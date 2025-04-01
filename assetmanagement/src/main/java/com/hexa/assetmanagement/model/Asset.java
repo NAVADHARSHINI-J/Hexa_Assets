@@ -14,18 +14,18 @@ public class Asset {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String name;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String model;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String status;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private Date date;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String configuration;
 	private String description;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private int quanity;
 
 	public int getId() {
