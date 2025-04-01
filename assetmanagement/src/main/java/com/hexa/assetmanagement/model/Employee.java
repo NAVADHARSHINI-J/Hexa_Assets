@@ -14,15 +14,15 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String name;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String email;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String password;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String phone;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private Date hire_date;
 	private String address;
 

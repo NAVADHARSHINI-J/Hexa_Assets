@@ -14,7 +14,7 @@ public class AssetAllocation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private Date allocationDate;
 	private Date returnDate;
 
