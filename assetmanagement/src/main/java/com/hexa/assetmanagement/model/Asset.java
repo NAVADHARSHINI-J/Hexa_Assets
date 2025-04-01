@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Asset {
@@ -28,6 +29,9 @@ public class Asset {
 	private String description;
 	@Column(nullable = false)
 	private int quanity;
+	
+	@ManyToOne
+	private Category category;
 
 	public int getId() {
 		return id;

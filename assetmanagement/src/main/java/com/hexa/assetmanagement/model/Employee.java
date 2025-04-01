@@ -9,6 +9,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Employee {
@@ -21,13 +22,14 @@ public class Employee {
 	@Column(nullable = false)
 	private String email;
 	@Column(nullable = false)
-	private String password;
-	@Column(nullable = false)
-	private String phone;
+	private String contact;
 	@Column(nullable = false)
 	private LocalDate hire_date;
 	@Column(length = 600)
 	private String address;
+	
+	@ManyToOne
+	private Department department;
 
 	public int getId() {
 		return id;
@@ -53,20 +55,12 @@ public class Employee {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
+	public String getContact() {
+		return contact;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
+	public void setContact(String contact) {
+		this.contact = contact;
 	}
 
 	public LocalDate getHire_date() {
