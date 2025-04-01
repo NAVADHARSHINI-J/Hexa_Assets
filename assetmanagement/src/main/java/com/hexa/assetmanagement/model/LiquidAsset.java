@@ -12,11 +12,11 @@ public class LiquidAsset {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String name;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private double totalAmount;
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private double remainingAmount;
 	private String description;
 	private String status;
