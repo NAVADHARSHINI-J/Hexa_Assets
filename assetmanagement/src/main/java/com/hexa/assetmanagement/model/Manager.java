@@ -19,6 +19,7 @@ public class Manager {
 	private String password;
 	@Column(nullable = false)
 	private String contact;
+	@Column(length = 600)
 	private String address;
 
 	public int getId() {

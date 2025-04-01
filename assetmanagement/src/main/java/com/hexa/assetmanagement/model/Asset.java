@@ -22,8 +22,9 @@ public class Asset {
 	private String status;
 	@Column(nullable = false)
 	private Date date;
-	@Column(nullable = false)
+	@Column(nullable = false,length = 1000)
 	private String configuration;
+	@Column(length = 2000)
 	private String description;
 	@Column(nullable = false)
 	private int quanity;

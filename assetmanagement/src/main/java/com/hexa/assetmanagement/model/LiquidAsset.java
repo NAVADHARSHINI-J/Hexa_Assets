@@ -18,6 +18,7 @@ public class LiquidAsset {
 	private double totalAmount;
 	@Column(nullable = false)
 	private double remainingAmount;
+	@Column(length = 2000)
 	private String description;
 	private String status;
 

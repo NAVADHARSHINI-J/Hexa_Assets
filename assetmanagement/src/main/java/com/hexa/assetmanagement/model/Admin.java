@@ -19,6 +19,7 @@ public class Admin {
 	 private String password;
 	 @Column(nullable = false)
 	 private String contact;
+	 @Column(length = 551)
 	 private String address;
 	public int getId() {
 		return id;
