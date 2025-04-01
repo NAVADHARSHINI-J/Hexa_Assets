@@ -13,28 +13,26 @@ public class LiquidAssetAllocation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 	 @Column(nullable=false)
-    private LocalDate allocated_date;
+    private LocalDate allocatedDate;
 	 @Column(nullable=false)
-    private double allocated_amount;
-	
-	
+    private double allocatedAmount;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public LocalDate getAllocated_date() {
-		return allocated_date;
+	public LocalDate getAllocatedDate() {
+		return allocatedDate;
 	}
-	public void setAllocated_date(LocalDate allocated_date) {
-		this.allocated_date = allocated_date;
+	public void setAllocatedDate(LocalDate allocatedDate) {
+		this.allocatedDate = allocatedDate;
 	}
-	public double getAllocated_amount() {
-		return allocated_amount;
+	public double getAllocatedAmount() {
+		return allocatedAmount;
 	}
-	public void setAllocated_amount(double allocated_amount) {
-		this.allocated_amount = allocated_amount;
+	public void setAllocatedAmount(double allocatedAmount) {
+		this.allocatedAmount = allocatedAmount;
 	}
 	
 }

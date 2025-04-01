@@ -13,23 +13,21 @@ public class ServiceRequest {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
    @Column(nullable=false)
-   private LocalDate request_date;
+   private LocalDate requestDate;
    @Column(nullable=false)
    private String reason;
-   private byte[] image;
-   
-   
+   private String imageUrl;
 public int getId() {
 	return id;
 }
 public void setId(int id) {
 	this.id = id;
 }
-public LocalDate getRequest_date() {
-	return request_date;
+public LocalDate getRequestDate() {
+	return requestDate;
 }
-public void setRequest_date(LocalDate request_date) {
-	this.request_date = request_date;
+public void setRequestDate(LocalDate requestDate) {
+	this.requestDate = requestDate;
 }
 public String getReason() {
 	return reason;
@@ -37,11 +35,11 @@ public String getReason() {
 public void setReason(String reason) {
 	this.reason = reason;
 }
-public byte[] getImage() {
-	return image;
+public String getImageUrl() {
+	return imageUrl;
 }
-public void setImage(byte[] image) {
-	this.image = image;
+public void setImageUrl(String imageUrl) {
+	this.imageUrl = imageUrl;
 }
    
    

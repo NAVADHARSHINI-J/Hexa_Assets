@@ -14,31 +14,29 @@ public class LiquidAssetRequest {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int id;
   @Column(nullable=false)
-  private LocalDate request_date;
+  private LocalDate requestDate;
   @Column(nullable=false)
-  private double requested_amount;
+  private double requestedAmount;
   @Column(nullable=false)
   private String reason;
   private String status="pending";
-  
-  
 public int getId() {
 	return id;
 }
 public void setId(int id) {
 	this.id = id;
 }
-public LocalDate getRequest_date() {
-	return request_date;
+public LocalDate getRequestDate() {
+	return requestDate;
 }
-public void setRequest_date(LocalDate request_date) {
-	this.request_date = request_date;
+public void setRequestDate(LocalDate requestDate) {
+	this.requestDate = requestDate;
 }
-public double getRequested_amount() {
-	return requested_amount;
+public double getRequestedAmount() {
+	return requestedAmount;
 }
-public void setRequested_amount(double requested_amount) {
-	this.requested_amount = requested_amount;
+public void setRequestedAmount(double requestedAmount) {
+	this.requestedAmount = requestedAmount;
 }
 public String getReason() {
 	return reason;
@@ -52,6 +50,7 @@ public String getStatus() {
 public void setStatus(String status) {
 	this.status = status;
 }
-
+  
+    
     
 }
