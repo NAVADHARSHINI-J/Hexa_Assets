@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class AssetAllocation {
@@ -17,7 +18,21 @@ public class AssetAllocation {
 	@Column(nullable = false)
 	private Date allocationDate;
 	private Date returnDate;
-	private String status="Allocated";
+	private String status = "Allocated";
+
+	@ManyToOne
+	private Asset asset;
+
+	@ManyToOne
+	private Employee employee;
+
+	public Asset getAsset() {
+		return asset;
+	}
+
+	public void setAsset(Asset asset) {
+		this.asset = asset;
+	}
 
 	public String getStatus() {
 		return status;
