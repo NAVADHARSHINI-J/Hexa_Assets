@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 @Entity
 public class AssetRequest {
 	@Id
@@ -17,6 +18,24 @@ public class AssetRequest {
     @Column(nullable=false)
     private String reason;
     private String status="pending";
+    @ManyToOne
+    private Employee employee;
+    @ManyToOne
+    private Asset asset;
+    
+    
+	public Employee getEmployee() {
+		return employee;
+	}
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+	public Asset getAsset() {
+		return asset;
+	}
+	public void setAsset(Asset asset) {
+		this.asset = asset;
+	}
 	public int getId() {
 		return id;
 	}
