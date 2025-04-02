@@ -17,6 +17,15 @@ public class AssetAllocation {
 	@Column(nullable = false)
 	private Date allocationDate;
 	private Date returnDate;
+	private String status="Allocated";
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	public int getId() {
 		return id;
