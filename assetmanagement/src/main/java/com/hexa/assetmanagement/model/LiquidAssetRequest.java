@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class LiquidAssetRequest {
@@ -20,6 +21,24 @@ public class LiquidAssetRequest {
   @Column(nullable=false,length = 2000)
   private String reason;
   private String status="pending";
+  @ManyToOne
+  private Employee employee;
+  @ManyToOne
+  private LiquidAsset liquidAsset;
+  
+  
+public Employee getEmployee() {
+	return employee;
+}
+public void setEmployee(Employee employee) {
+	this.employee = employee;
+}
+public LiquidAsset getLiquidAsset() {
+	return liquidAsset;
+}
+public void setLiquidAsset(LiquidAsset liquidAsset) {
+	this.liquidAsset = liquidAsset;
+}
 public int getId() {
 	return id;
 }
