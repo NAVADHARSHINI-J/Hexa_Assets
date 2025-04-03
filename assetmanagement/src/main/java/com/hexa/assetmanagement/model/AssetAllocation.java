@@ -26,6 +26,14 @@ public class AssetAllocation {
 	@ManyToOne
 	private Employee employee;
 
+	public Employee getEmployee() {
+		return employee;
+	}
+
+	public void setEmployee(Employee employee) {
+		this.employee = employee;
+	}
+
 	public Asset getAsset() {
 		return asset;
 	}
