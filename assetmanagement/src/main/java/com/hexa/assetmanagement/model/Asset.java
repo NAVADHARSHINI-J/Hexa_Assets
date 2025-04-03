@@ -96,4 +96,12 @@ public class Asset {
 	public void setQuanity(int quanity) {
 		this.quanity = quanity;
 	}
+
+	public Category getCategory() {
+		return category;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
 }

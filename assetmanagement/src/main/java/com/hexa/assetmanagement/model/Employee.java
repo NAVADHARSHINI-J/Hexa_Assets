@@ -21,10 +21,12 @@ public class Employee {
 	private String name;
 	@Column(nullable = false)
 	private String email;
+	
+
 	@Column(nullable = false)
 	private String contact;
 	@Column(nullable = false)
-	private LocalDate hire_date;
+	private LocalDate hireDate;
 	@Column(length = 600)
 	private String address;
 	
@@ -63,12 +65,12 @@ public class Employee {
 		this.contact = contact;
 	}
 
-	public LocalDate getHire_date() {
-		return hire_date;
+	public LocalDate getHireDate() {
+		return hireDate;
 	}
 
-	public void setHire_date(LocalDate hire_date) {
-		this.hire_date = hire_date;
+	public void setHireDate(LocalDate hireDate) {
+		this.hireDate = hireDate;
 	}
 
 	public String getAddress() {
@@ -77,5 +79,12 @@ public class Employee {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 }
