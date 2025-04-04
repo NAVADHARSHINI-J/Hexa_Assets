@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,6 +31,9 @@ public class AssetRequestService {
 
 		Employee employee = employeeService.getById(empId);
 		assetRequest.setEmployee(employee);
+		
+		if(assetRequest.getRequestDate()==null)
+			assetRequest.setRequestDate(LocalDate.now());
 
 		return assetRequestRepository.save(assetRequest);
 	}

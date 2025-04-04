@@ -21,7 +21,7 @@ public class AssetRequestController {
 	@Autowired
 	private AssetRequestService assetRequestService;
 
-	@PostMapping("/add/{AssetId}/{EmpId}")
+	@PostMapping("/add/{assetId}/{EmpId}")
 	public AssetRequest addAssetRequest(@PathVariable int assetId, @PathVariable int EmpId,
 			@RequestBody AssetRequest assetRequest) throws InvalidIdException {
 
@@ -29,8 +29,8 @@ public class AssetRequestController {
 	}
 
 	@GetMapping("/get/{id}")
-	public AssetRequest getById(@PathVariable int assetRequestId) throws InvalidIdException {
-		return assetRequestService.getById(assetRequestId);
+	public AssetRequest getById(@PathVariable int id) throws InvalidIdException {
+		return assetRequestService.getById(id);
 	}
 
 	@GetMapping("/getall")

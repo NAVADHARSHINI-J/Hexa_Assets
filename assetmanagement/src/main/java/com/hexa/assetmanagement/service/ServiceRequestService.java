@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ public class ServiceRequestService {
     private ServiceRequestRepository serviceRequestRepository;
 
     public ServiceRequest addServiceRequest(ServiceRequest serviceRequest) {
+    	if(serviceRequest.getRequestDate()==null)
+    		serviceRequest.setRequestDate(LocalDate.now());
         return serviceRequestRepository.save(serviceRequest);
     }
 

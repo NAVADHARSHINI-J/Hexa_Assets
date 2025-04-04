@@ -22,7 +22,7 @@ import com.hexa.assetmanagement.service.LiquidAssetRequestService;
 import com.hexa.assetmanagement.service.LiquidAssetService;
 
 @RestController
-@RequestMapping("api/liquidassetreq")
+@RequestMapping("/api/liquidassetreq")
 public class LiquidAssetRequestController {
 
 	@Autowired
@@ -45,7 +45,6 @@ public class LiquidAssetRequestController {
 
         request.setEmployee(employee);
         request.setLiquidAsset(liquidAsset);
-        request.setStatus("pending");
 
         return liquidAssetRequestService.addLiquidAssetRequest(request);
     }

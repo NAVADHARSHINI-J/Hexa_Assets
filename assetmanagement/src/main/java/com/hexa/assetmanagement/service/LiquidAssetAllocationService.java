@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,8 @@ public class LiquidAssetAllocationService {
     private LiquidAssetAllocationRepository liquidAssetAllocationRepository;
 
     public LiquidAssetAllocation addLiquidAssetAllocation(LiquidAssetAllocation allocation) {
+    	if(allocation.getAllocatedDate()==null)
+    		allocation.setAllocatedDate(LocalDate.now());
         return liquidAssetAllocationRepository.save(allocation);
     }
 
