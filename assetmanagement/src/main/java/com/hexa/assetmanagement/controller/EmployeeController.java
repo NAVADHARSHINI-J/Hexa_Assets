@@ -28,12 +28,13 @@ public class EmployeeController {
 	@Autowired
 	private DepartmentService departmentService;
 	
-	@PostMapping("/add/{id}")
+	@PostMapping("/add/{departmentId}/{userId}")
 	public Employee addEmployee(@RequestBody Employee employee,
-			@PathVariable int id) throws InvalidIdException, InvalidContactException {
-		Department department= departmentService.getById(id);
+			@PathVariable int departmentId,
+			@PathVariable int userId) throws InvalidIdException, InvalidContactException {
+		Department department= departmentService.getById(departmentId);
 		employee.setDepartment(department);
-		return employeeService.addEmployee(employee);
+		return employeeService.addEmployee(employee,userId);
 	}
 	
 	@GetMapping("/getbyid/{id}")

@@ -5,6 +5,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Admin {
@@ -21,6 +22,9 @@ public class Admin {
 	 private String contact;
 	 @Column(length = 551)
 	 private String address;
+	 
+	@OneToOne
+	private User user; 
 	public int getId() {
 		return id;
 	}
@@ -58,5 +62,11 @@ public class Admin {
 		this.address = address;
 	}
 	 
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	
 }
