@@ -24,6 +24,7 @@ public class Manager {
 	private String address;
 	@OneToOne
 	private User user; 
+	
 
 	public int getId() {
 		return id;
