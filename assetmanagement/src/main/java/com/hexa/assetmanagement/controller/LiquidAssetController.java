@@ -29,7 +29,7 @@ public class LiquidAssetController {
 		return liquidAssetService.addliquidAsset(liquidAsset);
 	}
 
-	@GetMapping("/get/{liqAstId}")
+	@GetMapping("/get/{id}")
 	public LiquidAsset getLiquidAssetById(@PathVariable int id) throws InvalidIdException {
 		return liquidAssetService.getLiquidAssetById(id);
 	}
