@@ -18,7 +18,6 @@ public class LiquidAssetService {
 	private LiquidAssetRepository liquidAssetRepository;
 
 	public LiquidAsset addliquidAsset(LiquidAsset liquidAsset) {
-
 		return liquidAssetRepository.save(liquidAsset);
 	}
 

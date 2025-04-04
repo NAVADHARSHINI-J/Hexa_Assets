@@ -44,8 +44,6 @@ public class ServiceRequestController {
         
         serviceRequest.setEmployee(employee);
         serviceRequest.setAsset(asset);
-        serviceRequest.setStatus("pending");
-        
         return serviceRequestService.addServiceRequest(serviceRequest);
     }
 

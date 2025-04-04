@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +18,8 @@ public class LiquidAssetRequestService {
 	    private LiquidAssetRequestRepository liquidAssetRequestRepository;
 
 	    public LiquidAssetRequest addLiquidAssetRequest(LiquidAssetRequest request) {
+	    	if(request.getRequestDate()==null)
+	    		request.setRequestDate(LocalDate.now());
 	        return liquidAssetRequestRepository.save(request);
 	    }
 

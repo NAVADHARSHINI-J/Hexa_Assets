@@ -14,6 +14,7 @@ import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.AssetAllocation;
 import com.hexa.assetmanagement.service.AssetAllocationService;
 
+
 @RestController
 @RequestMapping("/api/assetallocation")
 public class AssetAllocationController {
@@ -21,16 +22,16 @@ public class AssetAllocationController {
 	@Autowired
 	private AssetAllocationService assetAllocationService;
 
-	@PostMapping("/add/{AssetId}/{EmpId}")
+	@PostMapping("/add/{assetId}/{EmpId}")
 	public AssetAllocation addAssetAllocation(@PathVariable int assetId, @PathVariable int EmpId,
 			@RequestBody AssetAllocation assetAllocation) throws InvalidIdException {
-
+		
 		return assetAllocationService.addAssetAllocation(assetId, EmpId, assetAllocation);
 	}
 
 	@GetMapping("/get/{id}")
-	public AssetAllocation getById(@PathVariable int assetAllocationId) throws InvalidIdException {
-		return assetAllocationService.getById(assetAllocationId);
+	public AssetAllocation getById(@PathVariable int id) throws InvalidIdException {
+		return assetAllocationService.getById(id);
 	}
 
 	@GetMapping("/getall")
