@@ -29,6 +29,16 @@ public class AssetController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	@GetMapping("/public/hello")
+	public String sayHello() {
+		return "Welcome spring in public..";
+	}
+	
+	@GetMapping("/private/hello")
+	public String sayPrivateHello() {
+		return "Welcome spring in private..";
+	}
+	
 	@PostMapping("/add/{id}")
 	public Asset addAsset(@RequestBody Asset asset,@PathVariable int id) throws InvalidIdException {
 		Category category=categoryService.getById(id);
