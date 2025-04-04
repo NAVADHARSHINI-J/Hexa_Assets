@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +29,8 @@ public class AssetAllocationService {
 			throws InvalidIdException {
 		Asset asset = assetService.getById(assetId);
 		assetAllocation.setAsset(asset);
-
+		if(assetAllocation.getAllocationDate()==null)
+			assetAllocation.setAllocationDate(LocalDate.now());
 		Employee employee = employeeService.getById(empId);
 		assetAllocation.setEmployee(employee);
 

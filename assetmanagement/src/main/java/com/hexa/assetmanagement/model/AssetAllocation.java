@@ -1,6 +1,8 @@
 package com.hexa.assetmanagement.model;
 
-import java.util.Date;
+
+
+import java.time.LocalDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,8 +18,8 @@ public class AssetAllocation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	@Column(nullable = false)
-	private Date allocationDate;
-	private Date returnDate;
+	private LocalDate allocationDate;
+	private LocalDate returnDate;
 	private String status = "Allocated";
 
 	@ManyToOne
@@ -58,19 +60,19 @@ public class AssetAllocation {
 		this.id = id;
 	}
 
-	public Date getAllocationDate() {
+	public LocalDate getAllocationDate() {
 		return allocationDate;
 	}
 
-	public void setAllocationDate(Date allocationDate) {
+	public void setAllocationDate(LocalDate allocationDate) {
 		this.allocationDate = allocationDate;
 	}
 
-	public Date getReturnDate() {
+	public LocalDate getReturnDate() {
 		return returnDate;
 	}
 
-	public void setReturnDate(Date returnDate) {
+	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
 	}
 
