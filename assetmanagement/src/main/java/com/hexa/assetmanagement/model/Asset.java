@@ -1,7 +1,6 @@
 package com.hexa.assetmanagement.model;
 
-import java.util.Date;
-
+import java.time.LocalDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,7 +21,7 @@ public class Asset {
 	@Column(nullable = false)
 	private String status;
 	@Column(nullable = false)
-	private Date date;
+	private LocalDate date;
 	@Column(nullable = false,length = 1000)
 	private String configuration;
 	@Column(length = 2000)
@@ -65,11 +64,11 @@ public class Asset {
 		this.status = status;
 	}
 
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 

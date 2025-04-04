@@ -10,16 +10,23 @@ import org.springframework.stereotype.Service;
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
+import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.EmployeeRepository;
 
 @Service
 public class EmployeeService {
 	@Autowired
 	private EmployeeRepository employeeRepository;
+	@Autowired
+	private UserService userService;
 
-	public Employee addEmployee(Employee employee) throws InvalidContactException {
+	public Employee addEmployee(Employee employee,
+			int id) throws InvalidContactException, InvalidIdException {
 		if(employee.getContact().length()!=10)
 			throw new InvalidContactException("Invalid Contact number....");
+		//get the user and add it in the employee
+		User user=userService.getById(id);
+		employee.setUser(user);
 		return employeeRepository.save(employee);
 	}
 	public Employee getById(int id) throws InvalidIdException {

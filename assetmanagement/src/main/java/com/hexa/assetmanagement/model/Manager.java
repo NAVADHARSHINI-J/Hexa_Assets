@@ -22,17 +22,9 @@ public class Manager {
 	private String contact;
 	@Column(length = 600)
 	private String address;
-	
 	@OneToOne
-	private User user;
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
+	private User user; 
+	
 
 	public int getId() {
 		return id;
@@ -80,6 +72,14 @@ public class Manager {
 
 	public void setAddress(String address) {
 		this.address = address;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }
