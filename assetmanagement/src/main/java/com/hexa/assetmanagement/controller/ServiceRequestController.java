@@ -38,10 +38,11 @@ public class ServiceRequestController {
             @RequestBody ServiceRequest serviceRequest,
             @PathVariable int employeeId,
             @PathVariable int assetId) throws InvalidIdException {
-        
+        //get the employee by id to validate the id
         Employee employee = employeeService.getById(employeeId);
+      //get the asset by id to validate the id
         Asset asset = assetService.getById(assetId);
-        
+        //add the employee and asset in the serviceRequest
         serviceRequest.setEmployee(employee);
         serviceRequest.setAsset(asset);
         return serviceRequestService.addServiceRequest(serviceRequest);
@@ -54,8 +55,30 @@ public class ServiceRequestController {
 
     @GetMapping("/getall")
     public List<ServiceRequest> getAll(@RequestParam int page, @RequestParam int size) {
+    	//create a pageable object to store the page and size 
+    	//and findall method get the pageable object
         Pageable pageable = PageRequest.of(page, size);
         return serviceRequestService.getAll(pageable);
+    }
+    
+    @GetMapping("/bystatus")
+    public List<ServiceRequest> filterByStatus(@RequestParam String status) {
+    	return serviceRequestService.filterByStatus(status);
+    }
+    
+    @GetMapping("/byEmployeeId")
+    public List<ServiceRequest> filterByEmployeeId(@RequestParam int empid) 
+    		throws InvalidIdException {
+    	//check employee with id is present in db or not
+    	employeeService.getById(empid);
+    	return serviceRequestService.filterByEmployeeId(empid);
+    }
+    
+    @GetMapping("/byAssetId")
+    public List<ServiceRequest> filterByAssetId(@RequestParam int assetId) throws InvalidIdException {
+    	//check asset with id is present in db or not
+    	assetService.getById(assetId);
+    	return serviceRequestService.filterByAssetId(assetId);
     }
 }
 

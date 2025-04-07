@@ -14,13 +14,13 @@ public class ServiceRequest {
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    private int id;
    @Column(nullable=false)
-   private LocalDate requestDate;
+   private LocalDate requestDate;    //findByRequestDate
    @Column(nullable=false,length = 2000)
    private String reason;
    private String imageUrl;
-   private String status="pending";
+   private String status="pending";   //findByStatus
    @ManyToOne
-   private Employee employee;
+   private Employee employee;   //findByEmployee
    @ManyToOne
    private Asset asset;
    
