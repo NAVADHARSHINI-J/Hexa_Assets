@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -17,6 +18,11 @@ public class GlobalExceptionHandler {
 	
 	@ExceptionHandler(InvalidContactException.class)
 	public ErrorResponse contactErrorHandler(InvalidContactException e) {
+		return ErrorResponse.create(e, HttpStatusCode.valueOf(400), e.getMessage());
+	}
+	
+	@ExceptionHandler(UsernameInvalidException.class)
+	public ErrorResponse usernameErrorHandler(UsernameInvalidException e) {
 		return ErrorResponse.create(e, HttpStatusCode.valueOf(400), e.getMessage());
 	}
 }
