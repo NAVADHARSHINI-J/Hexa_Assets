@@ -20,7 +20,6 @@ public class AdminService {
 	@Autowired
 	private UserRepository userRepository;
 
-
 	public Admin add(Admin admin, int id) throws InvalidIdException, InvalidContactException {
 		//get the user from id
 		Optional<User> user=userRepository.findById(id);
