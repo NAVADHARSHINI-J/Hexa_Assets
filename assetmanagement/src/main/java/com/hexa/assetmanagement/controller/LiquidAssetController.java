@@ -39,5 +39,11 @@ public class LiquidAssetController {
 		Pageable pageable = PageRequest.of(page, size);
 		return liquidAssetService.getAllLiquidAsset(pageable);
 	}
+	
+	@GetMapping("/bystatus")
+    public List<LiquidAsset> filterByStatus(@RequestParam String status) {
+    	return liquidAssetService.filterByStatus(status);
+    }
+	
 
 }

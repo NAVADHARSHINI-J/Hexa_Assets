@@ -16,13 +16,13 @@ public class LiquidAssetService {
 
 	@Autowired
 	private LiquidAssetRepository liquidAssetRepository;
-
+	
+	
 	public LiquidAsset addliquidAsset(LiquidAsset liquidAsset) {
 		return liquidAssetRepository.save(liquidAsset);
 	}
 
 	public LiquidAsset getLiquidAssetById(int id) throws InvalidIdException {
-
 		Optional<LiquidAsset> optional = liquidAssetRepository.findById(id);
 		if (optional.isEmpty())
 			throw new InvalidIdException("Liquid asset Id is invalid!");
@@ -31,8 +31,11 @@ public class LiquidAssetService {
 	}
 
 	public List<LiquidAsset> getAllLiquidAsset(Pageable pageable) {
-
 		return liquidAssetRepository.findAll(pageable).getContent();
 	}
 
+	public List<LiquidAsset> filterByStatus(String status) {
+		return liquidAssetRepository.findByStatus(status);
+	}
+	
 }

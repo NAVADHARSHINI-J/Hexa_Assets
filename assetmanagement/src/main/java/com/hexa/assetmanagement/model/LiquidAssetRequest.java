@@ -1,7 +1,6 @@
 package com.hexa.assetmanagement.model;
 
 import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
