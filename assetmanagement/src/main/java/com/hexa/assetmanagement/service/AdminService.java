@@ -3,6 +3,8 @@ package com.hexa.assetmanagement.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class AdminService {
 	@Autowired
 	private UserRepository userRepository;
 
+	Logger logger=LoggerFactory.getLogger("AdminService");
 	public Admin add(Admin admin, int id) throws InvalidIdException, InvalidContactException {
 		//get the user from id
 		Optional<User> user=userRepository.findById(id);

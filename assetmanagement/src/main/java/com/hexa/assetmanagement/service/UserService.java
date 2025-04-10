@@ -2,10 +2,11 @@ package com.hexa.assetmanagement.service;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.User;
@@ -17,6 +18,8 @@ public class UserService {
 	private UserRepository userRepository;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
+	
+	Logger logger=LoggerFactory.getLogger("UserService");
 
 	public User signup(User user) throws UsernameInvalidException {
 		// check if user is present in the table or not
@@ -42,4 +45,23 @@ public class UserService {
 		return user.get();
 	}
 
+	public void reset(String username, User user) {
+		//find the user by using the username from the db 
+	   User user1=userRepository.findByUsername(username);
+	   //bcrypt the new password
+	   String password = encoder.encode(user.getPassword());
+	   //update the old password with new password
+	   user1.setPassword(password);
+	   logger.info("The password is reseted for user "+ username);
+	   //save the user
+	   userRepository.save(user1);
+	}
+
 }
+
+
+
+
+
+
+

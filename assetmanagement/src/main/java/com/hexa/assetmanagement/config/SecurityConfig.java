@@ -35,6 +35,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/asset/public/hello").permitAll()
 				.requestMatchers("/api/asset/private/hello").authenticated()
 				.requestMatchers("/api/user/signup").permitAll()
+				.requestMatchers("/api/user/reset").authenticated()
 				.requestMatchers("/api/user/login").authenticated()
 				.requestMatchers("/api/assetallocation/add/{assetId}/{EmpId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/assetallocation/delete-assetid/{id}").hasAuthority("ADMIN")
@@ -46,6 +47,9 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicereq/bystatus").permitAll()
 				.requestMatchers("/api/servicereq/byEmployeeId").permitAll()
 				.requestMatchers("/api/servicereq/byAssetId").permitAll()
+				.requestMatchers("/api/category/add").permitAll()
+				.requestMatchers("/api/category/getbyid/{id}").permitAll()
+				.requestMatchers("/api/category/getall").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
