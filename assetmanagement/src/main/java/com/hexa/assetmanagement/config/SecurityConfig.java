@@ -27,6 +27,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+
 				// cross site reference forgery to run post we have to disable this
 				.csrf(csrf -> csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/user/token/generate").permitAll()
@@ -35,6 +36,7 @@ public class SecurityConfig {
 						.requestMatchers("/api/asset/private/hello").authenticated()
 						.requestMatchers("/api/user/signup").permitAll()
 						.requestMatchers("/api/user/login").authenticated()
+          	.requestMatchers("/api/user/reset").authenticated()
 						.requestMatchers("/api/assetallocation/add/{assetId}/{EmpId}").hasAuthority("ADMIN")
 						.requestMatchers("/api/assetallocation/delete-assetid/{id}").hasAuthority("ADMIN")
 						.requestMatchers("/api/assetallocation/get/{id}").permitAll()
@@ -52,9 +54,14 @@ public class SecurityConfig {
 						.requestMatchers("/api/employee/getbyid/{id}").permitAll()
 						.requestMatchers("/api/employee/getbyname").permitAll()
 						.requestMatchers("/api/employee/getbydepartment").permitAll()
+            .requestMatchers("/api/category/add").permitAll()
+				    .requestMatchers("/api/category/getbyid/{id}").permitAll()
+				    .requestMatchers("/api/category/getall").permitAll()
+                               
 						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
 		return http.build();
 	}
 

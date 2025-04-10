@@ -17,8 +17,6 @@ public class Manager {
 	@Column(nullable = false)
 	private String email;
 	@Column(nullable = false)
-	private String password;
-	@Column(nullable = false)
 	private String contact;
 	@Column(length = 600)
 	private String address;
@@ -48,14 +46,6 @@ public class Manager {
 
 	public void setEmail(String email) {
 		this.email = email;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
 	}
 
 	public String getContact() {

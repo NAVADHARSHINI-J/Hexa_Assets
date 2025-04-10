@@ -21,6 +21,7 @@ public class Employee {
 
 	@Column(nullable = false)
 	private String contact;
+
 	@Column(length = 600)
 	private String address;
 
@@ -29,6 +30,14 @@ public class Employee {
 
 	@OneToOne
 	private User user;
+
+
+	
+	
+	public Employee() {
+		super();
+	}
+	
 
 	public int getId() {
 		return id;
