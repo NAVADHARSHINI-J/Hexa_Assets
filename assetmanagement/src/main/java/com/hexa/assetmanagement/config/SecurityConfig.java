@@ -29,36 +29,11 @@ public class SecurityConfig {
 		http
 
 				// cross site reference forgery to run post we have to disable this
-				.csrf(csrf -> csrf.disable())
-				.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/user/token/generate").permitAll()
-						.requestMatchers("/api/user/user/details").authenticated()
-						.requestMatchers("/api/asset/public/hello").permitAll()
-						.requestMatchers("/api/asset/private/hello").authenticated()
-						.requestMatchers("/api/user/signup").permitAll()
-						.requestMatchers("/api/user/login").authenticated()
-          	.requestMatchers("/api/user/reset").authenticated()
-						.requestMatchers("/api/assetallocation/add/{assetId}/{EmpId}").hasAuthority("ADMIN")
-						.requestMatchers("/api/assetallocation/delete-assetid/{id}").hasAuthority("ADMIN")
-						.requestMatchers("/api/assetallocation/get/{id}").permitAll()
-						.requestMatchers("/api/assetallocation/getall").permitAll()
-						.requestMatchers("/api/servicereq/add/{employeeId}/{assetId}").hasAuthority("EMPLOYEE")
-						.requestMatchers("/api/servicereq/getbyid/{id}").permitAll()
-						.requestMatchers("/api/servicereq/getall").permitAll()
-						.requestMatchers("/api/servicereq/bystatus").permitAll()
-						.requestMatchers("/api/servicereq/byEmployeeId").permitAll()
-						.requestMatchers("/api/servicereq/byAssetId").permitAll()
-						.requestMatchers("/api/department/add").permitAll()
-						.requestMatchers("/api/department/getbyid/{id}").permitAll()
-						.requestMatchers("/api/department/getall").permitAll()
-						.requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
-						.requestMatchers("/api/employee/getbyid/{id}").permitAll()
-						.requestMatchers("/api/employee/getbyname").permitAll()
-						.requestMatchers("/api/employee/getbydepartment").permitAll()
-            .requestMatchers("/api/category/add").permitAll()
-				    .requestMatchers("/api/category/getbyid/{id}").permitAll()
-				    .requestMatchers("/api/category/getall").permitAll()
+			.csrf(csrf -> csrf.disable())
+			.authorizeHttpRequests((authorize) -> authorize.requestMatchers("/api/user/token/generate").permitAll()
+			
                                
-						.anyRequest().authenticated())
+				.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
