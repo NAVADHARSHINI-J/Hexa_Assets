@@ -23,7 +23,7 @@ public class AssetAllocation {
 	private String status = "Allocated";
 
 	@ManyToOne
-	private Asset asset;
+	private Asset asset;   
 
 	@ManyToOne
 	private Employee employee;

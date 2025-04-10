@@ -22,7 +22,6 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
-	
 	@PostMapping("/add/{id}")
 	public Admin add(@RequestBody Admin admin,
 			@PathVariable int id) throws InvalidIdException, InvalidContactException {
