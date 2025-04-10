@@ -47,6 +47,7 @@ public class LiquidAssetController {
     	return liquidAssetService.filterByStatus(status);
     }
 	
+ 
 	@GetMapping("/byname")
     public List<LiquidAsset> filterByName(@RequestParam String name) {
     	return liquidAssetService.filterByName(name);
@@ -58,3 +59,4 @@ public class LiquidAssetController {
 		return ResponseEntity.ok("Deleted successfully.....");
 	}
 }
+ 

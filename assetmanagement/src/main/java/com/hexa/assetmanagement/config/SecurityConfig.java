@@ -16,7 +16,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.hexa.assetmanagement.service.MyService;
 
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -24,9 +23,11 @@ public class SecurityConfig {
 	private MyService myService;
 	@Autowired
 	private JwtFilter jwtFilter;
+
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
+
 		 //cross site reference forgery to run post we have to disable this
 				.csrf(csrf ->csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize
@@ -67,24 +68,25 @@ public class SecurityConfig {
 			.sessionManagement(session->session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
 		return http.build();
 	}
 
 	@Bean
 	AuthenticationProvider myAuth() {
-		DaoAuthenticationProvider dao=new DaoAuthenticationProvider();
+		DaoAuthenticationProvider dao = new DaoAuthenticationProvider();
 		dao.setPasswordEncoder(encodePass());
 		dao.setUserDetailsService(myService);
-		return dao ;
+		return dao;
 	}
+
 	@Bean
-	BCryptPasswordEncoder encodePass(){
+	BCryptPasswordEncoder encodePass() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Bean
-	AuthenticationManager getAuthentication(AuthenticationConfiguration auth) 
-			throws Exception {
+	AuthenticationManager getAuthentication(AuthenticationConfiguration auth) throws Exception {
 		return auth.getAuthenticationManager();
 	}
 }

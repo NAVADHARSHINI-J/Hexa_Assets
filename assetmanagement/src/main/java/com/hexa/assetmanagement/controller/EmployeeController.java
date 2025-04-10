@@ -27,24 +27,33 @@ public class EmployeeController {
 	private EmployeeService employeeService;
 	@Autowired
 	private DepartmentService departmentService;
-	
+
 	@PostMapping("/add/{departmentId}/{userId}")
-	public Employee addEmployee(@RequestBody Employee employee,
-			@PathVariable int departmentId,
+	public Employee addEmployee(@RequestBody Employee employee, @PathVariable int departmentId,
 			@PathVariable int userId) throws InvalidIdException, InvalidContactException {
-		Department department= departmentService.getById(departmentId);
+		Department department = departmentService.getById(departmentId);
 		employee.setDepartment(department);
-		return employeeService.addEmployee(employee,userId);
+		return employeeService.addEmployee(employee, userId);
 	}
-	
+
 	@GetMapping("/getbyid/{id}")
 	public Employee getById(@PathVariable int id) throws InvalidIdException {
 		return employeeService.getById(id);
 	}
-	
+
 	@GetMapping("/getall")
-	public List<Employee> getAll(@RequestParam int page,@RequestParam int size) {
-		Pageable pageable= PageRequest.of(page, size);
+	public List<Employee> getAll(@RequestParam int page, @RequestParam int size) {
+		Pageable pageable = PageRequest.of(page, size);
 		return employeeService.getAll(pageable);
+	}
+
+	@GetMapping("/getbyname")
+	public List<Employee> filterByName(@RequestParam String name) {
+		return employeeService.filterByName(name);
+	}
+
+	@GetMapping("/getbydepartment")
+	public List<Employee> filterByDepartment(@RequestParam String department) {
+		return employeeService.filterByDepartment(department);
 	}
 }

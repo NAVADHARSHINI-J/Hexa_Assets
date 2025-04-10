@@ -1,5 +1,7 @@
 package com.hexa.assetmanagement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +24,14 @@ public class DepartmentController {
 	public Department addDepartment(@RequestBody Department department) {
 		return departmentService.addDepartment(department);
 	}
+
 	@GetMapping("/getbyid/{id}")
 	public Department getById(@PathVariable int id) throws InvalidIdException {
 		return departmentService.getById(id);
+	}
+	
+	@GetMapping("/getall")
+	public List<Department> getAll(){
+		return departmentService.getAll();
 	}
 }
