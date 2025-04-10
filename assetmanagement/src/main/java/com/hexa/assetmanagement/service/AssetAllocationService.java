@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hexa.assetmanagement.exception.AssetUnavailableException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Asset;
 import com.hexa.assetmanagement.model.AssetAllocation;
@@ -26,13 +27,22 @@ public class AssetAllocationService {
 	private AssetAllocationRepository assetAllocationRepository;
 
 	public AssetAllocation addAssetAllocation(int assetId, int empId, AssetAllocation assetAllocation)
-			throws InvalidIdException {
+			throws InvalidIdException, AssetUnavailableException {
+		//check the asset id
 		Asset asset = assetService.getById(assetId);
+		//check the quantity of the asset
+		if(asset.getQuanity()<=0)
+			throw new AssetUnavailableException("asset is not available.....");
 		assetAllocation.setAsset(asset);
+		//check the allocation date
 		if(assetAllocation.getAllocationDate()==null)
 			assetAllocation.setAllocationDate(LocalDate.now());
+		//check the employee id and add it to asset allocation
 		Employee employee = employeeService.getById(empId);
 		assetAllocation.setEmployee(employee);
+		//After allocation reduce the one quantity of the asset 
+		asset.setQuanity(asset.getQuanity()-1);
+		assetService.addAsset(asset);
 
 		return assetAllocationRepository.save(assetAllocation);
 	}
@@ -46,6 +56,17 @@ public class AssetAllocationService {
 
 	public List<AssetAllocation> getAllAssetAllocation() {
 		return assetAllocationRepository.findAll();
+	}
+
+	public void deleteByAssetId(int id) throws InvalidIdException {
+		//check that the asset id is found or not
+		Asset asset=assetService.getById(id);
+		//find all the assetallocation with this asset
+		List<AssetAllocation> list=assetAllocationRepository.findAll().stream()
+		.filter(aa->aa.getAsset().equals(asset)).toList();
+		//delete the assetallocation
+		assetAllocationRepository.deleteAll(list);
+		
 	}
 
 }

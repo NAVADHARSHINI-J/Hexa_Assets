@@ -3,6 +3,8 @@ package com.hexa.assetmanagement.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexa.assetmanagement.exception.AssetUnavailableException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.AssetAllocation;
 import com.hexa.assetmanagement.service.AssetAllocationService;
@@ -23,8 +26,10 @@ public class AssetAllocationController {
 	private AssetAllocationService assetAllocationService;
 
 	@PostMapping("/add/{assetId}/{EmpId}")
-	public AssetAllocation addAssetAllocation(@PathVariable int assetId, @PathVariable int EmpId,
-			@RequestBody AssetAllocation assetAllocation) throws InvalidIdException {
+	public AssetAllocation addAssetAllocation(@PathVariable int assetId
+			, @PathVariable int EmpId,
+			@RequestBody AssetAllocation assetAllocation) 
+					throws InvalidIdException, AssetUnavailableException {
 		
 		return assetAllocationService.addAssetAllocation(assetId, EmpId, assetAllocation);
 	}
@@ -38,4 +43,14 @@ public class AssetAllocationController {
 	public List<AssetAllocation> getAllAssetAllocation() {
 		return assetAllocationService.getAllAssetAllocation();
 	}
+	
+	@DeleteMapping("/delete-assetid/{id}")
+	public ResponseEntity<?> deleteByAssetId(@PathVariable int id) throws InvalidIdException {
+		assetAllocationService.deleteByAssetId(id);
+		return ResponseEntity.ok("Deleted successfully.....");
+	}
 }
+
+
+
+
