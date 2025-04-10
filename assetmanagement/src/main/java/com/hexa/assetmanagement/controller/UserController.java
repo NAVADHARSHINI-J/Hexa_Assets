@@ -2,6 +2,7 @@ package com.hexa.assetmanagement.controller;
 
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -77,6 +78,15 @@ public class UserController {
  		String username = principal.getName();
  		return myService.loadUserByUsername(username);
  	}
+	
+	//api to reset the password
+	@PostMapping("/reset")
+	public ResponseEntity<?> reset(@RequestBody User user,Principal principal) {
+		//get the username from pricipal and fetch the info from db
+		String username = principal.getName();
+ 		userService.reset(username,user);
+ 		return ResponseEntity.ok("Password reseted successfully...");
+	}
 }
 
 

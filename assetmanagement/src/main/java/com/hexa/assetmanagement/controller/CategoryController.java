@@ -1,5 +1,7 @@
 package com.hexa.assetmanagement.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,5 +27,10 @@ public class CategoryController {
 	@GetMapping("/getbyid/{id}")
 	public Category getById(@PathVariable int id) throws InvalidIdException {
 		return categoryService.getById(id);
+	}
+	
+	@GetMapping("/getall")
+	public List<Category> getAll() {
+		return categoryService.getall();
 	}
 }
