@@ -20,24 +20,32 @@ public class EmployeeService {
 	@Autowired
 	private UserService userService;
 
-	public Employee addEmployee(Employee employee,
-			int id) throws InvalidContactException, InvalidIdException {
-		if(employee.getContact().length()!=10)
+	public Employee addEmployee(Employee employee, int id) throws InvalidContactException, InvalidIdException {
+		if (employee.getContact().length() != 10)
 			throw new InvalidContactException("Invalid Contact number....");
-		//get the user and add it in the employee
-		User user=userService.getById(id);
+		// get the user and add it in the employee
+		User user = userService.getById(id);
 		employee.setUser(user);
 		return employeeRepository.save(employee);
 	}
+
 	public Employee getById(int id) throws InvalidIdException {
-		Optional<Employee> op=employeeRepository.findById(id);
-		if(op.isEmpty())
+		Optional<Employee> op = employeeRepository.findById(id);
+		if (op.isEmpty())
 			throw new InvalidIdException("Employee Id is invalid....");
 		return op.get();
 	}
 
 	public List<Employee> getAll(Pageable pageable) {
 		return employeeRepository.findAll(pageable).getContent();
+	}
+
+	public List<Employee> filterByName(String name) {
+		return employeeRepository.findByName(name);
+	}
+
+	public List<Employee> filterByDepartment(String department) {
+		return employeeRepository.findByDepartment(department);
 	}
 
 }

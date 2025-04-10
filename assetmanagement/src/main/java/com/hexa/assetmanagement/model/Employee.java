@@ -1,9 +1,5 @@
 package com.hexa.assetmanagement.model;
 
-
-
-import java.time.LocalDate;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,21 +18,18 @@ public class Employee {
 	private String name;
 	@Column(nullable = false)
 	private String email;
-	
 
 	@Column(nullable = false)
 	private String contact;
-	@Column(nullable = false)
-	private LocalDate hireDate;
 	@Column(length = 600)
 	private String address;
-	
+
 	@ManyToOne
 	private Department department;
-	
+
 	@OneToOne
-	private User user; 
-	
+	private User user;
+
 	public int getId() {
 		return id;
 	}
@@ -69,14 +62,6 @@ public class Employee {
 		this.contact = contact;
 	}
 
-	public LocalDate getHireDate() {
-		return hireDate;
-	}
-
-	public void setHireDate(LocalDate hireDate) {
-		this.hireDate = hireDate;
-	}
-
 	public String getAddress() {
 		return address;
 	}
@@ -84,6 +69,7 @@ public class Employee {
 	public void setAddress(String address) {
 		this.address = address;
 	}
+
 	public Department getDepartment() {
 		return department;
 	}
@@ -99,5 +85,5 @@ public class Employee {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 }
