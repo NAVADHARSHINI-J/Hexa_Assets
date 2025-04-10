@@ -68,4 +68,8 @@ public class LiquidAssetController {
 	    return ResponseEntity.ok("Updated sucessfully");
 	}
 }
+<<<<<<< HEAD
  
+=======
+ 
+>>>>>>> 21966a580b30fd49bef997c29362c44f60279d3b
