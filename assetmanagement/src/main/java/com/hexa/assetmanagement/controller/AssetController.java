@@ -56,6 +56,11 @@ public class AssetController {
 		Pageable pageable= PageRequest.of(page, size);
 		return assetService.getAll(pageable);
 	}
+	
+	@GetMapping("/getbyname")
+	public List<Asset> filterByName(@RequestParam String name){
+		return assetService.filterByName(name);
+	}
 }
 
 

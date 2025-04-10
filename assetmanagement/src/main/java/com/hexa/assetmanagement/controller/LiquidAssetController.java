@@ -58,5 +58,11 @@ public class LiquidAssetController {
 		liquidAssetService.deleteById(id);
 		return ResponseEntity.ok("Deleted successfully.....");
 	}
-}
+ 
+	@PutMapping("/update/{id}")
+	public ResponseEntity<?> updateLiquidAsset(@PathVariable int id, @RequestBody LiquidAsset liquidAssetupdated) throws InvalidIdException {
+	    LiquidAsset LiquidAssetupdated = liquidAssetService.updateLiquidAsset(id, liquidAssetupdated);
+	    return ResponseEntity.ok("Updated sucessfully");
+	}
+}  
  

@@ -27,7 +27,8 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-
+				 
+	 
 		 //cross site reference forgery to run post we have to disable this
 				.csrf(csrf ->csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize
@@ -63,11 +64,16 @@ public class SecurityConfig {
 				.requestMatchers("api/liquidassetallocation/add/{employeeId}/{liquidAssetId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").permitAll()
 				.requestMatchers("/api/liquidassetallocation/getall").permitAll()
+                               .requestMatchers("/api/asset/add/{id}").hasAuthority("ADMIN")
+				        .requestMatchers("/api/asset/getbyid/{id}").permitAll()
+				        .requestMatchers("/api/asset/getall").permitAll()
+				        .requestMatchers("/api/asset/getbyname").permitAll()
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+ 
 
 		return http.build();
 	}
