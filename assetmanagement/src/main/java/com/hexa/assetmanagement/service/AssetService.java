@@ -31,4 +31,9 @@ public class AssetService {
 		return assetRepository.findAll(pageable).getContent();
 	}
 
+	public List<Asset> filterByName(String name) {
+		 
+		return assetRepository.findByName(name);
+	}
+
 }

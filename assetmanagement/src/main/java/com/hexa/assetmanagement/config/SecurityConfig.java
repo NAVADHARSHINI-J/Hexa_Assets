@@ -36,7 +36,7 @@ public class SecurityConfig {
 						.requestMatchers("/api/asset/private/hello").authenticated()
 						.requestMatchers("/api/user/signup").permitAll()
 						.requestMatchers("/api/user/login").authenticated()
-          	.requestMatchers("/api/user/reset").authenticated()
+          	            .requestMatchers("/api/user/reset").authenticated()
 						.requestMatchers("/api/assetallocation/add/{assetId}/{EmpId}").hasAuthority("ADMIN")
 						.requestMatchers("/api/assetallocation/delete-assetid/{id}").hasAuthority("ADMIN")
 						.requestMatchers("/api/assetallocation/get/{id}").permitAll()
@@ -54,10 +54,14 @@ public class SecurityConfig {
 						.requestMatchers("/api/employee/getbyid/{id}").permitAll()
 						.requestMatchers("/api/employee/getbyname").permitAll()
 						.requestMatchers("/api/employee/getbydepartment").permitAll()
-            .requestMatchers("/api/category/add").permitAll()
-				    .requestMatchers("/api/category/getbyid/{id}").permitAll()
-				    .requestMatchers("/api/category/getall").permitAll()
-                               
+                        .requestMatchers("/api/category/add").permitAll()
+				        .requestMatchers("/api/category/getbyid/{id}").permitAll()
+				        .requestMatchers("/api/category/getall").permitAll()
+				        .requestMatchers("/api/asset/add/{id}").hasAuthority("ADMIN")
+				        .requestMatchers("/api/asset/getbyid/{id}").permitAll()
+				        .requestMatchers("/api/asset/getall").permitAll()
+				        .requestMatchers("/api/asset/getbyname").permitAll()
+				        
 						.anyRequest().authenticated())
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
