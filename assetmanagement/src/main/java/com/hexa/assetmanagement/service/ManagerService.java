@@ -63,7 +63,6 @@ public class ManagerService {
 		}
 		if(man.getAddress() != null)
 			man.setAddress(man.getAddress());
-		
 		return managerRepository.save(man);
 	}
 }
