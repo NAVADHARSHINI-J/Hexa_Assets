@@ -36,4 +36,12 @@ public class AssetService {
 		return assetRepository.findByName(name);
 	}
 
+	public List<Asset> filterByCategory(String category) { 
+		return assetRepository.findByCategoryName(category);
+	}
+
+	public List<Asset> filterByStatus(String status) { 
+		return assetRepository.findByStatus(status);
+	}
+
 }

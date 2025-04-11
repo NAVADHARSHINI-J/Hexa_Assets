@@ -42,17 +42,20 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/getall")
+	//getting the list of employees - admin and manager has authority for this.
 	public List<Employee> getAll(@RequestParam int page, @RequestParam int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		return employeeService.getAll(pageable);
 	}
 
 	@GetMapping("/getbyname")
+	//filtering employees with their name
 	public List<Employee> filterByName(@RequestParam String name) {
 		return employeeService.filterByName(name);
 	}
 
 	@GetMapping("/getbydepartment")
+	//filtering employees by their department
 	public List<Employee> filterByDepartment(@RequestParam String department) {
 		return employeeService.filterByDepartment(department);
 	}

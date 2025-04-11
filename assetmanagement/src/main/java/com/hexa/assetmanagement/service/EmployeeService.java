@@ -45,7 +45,7 @@ public class EmployeeService {
 	}
 
 	public List<Employee> filterByDepartment(String department) {
-		return employeeRepository.findByDepartment(department);
+		return employeeRepository.findByDepartmentName(department);
 	}
 
 }
