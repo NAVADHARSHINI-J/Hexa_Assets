@@ -1,6 +1,8 @@
 package com.hexa.assetmanagement.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,10 +29,31 @@ public class Asset {
 	@Column(length = 2000)
 	private String description;
 	@Column(nullable = false)
-	private int quanity;
+	private int quantity;
 	
 	@ManyToOne
 	private Category category;
+	
+	public Asset() {
+		super();
+	}
+
+	public Asset(int id, String name, String model, String status, LocalDate date, String configuration,
+			String description, int quantity, Category category) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.model = model;
+		this.status = status;
+		this.date = date;
+		this.configuration = configuration;
+		this.description = description;
+		this.quantity = quantity;
+		this.category = category;
+	}
+
+	
+
 
 	public int getId() {
 		return id;
@@ -88,12 +111,12 @@ public class Asset {
 		this.description = description;
 	}
 
-	public int getQuanity() {
-		return quanity;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setQuanity(int quanity) {
-		this.quanity = quanity;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public Category getCategory() {
@@ -103,4 +126,25 @@ public class Asset {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(category, configuration, date, description, id, model, name, quantity, status);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Asset other = (Asset) obj;
+		return Objects.equals(category, other.category) && Objects.equals(configuration, other.configuration)
+				&& Objects.equals(date, other.date) && Objects.equals(description, other.description) && id == other.id
+				&& Objects.equals(model, other.model) && Objects.equals(name, other.name) && quantity == other.quantity
+				&& Objects.equals(status, other.status);
+	}
+	
 }

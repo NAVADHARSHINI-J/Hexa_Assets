@@ -27,7 +27,6 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-				 
 	 
 		 //cross site reference forgery to run post we have to disable this
 				.csrf(csrf ->csrf.disable())
@@ -43,14 +42,14 @@ public class SecurityConfig {
 				.requestMatchers("/api/assetallocation/delete-assetid/{id}").hasAuthority("ADMIN")
 				.requestMatchers("/api/assetallocation/get/{id}").permitAll()
 				.requestMatchers("/api/assetallocation/getall").permitAll()
-				.requestMatchers("/api/servicereq/add/{employeeId}/{assetId}").hasAuthority("EMPLOYEE")
-				.requestMatchers("/api/servicereq/getbyid/{id}").permitAll()
-				.requestMatchers("/api/servicereq/getall").permitAll()
-				.requestMatchers("/api/servicereq/bystatus").permitAll()
-				.requestMatchers("/api/servicereq/byEmployeeId").permitAll()
-				.requestMatchers("/api/servicereq/byAssetId").permitAll()
-				.requestMatchers("/api/category/add").permitAll()
-				.requestMatchers("/api/category/getbyid/{id}").permitAll()
+				.requestMatchers("/api/servicerequest/add/{employeeId}/{assetId}").hasAuthority("EMPLOYEE")
+				.requestMatchers("/api/servicerequest/getbyid/{RequestId}").permitAll()
+				.requestMatchers("/api/servicerequest/getall").permitAll()
+				.requestMatchers("/api/servicerequest/bystatus").permitAll()
+				.requestMatchers("/api/servicerequest/byEmployeeId").permitAll()
+				.requestMatchers("/api/servicerequest/byAssetId").permitAll()
+				.requestMatchers("/api/category/add").hasAuthority("ADMIN")
+				.requestMatchers("/api/category/getbyid/{CategoryId}").permitAll()
 				.requestMatchers("/api/category/getall").permitAll()
 				.requestMatchers("/api/liquidasset/add").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidasset/getall").permitAll()
@@ -65,17 +64,28 @@ public class SecurityConfig {
 				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").permitAll()
 				.requestMatchers("/api/liquidassetallocation/getall").permitAll()
                 .requestMatchers("/api/asset/add/{id}").hasAuthority("ADMIN")
-				.requestMatchers("/api/asset/getbyid/{id}").permitAll()
+                .requestMatchers("/api/asset/getbyid/{id}").permitAll()
 				.requestMatchers("/api/asset/getall").permitAll()
 				.requestMatchers("/api/asset/getbyname").permitAll()
 				.requestMatchers("/api/asset/getbycategory").permitAll()
 				.requestMatchers("/api/asset/getbystatus").permitAll() 
+				.requestMatchers("/api/admin/add").authenticated()
+	            .requestMatchers("/api/admin/getall").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/admin/getbyid/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/admin/update/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/employee/add/{departmentId}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/employee/getbyid/{id}").permitAll()
+	            .requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
+	            .requestMatchers("/api/employee/getbyname").permitAll()
+	            .requestMatchers("/api/employee/getbydepartment").permitAll()
+	            .requestMatchers("/api/employee/update/{id}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN") 
+	            
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
- 
 
 		return http.build();
 	}

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -76,6 +77,14 @@ public class AssetController {
 	//filtering assets by status
 	public List<Asset> filterByStatus(@RequestParam String status){
 		return assetService.filterByStatus(status);
+	}
+	
+	@PutMapping("/update-asset/{id}")
+	//update an existing asset with its id:
+	public Asset updateAsset(@RequestBody Asset newAsset, @PathVariable int id) throws InvalidIdException {
+		
+		Asset oldAsset = assetService.getById(id);
+		return assetService.updateAsset(newAsset, oldAsset);
 	}
 }
 
