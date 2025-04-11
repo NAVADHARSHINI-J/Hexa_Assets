@@ -29,7 +29,7 @@ public class Asset {
 	@Column(length = 2000)
 	private String description;
 	@Column(nullable = false)
-	private int quanity;
+	private int quantity;
 	
 	@ManyToOne
 	private Category category;
@@ -39,7 +39,7 @@ public class Asset {
 	}
 
 	public Asset(int id, String name, String model, String status, LocalDate date, String configuration,
-			String description, int quanity, Category category) {
+			String description, int quantity, Category category) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -48,9 +48,12 @@ public class Asset {
 		this.date = date;
 		this.configuration = configuration;
 		this.description = description;
-		this.quanity = quanity;
+		this.quantity = quantity;
 		this.category = category;
 	}
+
+	
+
 
 	public int getId() {
 		return id;
@@ -108,12 +111,12 @@ public class Asset {
 		this.description = description;
 	}
 
-	public int getQuanity() {
-		return quanity;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setQuanity(int quanity) {
-		this.quanity = quanity;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 	public Category getCategory() {
@@ -126,7 +129,7 @@ public class Asset {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(category, configuration, date, description, id, model, name, quanity, status);
+		return Objects.hash(category, configuration, date, description, id, model, name, quantity, status);
 	}
 
 	@Override
@@ -140,7 +143,7 @@ public class Asset {
 		Asset other = (Asset) obj;
 		return Objects.equals(category, other.category) && Objects.equals(configuration, other.configuration)
 				&& Objects.equals(date, other.date) && Objects.equals(description, other.description) && id == other.id
-				&& Objects.equals(model, other.model) && Objects.equals(name, other.name) && quanity == other.quanity
+				&& Objects.equals(model, other.model) && Objects.equals(name, other.name) && quantity == other.quantity
 				&& Objects.equals(status, other.status);
 	}
 	

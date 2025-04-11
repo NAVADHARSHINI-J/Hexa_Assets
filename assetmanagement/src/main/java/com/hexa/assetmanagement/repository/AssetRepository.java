@@ -10,4 +10,8 @@ public interface AssetRepository extends JpaRepository<Asset, Integer>{
 
 	List<Asset> findByName(String name);
 
+	List<Asset> findByCategoryName(String category);
+
+	List<Asset> findByStatus(String status);
+
 }

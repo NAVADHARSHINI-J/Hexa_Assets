@@ -67,11 +67,20 @@ public class SecurityConfig {
                 .requestMatchers("/api/asset/getbyid/{id}").permitAll()
 				.requestMatchers("/api/asset/getall").permitAll()
 				.requestMatchers("/api/asset/getbyname").permitAll()
-	            .requestMatchers("/api/admin/add").authenticated()
+				.requestMatchers("/api/asset/getbycategory").permitAll()
+				.requestMatchers("/api/asset/getbystatus").permitAll() 
+				.requestMatchers("/api/admin/add").authenticated()
 	            .requestMatchers("/api/admin/getall").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/getbyid/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/update/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
-				 
+	            .requestMatchers("/api/employee/add/{departmentId}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/employee/getbyid/{id}").permitAll()
+	            .requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
+	            .requestMatchers("/api/employee/getbyname").permitAll()
+	            .requestMatchers("/api/employee/getbydepartment").permitAll()
+	            .requestMatchers("/api/employee/update/{id}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN") 
+	            
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
