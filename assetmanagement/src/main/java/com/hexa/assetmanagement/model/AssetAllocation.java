@@ -3,6 +3,7 @@ package com.hexa.assetmanagement.model;
 
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,6 +28,17 @@ public class AssetAllocation {
 
 	@ManyToOne
 	private Employee employee;
+	
+	public AssetAllocation() {
+		super();
+	}
+	public AssetAllocation(int id, LocalDate allocationDate, LocalDate returnDate, String status) {
+		super();
+		this.id = id;
+		this.allocationDate = allocationDate;
+		this.returnDate = returnDate;
+		this.status = status;
+	}
 
 	public Employee getEmployee() {
 		return employee;
@@ -74,6 +86,23 @@ public class AssetAllocation {
 
 	public void setReturnDate(LocalDate returnDate) {
 		this.returnDate = returnDate;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(allocationDate, asset, employee, id, returnDate, status);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AssetAllocation other = (AssetAllocation) obj;
+		return Objects.equals(allocationDate, other.allocationDate) && Objects.equals(asset, other.asset)
+				&& Objects.equals(employee, other.employee) && id == other.id
+				&& Objects.equals(returnDate, other.returnDate) && Objects.equals(status, other.status);
 	}
 
 }

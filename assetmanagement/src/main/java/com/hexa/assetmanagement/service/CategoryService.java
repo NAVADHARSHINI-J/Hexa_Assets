@@ -20,18 +20,23 @@ public class CategoryService {
 
 	@Autowired
 	private CategoryRepository categoryRepository;
+	
 	public Category addCategory(Category category) {
 		logger.info("Category added with name "+category.getName());
+		//save the category
 		return categoryRepository.save(category);
 	}
-	public Category getById(int id) throws InvalidIdException {
+	
+	public Category getById(int CategoryId) throws InvalidIdException {
 		//check whether the category is present with id or not
-		Optional<Category> op=categoryRepository.findById(id);
+		Optional<Category> op=categoryRepository.findById(CategoryId);
 		if(op.isEmpty())
 			throw new InvalidIdException("Category Id is invalid....");
+		
 		logger.info("Category found with name "+op.get().getName());
 		return op.get();
 	}
+	
 	public List<Category> getall() {
 		logger.info("All Categories of asset was got from db");
 		return categoryRepository.findAll();

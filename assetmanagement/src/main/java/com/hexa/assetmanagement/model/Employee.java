@@ -1,5 +1,7 @@
 package com.hexa.assetmanagement.model;
 
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,14 +33,31 @@ public class Employee {
 	@OneToOne
 	private User user;
 
+	public Employee(int id, String name, String email, String contact, String address, Department department,
+			User user) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.contact = contact;
+		this.address = address;
+		this.department = department;
+		this.user = user;
+	}
+	public Employee(int id, String name, String email, String contact, String address, Department department) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.contact = contact;
+		this.address = address;
+		this.department = department;
+	}
 
-	
-	
 	public Employee() {
 		super();
 	}
 	
-
 	public int getId() {
 		return id;
 	}
@@ -93,6 +112,23 @@ public class Employee {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	@Override
+	public int hashCode() {
+		return Objects.hash(address, contact, department, email, id, name, user);
+	}
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Employee other = (Employee) obj;
+		return Objects.equals(address, other.address) && Objects.equals(contact, other.contact)
+				&& Objects.equals(department, other.department) && Objects.equals(email, other.email) && id == other.id
+				&& Objects.equals(name, other.name) && Objects.equals(user, other.user);
 	}
 
 }
