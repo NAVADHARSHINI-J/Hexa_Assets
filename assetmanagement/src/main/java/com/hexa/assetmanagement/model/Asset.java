@@ -1,6 +1,8 @@
 package com.hexa.assetmanagement.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -31,6 +33,24 @@ public class Asset {
 	
 	@ManyToOne
 	private Category category;
+	
+	public Asset() {
+		super();
+	}
+
+	public Asset(int id, String name, String model, String status, LocalDate date, String configuration,
+			String description, int quanity, Category category) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.model = model;
+		this.status = status;
+		this.date = date;
+		this.configuration = configuration;
+		this.description = description;
+		this.quanity = quanity;
+		this.category = category;
+	}
 
 	public int getId() {
 		return id;
@@ -103,4 +123,25 @@ public class Asset {
 	public void setCategory(Category category) {
 		this.category = category;
 	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(category, configuration, date, description, id, model, name, quanity, status);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Asset other = (Asset) obj;
+		return Objects.equals(category, other.category) && Objects.equals(configuration, other.configuration)
+				&& Objects.equals(date, other.date) && Objects.equals(description, other.description) && id == other.id
+				&& Objects.equals(model, other.model) && Objects.equals(name, other.name) && quanity == other.quanity
+				&& Objects.equals(status, other.status);
+	}
+	
 }

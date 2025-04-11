@@ -25,18 +25,18 @@ public class AssetAllocationController {
 	@Autowired
 	private AssetAllocationService assetAllocationService;
 
-	@PostMapping("/add/{assetId}/{EmpId}")
+	@PostMapping("/add/{assetId}/{empId}")
 	public AssetAllocation addAssetAllocation(@PathVariable int assetId
-			, @PathVariable int EmpId,
+			, @PathVariable int empId,
 			@RequestBody AssetAllocation assetAllocation) 
 					throws InvalidIdException, AssetUnavailableException {
 		
-		return assetAllocationService.addAssetAllocation(assetId, EmpId, assetAllocation);
+		return assetAllocationService.addAssetAllocation(assetId, empId, assetAllocation);
 	}
 
-	@GetMapping("/get/{id}")
-	public AssetAllocation getById(@PathVariable int id) throws InvalidIdException {
-		return assetAllocationService.getById(id);
+	@GetMapping("/get/{AssetAllocationId}")
+	public AssetAllocation getById(@PathVariable int AssetAllocationId) throws InvalidIdException {
+		return assetAllocationService.getById(AssetAllocationId);
 	}
 
 	@GetMapping("/getall")
@@ -44,10 +44,10 @@ public class AssetAllocationController {
 		return assetAllocationService.getAllAssetAllocation();
 	}
 	
-	@DeleteMapping("/delete-assetid/{id}")
-	public ResponseEntity<?> deleteByAssetId(@PathVariable int id) throws InvalidIdException {
-		assetAllocationService.deleteByAssetId(id);
-		return ResponseEntity.ok("Deleted successfully.....");
+	@DeleteMapping("/delete-assetid/{AssetId}")
+	public ResponseEntity<?> deleteByAssetId(@PathVariable int AssetId) throws InvalidIdException {
+		String message =assetAllocationService.deleteByAssetId(AssetId);
+		return ResponseEntity.ok(message);
 	}
 }
 

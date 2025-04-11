@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,11 @@ public class AssetAllocationService {
 
 	@Autowired
 	private AssetAllocationRepository assetAllocationRepository;
+	
+	Logger logger=LoggerFactory.getLogger("AssetAllocationService");
 
-	public AssetAllocation addAssetAllocation(int assetId, int empId, AssetAllocation assetAllocation)
+	public AssetAllocation addAssetAllocation(int assetId, int empId,
+			AssetAllocation assetAllocation)
 			throws InvalidIdException, AssetUnavailableException {
 		//check the asset id
 		Asset asset = assetService.getById(assetId);
@@ -43,30 +48,36 @@ public class AssetAllocationService {
 		//After allocation reduce the one quantity of the asset 
 		asset.setQuanity(asset.getQuanity()-1);
 		assetService.addAsset(asset);
-
+		
+		logger.info("Asset "+asset.getName()+"is assigned for the employee "+employee.getName());
+		
 		return assetAllocationRepository.save(assetAllocation);
 	}
 
 	public AssetAllocation getById(int assetAllocationId) throws InvalidIdException {
+		//check the asset allocation is find with the id or not
 		Optional<AssetAllocation> optional = assetAllocationRepository.findById(assetAllocationId);
 		if (optional.isEmpty())
 			throw new InvalidIdException("Asset Allocation Id is invalid");
+		logger.info("Asser allocation is found with id "+optional.get().getId());
 		return optional.get();
 	}
 
 	public List<AssetAllocation> getAllAssetAllocation() {
+		logger.info("All asset allocation is retrieved from database");
 		return assetAllocationRepository.findAll();
 	}
 
-	public void deleteByAssetId(int id) throws InvalidIdException {
+	public String deleteByAssetId(int AssetId) throws InvalidIdException {
 		//check that the asset id is found or not
-		Asset asset=assetService.getById(id);
+		Asset asset=assetService.getById(AssetId);
 		//find all the assetallocation with this asset
 		List<AssetAllocation> list=assetAllocationRepository.findAll().stream()
-		.filter(aa->aa.getAsset().equals(asset)).toList();
+		.filter(a->a.getAsset().getId()==asset.getId()).toList();
 		//delete the assetallocation
 		assetAllocationRepository.deleteAll(list);
-		
+		logger.info("Asset allocation with asset Id "+asset.getId()+" is deleted");
+		return "Assset allocation is deleted successfully";
 	}
 
 }

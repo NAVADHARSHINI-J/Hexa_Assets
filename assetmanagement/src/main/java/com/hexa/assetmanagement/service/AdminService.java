@@ -23,16 +23,18 @@ public class AdminService {
 	private UserRepository userRepository;
 
 	Logger logger=LoggerFactory.getLogger("AdminService");
-	public Admin add(Admin admin, int id) throws InvalidIdException, InvalidContactException {
-		//get the user from id
-		Optional<User> user=userRepository.findById(id);
-		if(user.isEmpty())
-			throw new InvalidIdException("the user id is invalid....");
+	
+	public Admin add(Admin admin, String username) 
+			throws InvalidContactException {
+		//get the user from username
+		User user=userRepository.findByUsername(username);
 		//check whether the contact number is correct are not
 		if(admin.getContact().length() != 10)
 			throw new InvalidContactException("Invalid contact number...");
 		//set the user in the admin
-		admin.setUser(user.get());
+		admin.setUser(user);
+		logger.info("Admin is added with username "+ username);
+		
 		return adminRepository.save(admin);
 	}
 
@@ -41,17 +43,18 @@ public class AdminService {
 		return adminRepository.findAll();
 	}
 
-	public Admin getById(int id) throws InvalidIdException {
+	public Admin getById(int AdminId) throws InvalidIdException {
 		//check whether the admin found with the given id
-		Optional<Admin> op=adminRepository.findById(id);
+		Optional<Admin> op=adminRepository.findById(AdminId);
 		if(op.isEmpty())
 			throw new InvalidIdException("Admin id is invalid.....");
+		logger.info("admin is found with id "+AdminId);
 		return op.get();
 	}
 
-	public Admin update(Admin admin, int id) 
+	public Admin update(Admin admin, int AdminId) 
 			throws InvalidIdException, InvalidContactException {
-		Admin admin1=getById(id);
+		Admin admin1=getById(AdminId);
 		//check whether each value in admin is mull or not 
        //if not null add that in the existing admin
 		if(admin.getName() != null)
@@ -67,6 +70,7 @@ public class AdminService {
 		if(admin.getAddress() != null)
 			admin1.setAddress(admin.getAddress());
 		
+		logger.info("Admin "+admin1.getName()+" updated successfully ");
 		return adminRepository.save(admin1);
 	}
 }

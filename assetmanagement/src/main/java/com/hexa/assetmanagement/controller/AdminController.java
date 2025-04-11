@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,10 +23,12 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
-	@PostMapping("/add/{id}")
+	@PostMapping("/add")
 	public Admin add(@RequestBody Admin admin,
-			@PathVariable int id) throws InvalidIdException, InvalidContactException {
-		 return adminService.add(admin,id);
+			Principal principal) throws InvalidContactException {
+		//get the username by using the principal
+		 String username=principal.getName();
+		 return adminService.add(admin,username);
 	}
 	
 	@GetMapping("/getall")
@@ -33,15 +36,15 @@ public class AdminController {
 		return adminService.getAll();
 	}
 	
-	@GetMapping("/getbyid/{id}")
-	public Admin getById(@PathVariable int id) throws InvalidIdException {
-		return adminService.getById(id);
+	@GetMapping("/getbyid/{AdminId}")
+	public Admin getById(@PathVariable int AdminId) throws InvalidIdException {
+		return adminService.getById(AdminId);
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/update/{AdminId}")
 	public Admin update(@RequestBody Admin admin,
-			@PathVariable int id) throws InvalidIdException, InvalidContactException {
-		return adminService.update(admin,id);
+			@PathVariable int AdminId) throws InvalidIdException, InvalidContactException {
+		return adminService.update(admin,AdminId);
 	}
 }
 

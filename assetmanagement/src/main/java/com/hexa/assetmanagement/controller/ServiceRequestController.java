@@ -22,7 +22,7 @@ import com.hexa.assetmanagement.service.EmployeeService;
 import com.hexa.assetmanagement.service.ServiceRequestService;
 
 @RestController
-@RequestMapping("/api/servicereq")
+@RequestMapping("/api/servicerequest")
 public class ServiceRequestController {
 	@Autowired
     private ServiceRequestService serviceRequestService;
@@ -48,9 +48,9 @@ public class ServiceRequestController {
         return serviceRequestService.addServiceRequest(serviceRequest);
     }
 
-    @GetMapping("/getbyid/{id}")
-    public ServiceRequest getById(@PathVariable int id) throws InvalidIdException {
-        return serviceRequestService.getById(id);
+    @GetMapping("/getbyid/{RequestId}")
+    public ServiceRequest getById(@PathVariable int RequestId) throws InvalidIdException {
+        return serviceRequestService.getById(RequestId);
     }
 
     @GetMapping("/getall")
@@ -67,15 +67,16 @@ public class ServiceRequestController {
     }
     
     @GetMapping("/byEmployeeId")
-    public List<ServiceRequest> filterByEmployeeId(@RequestParam int empid) 
+    public List<ServiceRequest> filterByEmployeeId(@RequestParam int empId) 
     		throws InvalidIdException {
     	//check employee with id is present in db or not
-    	employeeService.getById(empid);
-    	return serviceRequestService.filterByEmployeeId(empid);
+    	employeeService.getById(empId);
+    	return serviceRequestService.filterByEmployeeId(empId);
     }
     
     @GetMapping("/byAssetId")
-    public List<ServiceRequest> filterByAssetId(@RequestParam int assetId) throws InvalidIdException {
+    public List<ServiceRequest> filterByAssetId(@RequestParam int assetId) 
+    		throws InvalidIdException {
     	//check asset with id is present in db or not
     	assetService.getById(assetId);
     	return serviceRequestService.filterByAssetId(assetId);

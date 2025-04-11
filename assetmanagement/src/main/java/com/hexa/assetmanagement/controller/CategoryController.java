@@ -22,11 +22,13 @@ public class CategoryController {
 	
 	@PostMapping("/add")
 	public Category addCategory(@RequestBody Category category) {
+		//call method to add category
 		return categoryService.addCategory(category);
 	}
-	@GetMapping("/getbyid/{id}")
-	public Category getById(@PathVariable int id) throws InvalidIdException {
-		return categoryService.getById(id);
+	@GetMapping("/getbyid/{CategoryId}")
+	public Category getById(@PathVariable int CategoryId) throws InvalidIdException {
+		//call method to get by id
+		return categoryService.getById(CategoryId);
 	}
 	
 	@GetMapping("/getall")
