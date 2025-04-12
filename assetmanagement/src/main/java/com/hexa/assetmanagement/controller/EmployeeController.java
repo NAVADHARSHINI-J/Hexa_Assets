@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
-import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.InvalidIdException; 
 import com.hexa.assetmanagement.model.Department;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.service.DepartmentService;
@@ -30,7 +31,8 @@ public class EmployeeController {
 	@Autowired
 	private DepartmentService departmentService;
 
-	@PostMapping("/add/{departmentId}")
+	@PostMapping("/add-by-employee/{departmentId}")
+	//adding employee using employee signup - employee alone has authority.
 	public Employee addEmployee(@RequestBody Employee employee, @PathVariable int departmentId, Principal principal) throws InvalidIdException, InvalidContactException {
 		//getting the department using department id.
 		Department department = departmentService.getById(departmentId);
@@ -39,11 +41,20 @@ public class EmployeeController {
 		employee.setDepartment(department);
 		return employeeService.addEmployee(employee, username);
 	}
+	
+	@PostMapping("/add/{departmentId}")
+	//adding employee - admin and employee has authority
+	public Employee add(@RequestBody Employee employee, @PathVariable int departmentId) throws InvalidIdException {
+		//getting the department using department id.
+	    Department department = departmentService.getById(departmentId);
+	    employee.setDepartment(department);
+		return employeeService.add(employee);
+	}
 
-	@GetMapping("/getbyid/{id}")
+	@GetMapping("/getbyid/{empId}")
 	//getting an employee by his/her id.
-	public Employee getById(@PathVariable int id) throws InvalidIdException {
-		return employeeService.getById(id);
+	public Employee getById(@PathVariable int empId) throws InvalidIdException {
+		return employeeService.getById(empId);
 	}
 
 	@GetMapping("/getall")
@@ -65,10 +76,18 @@ public class EmployeeController {
 		return employeeService.filterByDepartment(department);
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/update/{empId}")
 	//updating employee with employee id
-	public Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable int id) throws InvalidIdException, InvalidContactException {
-		Employee oldEmployee= employeeService.getById(id);
+	public Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable int empId) throws InvalidIdException, InvalidContactException {
+		Employee oldEmployee= employeeService.getById(empId);
 		return employeeService.updateEmployee(oldEmployee, newEmployee );
+	}
+	
+	@DeleteMapping("/delete/{empId}")
+	public String deleteByEmployee(@PathVariable int empId) throws InvalidIdException {
+		//check whether the employee id exists or not
+		Employee employee=employeeService.getById(empId);
+	 
+		return employeeService.deleteByEmployee(employee);
 	}
 }
