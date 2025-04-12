@@ -41,23 +41,26 @@ public class LiquidAssetAllocationController {
             @RequestBody LiquidAssetAllocation allocation,
             @PathVariable int employeeId,
             @PathVariable int liquidAssetId) throws InvalidIdException {
-        
+        // Fetch the employee by ID
         Employee employee = employeeService.getById(employeeId);
-        LiquidAsset liquidAsset = liquidAssetService.getLiquidAssetById(liquidAssetId);
-        
+        // Fetch the liquid asset by ID
+        LiquidAsset liquidAsset = liquidAssetService.getById(liquidAssetId);
+        // Set the employee and liquid asset references in the allocation object
         allocation.setEmployee(employee);
         allocation.setLiquidAsset(liquidAsset);
-        
+        // Save and return the new allocation
         return liquidAssetAllocationService.addLiquidAssetAllocation(allocation);
     }
 
     @GetMapping("/getbyid/{id}")
     public LiquidAssetAllocation getById(@PathVariable int id) throws InvalidIdException {
+    	//get the liquid asset by using the given id
         return liquidAssetAllocationService.getById(id);
     }
 
     @GetMapping("/getall")
     public List<LiquidAssetAllocation> getAll(@RequestParam int page, @RequestParam int size) {
+    	//getting all liquid assets from the database
         Pageable pageable = PageRequest.of(page, size);
         return liquidAssetAllocationService.getAll(pageable);
     }
