@@ -13,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import com.hexa.assetmanagement.service.MyService;
 
 @Configuration
@@ -79,8 +78,11 @@ public class SecurityConfig {
 	            .requestMatchers("/api/employee/getbyname").permitAll()
 	            .requestMatchers("/api/employee/getbydepartment").permitAll()
 	            .requestMatchers("/api/employee/update/{id}").hasAuthority("ADMIN")
-	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN") 
-	            
+	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/manager/add").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/manager/getall").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/manager/getbyid/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
+	            .requestMatchers("/api/manager/update/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
 				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
