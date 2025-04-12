@@ -36,7 +36,7 @@ public class AssetAllocationService {
 		//check the asset id
 		Asset asset = assetService.getById(assetId);
 		//check the quantity of the asset
-		if(asset.getQuanity()<=0)
+		if(asset.getQuantity()<=0)
 			throw new AssetUnavailableException("asset is not available.....");
 		assetAllocation.setAsset(asset);
 		//check the allocation date
@@ -46,7 +46,7 @@ public class AssetAllocationService {
 		Employee employee = employeeService.getById(empId);
 		assetAllocation.setEmployee(employee);
 		//After allocation reduce the one quantity of the asset 
-		asset.setQuanity(asset.getQuanity()-1);
+		asset.setQuantity(asset.getQuantity()-1);
 		assetService.addAsset(asset);
 		
 		logger.info("Asset "+asset.getName()+"is assigned for the employee "+employee.getName());
