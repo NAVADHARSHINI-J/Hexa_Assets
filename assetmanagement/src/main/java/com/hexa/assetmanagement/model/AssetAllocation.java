@@ -21,10 +21,10 @@ public class AssetAllocation {
 	@Column(nullable = false)
 	private LocalDate allocationDate;
 	private LocalDate returnDate;
-	private String status = "Allocated";
+	private String status = "ALLOCATED";
 
 	@ManyToOne
-	private Asset asset;   
+	private Asset asset;  //findByAssetId 
 
 	@ManyToOne
 	private Employee employee;

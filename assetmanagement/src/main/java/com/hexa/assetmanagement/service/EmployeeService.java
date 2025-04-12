@@ -112,5 +112,9 @@ public class EmployeeService {
 		return "Employee deleted successfully";
 
 	}
+	
+	public Employee findByUsername(String username) {
+		return employeeRepository.findByUserUsername(username);
+	}
 
 }

@@ -8,8 +8,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexa.assetmanagement.exception.AssetUnavailableException;
@@ -30,24 +32,57 @@ public class AssetAllocationController {
 			, @PathVariable int empId,
 			@RequestBody AssetAllocation assetAllocation) 
 					throws InvalidIdException, AssetUnavailableException {
-		
+		//add the asset allocation
 		return assetAllocationService.addAssetAllocation(assetId, empId, assetAllocation);
 	}
 
-	@GetMapping("/get/{AssetAllocationId}")
-	public AssetAllocation getById(@PathVariable int AssetAllocationId) throws InvalidIdException {
-		return assetAllocationService.getById(AssetAllocationId);
+	@GetMapping("/get/{assetAllocationId}")
+	public AssetAllocation getById(@PathVariable int assetAllocationId) 
+			throws InvalidIdException {
+		//get the asset allocation by id
+		return assetAllocationService.getById(assetAllocationId);
 	}
 
 	@GetMapping("/getall")
 	public List<AssetAllocation> getAllAssetAllocation() {
+		//get all the asset allocation in database
 		return assetAllocationService.getAllAssetAllocation();
 	}
 	
-	@DeleteMapping("/delete-assetid/{AssetId}")
-	public ResponseEntity<?> deleteByAssetId(@PathVariable int AssetId) throws InvalidIdException {
-		String message =assetAllocationService.deleteByAssetId(AssetId);
+	@DeleteMapping("/delete-assetid/{assetId}")
+	public ResponseEntity<?> deleteByAssetId(@PathVariable int assetId) throws InvalidIdException {
+		//delete all the asset allocation by the given asset id
+		String message =assetAllocationService.deleteByAssetId(assetId);
 		return ResponseEntity.ok(message);
+	}
+	
+	@DeleteMapping("/delete-empId/{empId}")
+	public ResponseEntity<?> deleteByEmployeeId(@PathVariable int empId) 
+			throws InvalidIdException {
+		//delete all the asset allocation by the given employee id
+		String message =assetAllocationService.deleteByEmployeeId(empId);
+		return ResponseEntity.ok(message);
+	}
+	
+	@PutMapping("/update/{allocationId}")
+	public AssetAllocation update(@RequestBody AssetAllocation assetAllocation,
+			@PathVariable int allocationId) throws InvalidIdException {
+		//update the asset allocation
+		return assetAllocationService.update(assetAllocation,allocationId);
+	}
+	
+	@GetMapping("/byAssetId")
+	public List<AssetAllocation> getAssetAllocationByAssetId(@RequestParam int assetId) 
+			throws InvalidIdException {
+		//filter the allocation by assset id
+		return assetAllocationService.getAssetAllocationByAssetId(assetId);
+	}
+	
+	@GetMapping("/byEmpId")
+	public List<AssetAllocation> getAssetAllocationByEmployeeId(@RequestParam int empId) 
+			throws InvalidIdException {
+		//filter the allocation by employee id
+		return assetAllocationService.getAssetAllocationByEmployeeId(empId);
 	}
 }
 
