@@ -40,7 +40,7 @@ public class LiquidAssetRequestController {
             @PathVariable int liquidAssetId) throws InvalidIdException {
 
         Employee employee = employeeService.getById(employeeId);
-        LiquidAsset liquidAsset = liquidAssetService.getLiquidAssetById(liquidAssetId);
+        LiquidAsset liquidAsset = liquidAssetService.getById(liquidAssetId);
 
         request.setEmployee(employee);
         request.setLiquidAsset(liquidAsset);
