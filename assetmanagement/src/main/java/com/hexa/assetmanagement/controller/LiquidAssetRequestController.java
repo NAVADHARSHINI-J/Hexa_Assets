@@ -1,7 +1,6 @@
 package com.hexa.assetmanagement.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.LiquidAsset;
@@ -33,6 +31,7 @@ public class LiquidAssetRequestController {
 
     @Autowired
     private LiquidAssetService liquidAssetService;
+    
 
     @PostMapping("/add/{employeeId}/{liquidAssetId}")
     public LiquidAssetRequest addLiquidAssetRequest(
@@ -59,4 +58,22 @@ public class LiquidAssetRequestController {
         Pageable pageable = PageRequest.of(page, size);
         return liquidAssetRequestService.getAll(pageable);
     }
+    
+    @GetMapping("/bystatus")
+    public List<LiquidAssetRequest> filterByStatus(@RequestParam String status) {
+    	return liquidAssetRequestService.filterByStatus(status);
+    }
+    
+    @GetMapping("/byliquidAssetId")
+    public List<LiquidAssetRequest> filterByLiquidAssetId(@RequestParam int liquidAssetId) 
+    		throws InvalidIdException {
+    	//check asset with id is present in db or not
+    	liquidAssetRequestService.getById(liquidAssetId);
+    	return liquidAssetRequestService.filterByLiquidAssetId(liquidAssetId);
+    }
+    
+    
+    
+    
+    
 }
