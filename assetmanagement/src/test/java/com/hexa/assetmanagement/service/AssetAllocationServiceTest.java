@@ -55,9 +55,9 @@ public class AssetAllocationServiceTest {
 				new Category(2,"category2"));
 		e1=new Employee(1, "employee1","employee1@gmail.com","9344908756","Chennai",new Department(1,"IT"));
 		e2=new Employee(2, "employee2","employee2@gmail.com","6598908756","Mumbai",new Department(2,"FINANCE"));
-		aa1=new AssetAllocation(1, LocalDate.of(2024,03,11), null,"Allocated");
+		aa1=new AssetAllocation(1, LocalDate.of(2024,03,11), null,"ALLOCATED");
 		aa2=new AssetAllocation(2, null, null,"Allocated");
-		aa3=new AssetAllocation(3, LocalDate.of(2024,03,15), null,"Allocated");
+		aa3=new AssetAllocation(3, LocalDate.of(2024,03,15), null,"ALLOCATED");
 	}
 	
 	@Test
@@ -93,7 +93,7 @@ public class AssetAllocationServiceTest {
 		//check the assetallocation is added or not
 		assertEquals(aa2,actual);
 		//check the date is added or not in aa2 the allocated date is null
-		assertEquals(LocalDate.of(2025,04,11),actual.getAllocationDate());
+		assertEquals(LocalDate.now(),actual.getAllocationDate());
 		
 		//usecase : 3 (check the quantity is reduced or not)
 		//the quantity in asset 2 is 12
@@ -106,10 +106,10 @@ public class AssetAllocationServiceTest {
 		//check the assetallocation is added or not
 		assertEquals(aa2,actual);
 		//check the quantity is reduced original=12 check now it as 11
-		assertEquals(11,a2.getQuanity());
+		assertEquals(11,a2.getQuantity());
 		
 		//usecase :4 (throws AssetUnavailableException)
-		a2.setQuanity(0);
+		a2.setQuantity(0);
 		try {
 			actual=assetAllocationService.addAssetAllocation(2, 1, aa2);
 		} catch (InvalidIdException | AssetUnavailableException e) { 
@@ -217,6 +217,177 @@ public class AssetAllocationServiceTest {
 		expected=Arrays.asList(aa1);
 		//check that deleteAll method is called
 		verify(assetAllocationRepository,times(1)).deleteAll(expected);
+		
+	}
+
+	@Test
+	public void deleteByEmployeeIdTest() {
+		//expected: deleted message
+		//actual: assetAllocationService.deleteByEmployeeId(1);
+		//usecsase :1 (correct output)
+		//create a list to check that the asset allocation with given id is 
+		//deleted at the end
+		//at last we have only aa3 in the list
+		aa1.setEmployee(e1);
+		aa2.setEmployee(e1);
+		aa3.setEmployee(e2);
+		List<AssetAllocation> list=Arrays.asList(aa1,aa2,aa3);
+		try {
+			when(employeeService.getById(1)).thenReturn(e1);
+		} catch (InvalidIdException e) { }
+		when(assetAllocationRepository.findAll()).thenReturn(list);
+		//check that the message is returned or not 
+		try {
+			assertEquals("Assset allocation is deleted successfully",
+					assetAllocationService.deleteByEmployeeId(1));
+		} catch (InvalidIdException e) {}
+		//here I written expected as aa1,aa2 because this will be go into the 
+		//delete all method after the filteration to delete
+				List<AssetAllocation> expected=Arrays.asList(aa1,aa2);
+		//check that deleteAll method is called
+		verify(assetAllocationRepository,times(1)).deleteAll(expected);
+		
+		//usecase : 2 (throws InvalidIdException)
+		//we don't have a asset id 10
+		try {
+			when(employeeService.getById(10)).thenThrow(new InvalidIdException("Employee Id is invalid...."));
+			assertEquals("Assset allocation is deleted successfully",
+					assetAllocationService.deleteByEmployeeId(10));
+		} catch (InvalidIdException e) {
+			assertEquals("Employee Id is invalid....", e.getMessage());
+		}
+		
+		//usecase 3:
+		aa1.setEmployee(e1);
+		aa2.setEmployee(e2);
+		aa3.setEmployee(e2);
+		list=Arrays.asList(aa1,aa2,aa3);
+		try {
+			when(employeeService.getById(1)).thenReturn(e1);
+		} catch (InvalidIdException e) { }
+		when(assetAllocationRepository.findAll()).thenReturn(list);
+		//check that the message is returned or not 
+		try {
+			assertEquals("Assset allocation is deleted successfully",
+					assetAllocationService.deleteByEmployeeId(1));
+		} catch (InvalidIdException e) {}
+		//here I written expected as aa1 because this will be go into the 
+		//delete all method after the filteration to delete
+		expected=Arrays.asList(aa1);
+		//check that deleteAll method is called
+		verify(assetAllocationRepository,times(1)).deleteAll(expected);
+		
+	}
+	
+	@Test
+	public void updateTest() {
+		//expected : aa1
+		//actual:assetAllocationService.update(aa1, 1);
+		//use case 1: correct output
+		when(assetAllocationRepository.findById(1)).thenReturn(Optional.of(aa1));
+		when(assetAllocationRepository.save(aa1)).thenReturn(aa1);
+		//check that the output is correct or not
+		try {
+			assertEquals(aa1,assetAllocationService.update(aa1, 1));
+		} catch (InvalidIdException e) {	}
+		
+		//usecase 2: check that the value is changed for the status and return date
+		//for return date
+		assertEquals(LocalDate.now(), aa1.getReturnDate());
+		//for status
+		assertEquals("RETURNED", aa1.getStatus());
+		
+		//usecase : 3 (throws InvalidIdException)
+		//10 is not the valid id
+		try {
+			assertEquals(aa1,assetAllocationService.update(aa1, 10));
+		} catch (InvalidIdException e) {
+			assertEquals("Asset Allocation Id is invalid",e.getMessage());
+		}
+		
+		//usecase : 4 (check for wrong output)
+		//the update of aa1 return the aa1 but it is aa2 so it make the assertion 
+		//not equal
+		try {
+			assertNotEquals(aa2,assetAllocationService.update(aa1, 1));
+		} catch (InvalidIdException e) {	}
+		
+	}
+	
+	@Test
+	public void getAssetAllocationByAssetIdTest() {
+		//expected : List<AssetAllocation>
+		//actual :assetAllocationService.getAssetAllocationByAssetId(1);
+		
+		//usecase 1:check for correct output
+		aa1.setAsset(a1);
+		aa2.setAsset(a1);
+		List<AssetAllocation> list=Arrays.asList(aa1,aa2); 
+		try {
+			when(assetService.getById(1)).thenReturn(a1);
+		} catch (InvalidIdException e) {		}
+		when(assetAllocationRepository.findByAsset(a1)).thenReturn(list);
+		try {
+			assertEquals(list,assetAllocationService.getAssetAllocationByAssetId(1));
+		} catch (InvalidIdException e) {	}
+		
+		//usecase :2 (throws exception)
+		try {
+			//there is no asset found with id 10 soit throws an exception
+			when(assetService.getById(10))
+					.thenThrow(new InvalidIdException("Asset Id is invalid...."));
+			assertEquals(list,assetAllocationService.getAssetAllocationByAssetId(10));
+		} catch (InvalidIdException e) {
+			assertEquals("Asset Id is invalid....", e.getMessage());
+		}
+		
+		
+		//usecase 3: wrong output
+		//here the aa3 contains a2 when the method called it should not came as output
+		//but here the list is came with this aa3 ao it makes the assertion not equals
+		aa3.setAsset(a2);
+		list=Arrays.asList(aa1,aa2,aa3); 
+		try {
+			assertNotEquals(list,assetAllocationService.getAssetAllocationByAssetId(1));
+		} catch (InvalidIdException e) {	}	
+	}
+	
+	@Test
+	public void getAssetAllocationByEmployeeIdTest() {
+		//expected : List<AssetAllocation>
+		//actual :assetAllocationService.getAssetAllocationByEmployeeId(1);
+		
+		//usecase 1:check for correct output
+		aa1.setEmployee(e1);
+		aa2.setEmployee(e1);
+		List<AssetAllocation> list=Arrays.asList(aa1,aa2); 
+		try {
+			when(employeeService.getById(1)).thenReturn(e1);
+		} catch (InvalidIdException e) {		}
+		when(assetAllocationRepository.findByEmployee(e1)).thenReturn(list);
+		try {
+			assertEquals(list,assetAllocationService.getAssetAllocationByEmployeeId(1));
+		} catch (InvalidIdException e) {	}
+		
+		//usecase :2 (throws exception)
+		try {
+			//there is no employee found with id 10 so it throws an exception
+			when(employeeService.getById(10))
+					.thenThrow(new InvalidIdException("Employee Id is invalid...."));
+			assertEquals(list,assetAllocationService.getAssetAllocationByEmployeeId(10));
+		} catch (InvalidIdException e) {
+			assertEquals("Employee Id is invalid....", e.getMessage());
+		}
+		
+		
+		//usecase 3: wrong output
+		//here the aa3 contains e2 when the method called it should not came as output
+		//but here the list is came with this aa3 ao it makes the assertion not equals
+		aa3.setEmployee(e2);
+		list=Arrays.asList(aa1,aa2,aa3); 
+		try {
+			assertNotEquals(list,assetAllocationService.getAssetAllocationByEmployeeId(1));
+		} catch (InvalidIdException e) {	}
 		
 	}
 }

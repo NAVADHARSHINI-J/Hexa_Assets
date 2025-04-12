@@ -36,7 +36,7 @@ public class AssetAllocationService {
 		//check the asset id
 		Asset asset = assetService.getById(assetId);
 		//check the quantity of the asset
-		if(asset.getQuanity()<=0)
+		if(asset.getQuantity()<=0)
 			throw new AssetUnavailableException("asset is not available.....");
 		assetAllocation.setAsset(asset);
 		//check the allocation date
@@ -46,7 +46,7 @@ public class AssetAllocationService {
 		Employee employee = employeeService.getById(empId);
 		assetAllocation.setEmployee(employee);
 		//After allocation reduce the one quantity of the asset 
-		asset.setQuanity(asset.getQuanity()-1);
+		asset.setQuantity((asset.getQuantity())-1);
 		assetService.addAsset(asset);
 		
 		logger.info("Asset "+asset.getName()+"is assigned for the employee "+employee.getName());
@@ -68,9 +68,9 @@ public class AssetAllocationService {
 		return assetAllocationRepository.findAll();
 	}
 
-	public String deleteByAssetId(int AssetId) throws InvalidIdException {
+	public String deleteByAssetId(int assetId) throws InvalidIdException {
 		//check that the asset id is found or not
-		Asset asset=assetService.getById(AssetId);
+		Asset asset=assetService.getById(assetId);
 		//find all the assetallocation with this asset
 		List<AssetAllocation> list=assetAllocationRepository.findAll().stream()
 		.filter(a->a.getAsset().getId()==asset.getId()).toList();
@@ -78,6 +78,66 @@ public class AssetAllocationService {
 		assetAllocationRepository.deleteAll(list);
 		logger.info("Asset allocation with asset Id "+asset.getId()+" is deleted");
 		return "Assset allocation is deleted successfully";
+	}
+
+	public String deleteByEmployeeId(int empId) throws InvalidIdException {
+		//check that the employee with id is found or not
+		Employee employee=employeeService.getById(empId);
+		//find all the asset allocation with this Employee id
+		List<AssetAllocation> list=assetAllocationRepository.findAll().stream()
+				.filter(a->a.getEmployee().getId()==employee.getId()).toList();
+		//delete the assetallocation
+		assetAllocationRepository.deleteAll(list);
+		logger.info("Asset allocation with employee Id "+employee.getId()+" is deleted");
+		return "Assset allocation is deleted successfully";
+	}
+
+	public AssetAllocation update(AssetAllocation assetAllocation, int allocationId)
+			throws InvalidIdException {
+		//get the asset allocation by the id
+		AssetAllocation assetAllocation1 =getById(allocationId);
+		//check the allocation date
+		if(assetAllocation.getAllocationDate()!=null)
+			assetAllocation1.setAllocationDate(assetAllocation.getAllocationDate());
+		//check the employee
+		if(assetAllocation.getEmployee()!=null)
+			assetAllocation1.setEmployee(assetAllocation.getEmployee());
+		//check the asset
+		if(assetAllocation.getAsset()!=null)
+			assetAllocation1.setAsset(assetAllocation.getAsset());
+		//if the return date of the asset allocation is null then return date 
+		//will be the current date
+		if(assetAllocation.getReturnDate()==null)
+			assetAllocation1.setReturnDate(LocalDate.now());
+		//if return date is not null
+		if(assetAllocation.getReturnDate()!=null)
+			assetAllocation1.setReturnDate(assetAllocation.getReturnDate());
+		System.out.println(assetAllocation.getStatus());
+		//make the status as returned if they not give anything
+		assetAllocation1.setStatus(
+			    "ALLOCATED".equalsIgnoreCase(assetAllocation.getStatus()) ?
+			    		"RETURNED" : assetAllocation.getStatus()
+			);
+		logger.info("Asset allocation is updated");
+		//save it in the asset allocation
+		return assetAllocationRepository.save(assetAllocation1);
+	}
+
+	public List<AssetAllocation> getAssetAllocationByAssetId(int assetId) 
+			throws InvalidIdException {
+		//check that asset is found with assetid
+		Asset asset=assetService.getById(assetId);
+		logger.info("Asset allocation is retrieved by assetId "+asset.getId());
+		//get all the records by asset
+		return assetAllocationRepository.findByAsset(asset);
+	}
+	public List<AssetAllocation> getAssetAllocationByEmployeeId(int empId) 
+			throws InvalidIdException {
+		//check that employee is found with empId
+		Employee employee=employeeService.getById(empId);
+		logger.info("Asset allocation is retrieved by employee Id "+employee.getId());
+		//get all the records by employee
+		return assetAllocationRepository.findByEmployee(employee);
 	}
 
 }

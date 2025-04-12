@@ -83,5 +83,9 @@ public class EmployeeService {
 		return employeeRepository.save(oldEmployee);
 		
 	}
+	
+	public Employee findByUsername(String username) {
+		return employeeRepository.findByUserUsername(username);
+	}
 
 }
