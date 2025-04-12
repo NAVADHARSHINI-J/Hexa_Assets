@@ -63,7 +63,7 @@ public class LiquidAssetController {
 	    return liquidAssetService.update(liquidAsset, liquidAssetId);
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/delete/{liquidAssetId}")
 	public ResponseEntity<String> deleteById(@PathVariable int id) throws InvalidIdException {
 	    liquidAssetService.deleteById(id);
 	    //delete the liquid asset of the id

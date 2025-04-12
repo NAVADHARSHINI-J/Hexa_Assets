@@ -19,7 +19,7 @@ public class ServiceRequest {
 	@Column(nullable = false, length = 2000)
 	private String reason;
 	private String imageUrl;
-	private String status = "pending"; // findByStatus
+	private String status = "PENDING"; // findByStatus
 	@ManyToOne
 	private Employee employee; // findByEmployee
 	@ManyToOne
