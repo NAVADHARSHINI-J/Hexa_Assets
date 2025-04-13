@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.hexa.assetmanagement.exception.AssetUnavailableException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.LiquidAsset;
@@ -30,17 +31,36 @@ public class LiquidAssetAllocationService {
 	
 	Logger logger = LoggerFactory.getLogger("LiquidAssetAllocation");
 
-    public LiquidAssetAllocation addLiquidAssetAllocation(LiquidAssetAllocation allocation) {
-    	//check whether allocated date is null or not if yes set today's date
-    	if(allocation.getAllocatedDate()==null) {
-    		allocation.setAllocatedDate(LocalDate.now());
-    	logger.info("Allocation date was null. Set to current date: " + allocation.getAllocatedDate());
-    	}
-    	//Save the LiquidAssetAllocation entity to the database
-    	LiquidAssetAllocation saved = liquidAssetAllocationRepository.save(allocation);
-    		 logger.info("New LiquidAssetAllocation added with ID: " +saved.getId());
-        return liquidAssetAllocationRepository.save(allocation);
-    }
+	public LiquidAssetAllocation add(int assetId, int empId,
+            LiquidAssetAllocation allocation)throws InvalidIdException, AssetUnavailableException {
+             // Check the liquid asset ID
+             LiquidAsset asset = liquidAssetService.getById(assetId);
+             // Check if the total amount is zero
+             if (asset.getTotalAmount() <= 0) {
+             throw new AssetUnavailableException("Liquid asset is not available for allocation.");
+            }
+             // Check if the allocated amount is more than available
+             if (allocation.getAllocatedAmount() > asset.getTotalAmount()) {
+             throw new AssetUnavailableException("Insufficient liquid asset amount.");
+            }
+            // Assign asset to allocation
+             allocation.setLiquidAsset(asset);
+            // Set default allocation date if not provided
+             if (allocation.getAllocatedDate() == null) {
+             allocation.setAllocatedDate(LocalDate.now());
+              }
+            // Get employee and assign
+           Employee employee = employeeService.getById(empId);
+            allocation.setEmployee(employee);
+           // Reduce the liquid asset total amount
+            double newTotal = asset.getTotalAmount() - allocation.getAllocatedAmount();
+            asset.setTotalAmount(newTotal);
+           // Save updated asset
+           liquidAssetService.addliquidAsset(asset);
+         logger.info("Liquid Asset  is assigned to employee " + employee.getName());
+           return liquidAssetAllocationRepository.save(allocation);
+      }
+
 
     public LiquidAssetAllocation getById(int id) throws InvalidIdException {
         Optional<LiquidAssetAllocation> optional = liquidAssetAllocationRepository.findById(id);

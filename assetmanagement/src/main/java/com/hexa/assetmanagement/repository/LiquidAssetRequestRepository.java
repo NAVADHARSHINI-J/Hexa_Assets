@@ -10,7 +10,7 @@ import com.hexa.assetmanagement.model.LiquidAssetRequest;
 
 public interface LiquidAssetRequestRepository extends JpaRepository<LiquidAssetRequest,Integer>{
 
-	List<LiquidAssetRequest> filterByStatus(String status);
+	List<LiquidAssetRequest> findByStatus(String status);
 	List<LiquidAssetRequest> findByLiquidAssetId(int liquidAssetId);
 	List<LiquidAssetRequest> findByRequestDate(LocalDate date);
 	List<LiquidAssetRequest> findByEmployee(Employee employee);

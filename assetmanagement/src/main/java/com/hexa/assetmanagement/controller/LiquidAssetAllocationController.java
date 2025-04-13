@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexa.assetmanagement.exception.AssetUnavailableException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
-import com.hexa.assetmanagement.model.LiquidAsset;
 import com.hexa.assetmanagement.model.LiquidAssetAllocation;
-import com.hexa.assetmanagement.service.EmployeeService;
 import com.hexa.assetmanagement.service.LiquidAssetAllocationService;
-import com.hexa.assetmanagement.service.LiquidAssetService;
 
 @RestController
 @RequestMapping("api/liquidassetallocation")
@@ -29,29 +27,15 @@ public class LiquidAssetAllocationController {
 
 	@Autowired
     private LiquidAssetAllocationService liquidAssetAllocationService;
-    
-    @Autowired
-    private EmployeeService employeeService;
-    
-    @Autowired
-    private LiquidAssetService liquidAssetService;
 
-    @PostMapping("/add/{employeeId}/{liquidAssetId}")
-    public LiquidAssetAllocation addLiquidAssetAllocation(
-            @RequestBody LiquidAssetAllocation allocation,
-            @PathVariable int employeeId,
-            @PathVariable int liquidAssetId) throws InvalidIdException {
-        // Fetch the employee by ID
-        Employee employee = employeeService.getById(employeeId);
-        // Fetch the liquid asset by ID
-        LiquidAsset liquidAsset = liquidAssetService.getById(liquidAssetId);
-        // Set the employee and liquid asset references in the allocation object
-        allocation.setEmployee(employee);
-        allocation.setLiquidAsset(liquidAsset);
-        // Save and return the new allocation
-        return liquidAssetAllocationService.addLiquidAssetAllocation(allocation);
+    @PostMapping("/add/{assetId}/{empId}")
+    public LiquidAssetAllocation add(@PathVariable int assetId,
+                                                          @PathVariable int empId,
+                                                          @RequestBody LiquidAssetAllocation allocation)
+            throws InvalidIdException, AssetUnavailableException {
+    	// add allocation using employee id and liquid asset id
+        return liquidAssetAllocationService.add(assetId, empId, allocation);
     }
-
     @GetMapping("/getbyid/{id}")
     public LiquidAssetAllocation getById(@PathVariable int id) throws InvalidIdException {
     	//get the liquid asset allocated by using the given id

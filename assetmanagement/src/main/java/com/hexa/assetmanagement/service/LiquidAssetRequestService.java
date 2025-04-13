@@ -3,7 +3,6 @@ package com.hexa.assetmanagement.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +55,7 @@ public class LiquidAssetRequestService {
 		public List<LiquidAssetRequest> filterByStatus(String status) {
 			//fetch the liquid asset request using the status
 			logger.info("Liquid Asset request is filtered by status");
-			return liquidAssetRequestRepository.filterByStatus(status);
+			return liquidAssetRequestRepository.findByStatus(status);
 		}
 
 		public List<LiquidAssetRequest> filterByLiquidAssetId(int liquidAssetId) {
