@@ -17,17 +17,21 @@ public class DepartmentService {
 	private DepartmentRepository departmentRepository;
 
 	public Department addDepartment(Department department) {
+		//saving the department information.
 		return departmentRepository.save(department);
 	}
 
-	public Department getById(int id) throws InvalidIdException {
-		Optional<Department> op = departmentRepository.findById(id);
+	public Department getById(int departmentId) throws InvalidIdException {
+		//check if the department id exists or not.
+		Optional<Department> op = departmentRepository.findById(departmentId);
+		//if not threw an exception.
 		if (op.isEmpty())
 			throw new InvalidIdException("Department Id is invalid....");
 		return op.get();
 	}
 
 	public List<Department> getAll() {
+		//returning the list of departments.
 		return departmentRepository.findAll();
 	}
 

@@ -106,10 +106,10 @@ public class AssetAllocationServiceTest {
 		//check the assetallocation is added or not
 		assertEquals(aa2,actual);
 		//check the quantity is reduced original=12 check now it as 11
-		assertEquals(11,a2.getQuanity());
+		assertEquals(11,a2.getQuantity());
 		
 		//usecase :4 (throws AssetUnavailableException)
-		a2.setQuanity(0);
+		a2.setQuantity(0);
 		try {
 			actual=assetAllocationService.addAssetAllocation(2, 1, aa2);
 		} catch (InvalidIdException | AssetUnavailableException e) { 
