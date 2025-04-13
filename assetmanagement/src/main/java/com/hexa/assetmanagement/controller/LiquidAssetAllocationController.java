@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +35,6 @@ public class LiquidAssetAllocationController {
     
     @Autowired
     private LiquidAssetService liquidAssetService;
-    
-    //  Get Liquid Assets By Employee Id, Get Employee By Liquid Asset's Id.
 
     @PostMapping("/add/{employeeId}/{liquidAssetId}")
     public LiquidAssetAllocation addLiquidAssetAllocation(
@@ -54,15 +54,42 @@ public class LiquidAssetAllocationController {
 
     @GetMapping("/getbyid/{id}")
     public LiquidAssetAllocation getById(@PathVariable int id) throws InvalidIdException {
-    	//get the liquid asset by using the given id
+    	//get the liquid asset allocated by using the given id
         return liquidAssetAllocationService.getById(id);
     }
 
     @GetMapping("/getall")
     public List<LiquidAssetAllocation> getAll(@RequestParam int page, @RequestParam int size) {
-    	//getting all liquid assets from the database
+    	//getting all liquid assets allocated from the database
         Pageable pageable = PageRequest.of(page, size);
         return liquidAssetAllocationService.getAll(pageable);
     }
+    
+    @GetMapping("/employee/{employeeId}")
+    public List<LiquidAssetAllocation> getLiquidAssetByEmployeeId(@PathVariable int employeeId) throws InvalidIdException {
+    	//get the liquid asset allocation by employee id
+        return liquidAssetAllocationService.getLiquidAssetByEmployeeId(employeeId);
+    }
+    
+    @GetMapping("/liquidAsset/{liquidAssetId}/employees")
+    public List<Employee> getEmployeesByLiquidAssetId(@PathVariable int liquidAssetId) throws InvalidIdException {
+    	//get employees allocated by the liquidAsset ID
+        return liquidAssetAllocationService.getEmployeesByLiquidAssetId(liquidAssetId);
+    }
+    
+    @DeleteMapping("/delete/by-liquid-asset/{id}")
+    public ResponseEntity<String> deleteByLiquidAssetId(@PathVariable int id) throws InvalidIdException {
+    	//delete the liquid asset allocation by id
+        String msg = liquidAssetAllocationService.deleteByLiquidAssetId(id);
+        return ResponseEntity.ok(msg);
+    }
+    
+    @DeleteMapping("/delete/by-employee/{id}")
+    public ResponseEntity<String> deleteByEmployeeId(@PathVariable int id) throws InvalidIdException {
+    	//delete the liquid asset allocation by employee id 
+        String msg = liquidAssetAllocationService.deleteByEmployeeId(id);
+        return ResponseEntity.ok(msg);
+    }
+
 }
 
