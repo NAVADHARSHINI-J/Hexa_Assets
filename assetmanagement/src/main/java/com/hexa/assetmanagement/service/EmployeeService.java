@@ -31,7 +31,7 @@ public class EmployeeService {
 	Logger logger = LoggerFactory.getLogger("EmployeeService");
 
 	public Employee addEmployee(Employee employee, String username) throws InvalidContactException, InvalidIdException {
-		// check if the contact is valid or threw an exception.
+		// check if the contact is valid or throw an exception.
 		if (employee.getContact().length() != 10)
 			throw new InvalidContactException("Invalid Contact number....");
 		// get the user by username and add it in the employee model
@@ -42,21 +42,26 @@ public class EmployeeService {
 	}
 
 	public Employee getById(int empId) throws InvalidIdException {
+		//check if the employee exists or not through his/her id.
 		Optional<Employee> op = employeeRepository.findById(empId);
+		//if not throw an exception.
 		if (op.isEmpty())
 			throw new InvalidIdException("Employee Id is invalid....");
 		return op.get();
 	}
 
 	public List<Employee> getAll(Pageable pageable) {
+		//returning the list of employee.
 		return employeeRepository.findAll(pageable).getContent();
 	}
 
 	public List<Employee> filterByName(String name) {
+		//returning the list of employee with his/her name.
 		return employeeRepository.findByName(name);
 	}
 
 	public List<Employee> filterByDepartment(String department) {
+		//returning the list of employee with his/her name.
 		return employeeRepository.findByDepartmentName(department);
 	}
 
@@ -84,6 +89,7 @@ public class EmployeeService {
 			oldEmployee.setAddress(newEmployee.getAddress());
 
 		logger.info("Employee " + oldEmployee.getName() + " updated successfully ");
+		//saving the changes made.
 		return employeeRepository.save(oldEmployee);
 
 	}
@@ -93,6 +99,7 @@ public class EmployeeService {
 		String username = employee.getEmail();
 		// setting up the password , later the employee can reset it
 		String password = "1234";
+		//encrypting password.
 		String encryptedPassword = encoder.encode(password);
 		// creating a user object
 		User user = new User(username, encryptedPassword, "EMPLOYEE");
@@ -107,6 +114,7 @@ public class EmployeeService {
 	public String deleteByEmployee(Employee employee) {
 
 		logger.info("Employee {} deleted successfully!", employee.getName());
+		//deleting an employee.
 		employeeRepository.delete(employee);
 		
 		return "Employee deleted successfully";

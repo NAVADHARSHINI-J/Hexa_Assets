@@ -88,7 +88,7 @@ public class AssetController {
 	}
 
 	@DeleteMapping("/delete/{assetId}")
-	// delete an exisiting asset with its id
+	// delete an existing asset with its id
 	public String deleteAssetById(@PathVariable int assetId) throws InvalidIdException {
 		Asset asset = assetService.getById(assetId);
 

@@ -22,16 +22,19 @@ public class DepartmentController {
 	
 	@PostMapping("/add")
 	public Department addDepartment(@RequestBody Department department) {
+		//adding a new department.
 		return departmentService.addDepartment(department);
 	}
 
-	@GetMapping("/getbyid/{id}")
-	public Department getById(@PathVariable int id) throws InvalidIdException {
-		return departmentService.getById(id);
+	@GetMapping("/getbyid/{departmentId}")
+	public Department getById(@PathVariable int departmentId) throws InvalidIdException {
+		//getting a particular department with it's id.
+		return departmentService.getById(departmentId);
 	}
 	
 	@GetMapping("/getall")
 	public List<Department> getAll(){
+		//getting the list of departments exists.
 		return departmentService.getAll();
 	}
 }

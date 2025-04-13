@@ -30,26 +30,31 @@ public class AssetService {
 	}
 
 	public Asset getById(int assetId) throws InvalidIdException {
+		//check if the asset is present or not.
 		Optional<Asset> op = assetRepository.findById(assetId);
+		//if not throw an exception.
 		if (op.isEmpty())
 			throw new InvalidIdException("Asset Id is invalid....");
 		return op.get();
 	}
 
 	public List<Asset> getAll(Pageable pageable) {
+		//returning the lists of assets.
 		return assetRepository.findAll(pageable).getContent();
 	}
 
 	public List<Asset> filterByName(String name) {
-
+        //returning the lists of assets found through it's name.
 		return assetRepository.findByName(name);
 	}
 
 	public List<Asset> filterByCategory(String category) {
+        //returning the lists of assets found through it's category.
 		return assetRepository.findByCategoryName(category);
 	}
 
 	public List<Asset> filterByStatus(String status) {
+        //returning the lists of assets found through it's status.
 		return assetRepository.findByStatus(status);
 	}
 
@@ -88,7 +93,7 @@ public class AssetService {
 	}
 
 	public String deleteAssetById(Asset asset) {
-
+        //delete an asset with it's id.
 		logger.info("Asset {} deleted successfully!", asset.getName());
 		assetRepository.delete(asset);
 		return "Asset deleted successfully";
