@@ -1,7 +1,7 @@
 package com.hexa.assetmanagement.controller;
 
+import java.security.Principal;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,28 +18,35 @@ import com.hexa.assetmanagement.service.ManagerService;
 @RestController
 @RequestMapping("/api/manager")
 public class ManagerController {
+	
     @Autowired
 	private ManagerService managerService;
 	
-	@PostMapping("/add/{id}")
+    @PostMapping("/add")
 	public Manager add(@RequestBody Manager manager,
-			@PathVariable int id) throws InvalidIdException, InvalidContactException {
-		 return managerService.add(manager,id);
+			Principal principal) throws InvalidContactException {
+		//get user name by using the principal
+		 String username=principal.getName();
+		 return managerService.add(manager,username);
 	}
+	
 	@GetMapping("/getall")
 	public List<Manager> getall() {
+		//get all manager details
 		return managerService.getAll();
 	}
 	
-	@GetMapping("/getbyid/{id}")
-	public Manager getById(@PathVariable int id) throws InvalidIdException {
-		return managerService.getById(id);
+	@GetMapping("/getbyid/{ManagerId}")
+	public Manager getById(@PathVariable int ManagerId) throws InvalidIdException {
+		// get manager based on the id
+		return managerService.getById(ManagerId);
 	}
 	
-	@PutMapping("/update/{id}")
+	@PutMapping("/update/{ManagerId}")
 	public Manager update(@RequestBody Manager manager,
-			@PathVariable int id) throws InvalidIdException, InvalidContactException {
-		return managerService.update(manager,id);
+			@PathVariable int ManagerId) throws InvalidIdException, InvalidContactException {
+		//update manager details based in the manager id
+		return managerService.update(manager,ManagerId);
 	}
 }
 

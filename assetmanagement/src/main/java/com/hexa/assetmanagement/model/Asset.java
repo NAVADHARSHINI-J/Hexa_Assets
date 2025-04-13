@@ -146,5 +146,4 @@ public class Asset {
 				&& Objects.equals(model, other.model) && Objects.equals(name, other.name) && quantity == other.quantity
 				&& Objects.equals(status, other.status);
 	}
-	
 }

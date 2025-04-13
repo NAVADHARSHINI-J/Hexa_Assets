@@ -1,5 +1,7 @@
 package com.hexa.assetmanagement.config;
 
+import java.io.IOException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatusCode;
@@ -42,5 +44,14 @@ public class GlobalExceptionHandler {
 		logger.error(e.getMessage());
 		return ErrorResponse.create(e, HttpStatusCode.valueOf(400), e.getMessage());
 	}
-	
+	@ExceptionHandler(IOException.class)
+	public ErrorResponse IOExceptionHandler(IOException e) {
+		logger.error(e.getMessage());
+		return ErrorResponse.create(e, HttpStatusCode.valueOf(400), e.getMessage());
+	}
+	@ExceptionHandler(RuntimeException.class)
+	public ErrorResponse RuntimeExceptionHandler(RuntimeException e) {
+		logger.error(e.getMessage());
+		return ErrorResponse.create(e, HttpStatusCode.valueOf(400), e.getMessage());
+	}
 }
