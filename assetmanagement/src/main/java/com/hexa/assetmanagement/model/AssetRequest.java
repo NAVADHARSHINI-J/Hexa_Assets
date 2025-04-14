@@ -23,6 +23,24 @@ public class AssetRequest {
 	private Employee employee;
 	@ManyToOne
 	private Asset asset;
+	
+	
+
+	public AssetRequest() {
+		super(); 
+	}
+
+	
+	public AssetRequest(int id, LocalDate requestDate, String reason, String status, Employee employee, Asset asset) {
+		super();
+		this.id = id;
+		this.requestDate = requestDate;
+		this.reason = reason;
+		this.status = status;
+		this.employee = employee;
+		this.asset = asset;
+	}
+
 
 	public Employee getEmployee() {
 		return employee;
