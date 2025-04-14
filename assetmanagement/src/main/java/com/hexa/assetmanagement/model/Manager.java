@@ -23,6 +23,28 @@ public class Manager {
 	@OneToOne
 	private User user; 
 	
+	public Manager(int id, String name, String email, String contact, String address, User user) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.contact = contact;
+		this.address = address;
+		this.user = user;
+	}
+
+	public Manager(int id, String name, String email, String contact, String address) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.contact = contact;
+		this.address = address;
+	}
+
+	public Manager() {
+		super();
+	}
 
 	public int getId() {
 		return id;

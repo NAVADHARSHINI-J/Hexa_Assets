@@ -23,12 +23,12 @@ public class ManagerController {
 	private ManagerService managerService;
 	
     @PostMapping("/add")
-	public Manager add(@RequestBody Manager manager,
-			Principal principal) throws InvalidContactException {
-		//get user name by using the principal
-		 String username=principal.getName();
-		 return managerService.add(manager,username);
-	}
+    public Manager add(@RequestBody Manager manager, Principal principal) throws InvalidContactException {
+        // Get username of logged-in user
+        String username = principal.getName();
+        return managerService.add(manager, username);
+    }
+
 	
 	@GetMapping("/getall")
 	public List<Manager> getall() {

@@ -25,7 +25,7 @@ public class LiquidAssetController {
 	@Autowired
 	private LiquidAssetService liquidAssetService;
 
-	@PostMapping("/add")
+	@PostMapping("/add") 
 	public LiquidAsset addLiquidAsset(@RequestBody LiquidAsset liquidAsset) {
 		//Adding new liquid Asset   
 		return liquidAssetService.addliquidAsset(liquidAsset);
@@ -43,20 +43,20 @@ public class LiquidAssetController {
 		//getting all liquid assets from the database
 		return liquidAssetService.getAll(pageable);
 	}
-	
-	@GetMapping("/bystatus")
-    public List<LiquidAsset> filterByStatus(@RequestParam String status) {
-		//get the liquid assets by status
-    	return liquidAssetService.filterByStatus(status);
+
+	@GetMapping("/bystatus/{status}")
+    public ResponseEntity<List<LiquidAsset>> getByStatus(@PathVariable String status) {
+        // logic to retrieve assets by status
+        return ResponseEntity.ok(liquidAssetService.filterByStatus(status));
     }
 	
-	@GetMapping("/byname")
-    public List<LiquidAsset> filterByName(@RequestParam String name) {
+	@GetMapping("/byname/{name}")
+    public List<LiquidAsset> filterByName(@PathVariable String name) {
 		// get liquid asset by name
     	return liquidAssetService.filterByName(name);
     }
 	
-	@PutMapping("/update/{liquidAssetId}")
+	@PutMapping("/update/{liquidAssetId}") 
 	public LiquidAsset updateLiquidAsset(@RequestBody LiquidAsset liquidAsset,
 	                                     @PathVariable int liquidAssetId) throws InvalidIdException {
 		//update the liquid asset with the given liquid assetId
@@ -64,13 +64,10 @@ public class LiquidAssetController {
 	}
 	
 	@DeleteMapping("/delete/{liquidAssetId}")
-	public ResponseEntity<String> deleteById(@PathVariable int id) throws InvalidIdException {
-	    liquidAssetService.deleteById(id);
+	public ResponseEntity<String> deleteById(@PathVariable int liquidAssetId) throws InvalidIdException {
+	    liquidAssetService.deleteById(liquidAssetId);
 	    //delete the liquid asset of the id
-	    return ResponseEntity.ok("LiquidAsset with ID " + id + " deleted successfully.");
+	    return ResponseEntity.ok("LiquidAsset with ID " + liquidAssetId + " deleted successfully.");
 	}
-	
-	
- 
 }  
  
