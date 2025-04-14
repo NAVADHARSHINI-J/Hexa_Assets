@@ -36,33 +36,37 @@ public class AssetRequestController {
 	@Autowired
 	private EmployeeService employeeService;
 
-//	@PostMapping("/add/{assetId}")
-//	public AssetRequest addAssetRequest(@PathVariable int assetId, @RequestBody AssetRequest assetRequest,
-//			Principal principal) throws InvalidIdException {
-//
-//		String username = principal.getName();
-//		return assetRequestService.addAssetRequest(assetId, username, assetRequest);
-//	}
+	@PostMapping("/add/{assetId}")
+	//adding a new request for asset with asset id.
+	public AssetRequest addAssetRequest(@PathVariable int assetId, @RequestBody AssetRequest assetRequest,
+			Principal principal) throws InvalidIdException {
+
+		//fetching the username with principal.
+		String username = principal.getName();
+		return assetRequestService.addAssetRequest(assetId, username, assetRequest);
+	}
+
 
 	@GetMapping("/get/{assetRequestId}")
+	//getting an asset request through it's id.
 	public AssetRequest getById(@PathVariable int assetRequestId) throws InvalidIdException {
 		return assetRequestService.getById(assetRequestId);
 	}
 
 	@GetMapping("/getall")
-	// getting the list of requests made.
+	// getting the list of asset requests made.
 	public List<AssetRequest> getAllAssetRequest() {
 		return assetRequestService.getAllAssetRequest();
 	}
 
 	@GetMapping("/getbystatus")
-	// filtering the request with status.
+	// filtering the asset request with status.
 	public List<AssetRequest> filterByStatus(@RequestParam String status) {
 		return assetRequestService.filterByStatus(status);
 	}
 
 	@GetMapping("/getbyempid/{empId}")
-	// filter the request by employeeId.
+	// filtering the asset request by employeeId.
 	public List<AssetRequest> filterByEmployeeId(@PathVariable int empId) throws InvalidIdException {
 		return assetRequestService.filterByEmployeeId(empId);
 	}
@@ -74,19 +78,19 @@ public class AssetRequestController {
 	}
 
 	@GetMapping("/getbydate")
-	// filter the request by date
+	// filtering the asset request by request date.
 	public List<AssetRequest> filterByRequestDate(@RequestParam LocalDate RequestDate) {
 		return assetRequestService.filterByRequestDate(RequestDate);
 	}
 	
 	@PutMapping("/update-status/{assetRequestId}")
-	//update the status
+	//updating the status of the asset request with it's id.
 	public AssetRequest updateStatus(@RequestParam String status, @PathVariable int assetRequestId) throws InvalidIdException {
 		return assetRequestService.updateStatus(status, assetRequestId);
 	}
 	
 	@DeleteMapping("/delete-by-asset/{assetId}")
-	//delete the request by asset id
+	//delete the asset request by asset id
 	public String deleteAssetRequestByAsset(@PathVariable int assetId) throws InvalidIdException {
 		Asset asset = assetService.getById(assetId);
 		
@@ -94,7 +98,7 @@ public class AssetRequestController {
 	}
 	
 	@DeleteMapping("/delete-by-employee/{empId}")
-	//delete the request by employee id
+	//delete the asset request by employee id
 	public String deleteAssetRequestByEmployee(@PathVariable int empId) throws InvalidIdException {
 		Employee employee = employeeService.getById(empId);
 		

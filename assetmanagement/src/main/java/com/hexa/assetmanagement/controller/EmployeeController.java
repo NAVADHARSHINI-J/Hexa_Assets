@@ -32,7 +32,7 @@ public class EmployeeController {
 	private DepartmentService departmentService;
 
 	@PostMapping("/add-by-employee/{departmentId}")
-	//adding employee using employee signup - employee alone has authority.
+	//adding employee using employee signup -> employee alone has authority.
 	public Employee addEmployee(@RequestBody Employee employee, @PathVariable int departmentId, Principal principal) throws InvalidIdException, InvalidContactException {
 		//getting the department using department id.
 		Department department = departmentService.getById(departmentId);
@@ -43,7 +43,7 @@ public class EmployeeController {
 	}
 	
 	@PostMapping("/add/{departmentId}")
-	//adding employee - admin and employee has authority
+	//adding employee -> admin and employee has authority
 	public Employee add(@RequestBody Employee employee, @PathVariable int departmentId) throws InvalidIdException {
 		//getting the department using department id.
 	    Department department = departmentService.getById(departmentId);
@@ -58,7 +58,7 @@ public class EmployeeController {
 	}
 
 	@GetMapping("/getall")
-	//getting the list of employees - admin and manager has authority for this.
+	//getting the list of employees -> admin and manager has authority for this.
 	public List<Employee> getAll(@RequestParam int page, @RequestParam int size) {
 		Pageable pageable = PageRequest.of(page, size);
 		return employeeService.getAll(pageable);

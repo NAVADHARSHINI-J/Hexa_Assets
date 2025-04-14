@@ -1,7 +1,6 @@
 package com.hexa.assetmanagement.controller;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.LiquidAsset;
 import com.hexa.assetmanagement.service.LiquidAssetService;
@@ -29,42 +27,50 @@ public class LiquidAssetController {
 
 	@PostMapping("/add")
 	public LiquidAsset addLiquidAsset(@RequestBody LiquidAsset liquidAsset) {
+		//Adding new liquid Asset   
 		return liquidAssetService.addliquidAsset(liquidAsset);
 	}
 
 	@GetMapping("/get/{id}")
-	public LiquidAsset getLiquidAssetById(@PathVariable int id) throws InvalidIdException {
-		return liquidAssetService.getLiquidAssetById(id);
+	public LiquidAsset getById(@PathVariable int id) throws InvalidIdException {
+		//get liquid asset using id
+		return liquidAssetService.getById(id);
 	}
 
 	@GetMapping("/getall")
-	public List<LiquidAsset> getAllLiquidAsset(@RequestParam int page, @RequestParam int size) {
+	public List<LiquidAsset> getAll(@RequestParam int page, @RequestParam int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		return liquidAssetService.getAllLiquidAsset(pageable);
+		//getting all liquid assets from the database
+		return liquidAssetService.getAll(pageable);
 	}
 	
 	@GetMapping("/bystatus")
     public List<LiquidAsset> filterByStatus(@RequestParam String status) {
+		//get the liquid assets by status
     	return liquidAssetService.filterByStatus(status);
     }
 	
- 
 	@GetMapping("/byname")
     public List<LiquidAsset> filterByName(@RequestParam String name) {
+		// get liquid asset by name
     	return liquidAssetService.filterByName(name);
     }
 	
-	@DeleteMapping("/deleteby/{id}")
-	public ResponseEntity<?> deleteById(@PathVariable int id) throws InvalidIdException {
-		liquidAssetService.deleteById(id);
-		return ResponseEntity.ok("Deleted successfully.....");
+	@PutMapping("/update/{liquidAssetId}")
+	public LiquidAsset updateLiquidAsset(@RequestBody LiquidAsset liquidAsset,
+	                                     @PathVariable int liquidAssetId) throws InvalidIdException {
+		//update the liquid asset with the given liquid assetId
+	    return liquidAssetService.update(liquidAsset, liquidAssetId);
 	}
+	
+	@DeleteMapping("/delete/{liquidAssetId}")
+	public ResponseEntity<String> deleteById(@PathVariable int id) throws InvalidIdException {
+	    liquidAssetService.deleteById(id);
+	    //delete the liquid asset of the id
+	    return ResponseEntity.ok("LiquidAsset with ID " + id + " deleted successfully.");
+	}
+	
+	
  
-	/*@PutMapping("/update/{id}")
-	public ResponseEntity<?> updateLiquidAsset(@PathVariable int id, @RequestBody LiquidAsset liquidAssetupdated) throws InvalidIdException {
-	    //LiquidAsset LiquidAssetupdated = liquidAssetService.updateLiquidAsset(id, liquidAssetupdated);
-	    return ResponseEntity.ok("Updated sucessfully");
-	} 
-	*/
 }  
  
