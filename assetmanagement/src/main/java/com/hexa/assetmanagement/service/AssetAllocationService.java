@@ -120,6 +120,12 @@ public class AssetAllocationService {
 			    "ALLOCATED".equalsIgnoreCase(assetAllocation.getStatus()) ?
 			    		"RETURNED" : assetAllocation.getStatus()
 			);
+		//if the asset is returned then increase the quantity of the asset by one
+		//get the asset
+		Asset asset=assetAllocation1.getAsset();
+		asset.setQuantity(asset.getQuantity()+1);
+		//add the asset
+		assetService.addAsset(asset);
 		logger.info("Asset allocation is updated");
 		//save it in the asset allocation
 		return assetAllocationRepository.save(assetAllocation1);

@@ -36,13 +36,13 @@ public class AssetRequestController {
 	@Autowired
 	private EmployeeService employeeService;
 
-	@PostMapping("/add/{assetId}")
-	public AssetRequest addAssetRequest(@PathVariable int assetId, @RequestBody AssetRequest assetRequest,
-			Principal principal) throws InvalidIdException {
-
-		String username = principal.getName();
-		return assetRequestService.addAssetRequest(assetId, username, assetRequest);
-	}
+//	@PostMapping("/add/{assetId}")
+//	public AssetRequest addAssetRequest(@PathVariable int assetId, @RequestBody AssetRequest assetRequest,
+//			Principal principal) throws InvalidIdException {
+//
+//		String username = principal.getName();
+//		return assetRequestService.addAssetRequest(assetId, username, assetRequest);
+//	}
 
 	@GetMapping("/get/{assetRequestId}")
 	public AssetRequest getById(@PathVariable int assetRequestId) throws InvalidIdException {

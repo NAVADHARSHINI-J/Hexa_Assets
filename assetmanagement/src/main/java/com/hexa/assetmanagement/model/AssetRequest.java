@@ -8,7 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+
 @Entity
 public class AssetRequest {
 	@Id
@@ -23,16 +23,8 @@ public class AssetRequest {
     private Employee employee;
     @ManyToOne
     private Asset asset;
-    
-    @OneToOne
-    private User user;
+
         
-	public User getUser() {
-		return user;
-	}
-	public void setUser(User user) {
-		this.user = user;
-	}
 	public Employee getEmployee() {
 		return employee;
 	}

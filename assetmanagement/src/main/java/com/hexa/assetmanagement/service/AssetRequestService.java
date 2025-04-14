@@ -38,28 +38,28 @@ public class AssetRequestService {
 
 	Logger logger = LoggerFactory.getLogger("AssetRequestService");
 
-	public AssetRequest addAssetRequest(int assetId, String username, AssetRequest assetRequest)
-			throws InvalidIdException {
-
-		Asset asset = assetService.getById(assetId);
-		// finding the user by username
-		User user = userRepository.findByUsername(username);
-		assetRequest.setUser(user);
-		assetRequest.setAsset(asset);
-
-		// finding the employee with user, if not found threw an exception
-		Employee employee = employeeRepository.findByUser(user)
-				.orElseThrow(() -> new InvalidIdException("Employee not found for user"));
-
-		assetRequest.setEmployee(employee);
-
-		// if date is not provided then set it with current date
-		if (assetRequest.getRequestDate() == null)
-			assetRequest.setRequestDate(LocalDate.now());
-
-		logger.info("Asset Request for " + asset.getName() + "is made");
-		return assetRequestRepository.save(assetRequest);
-	}
+//	public AssetRequest addAssetRequest(int assetId, String username, AssetRequest assetRequest)
+//			throws InvalidIdException {
+//
+//		Asset asset = assetService.getById(assetId);
+//		// finding the user by username
+//		User user = userRepository.findByUsername(username);
+//		assetRequest.setUser(user);
+//		assetRequest.setAsset(asset);
+//
+//		// finding the employee with user, if not found threw an exception
+//		Employee employee = employeeRepository.findByUser(user)
+//				.orElseThrow(() -> new InvalidIdException("Employee not found for user"));
+//
+//		assetRequest.setEmployee(employee);
+//
+//		// if date is not provided then set it with current date
+//		if (assetRequest.getRequestDate() == null)
+//			assetRequest.setRequestDate(LocalDate.now());
+//
+//		logger.info("Asset Request for " + asset.getName() + "is made");
+//		return assetRequestRepository.save(assetRequest);
+//	}
 
 	public AssetRequest getById(int assetRequestId) throws InvalidIdException {
 		Optional<AssetRequest> optional = assetRequestRepository.findById(assetRequestId);
