@@ -22,7 +22,30 @@ public class LiquidAssetAllocation {
 	@ManyToOne
 	private LiquidAsset liquidAsset;
 	 
-	 
+	public LiquidAssetAllocation() {
+		super();
+	}
+	
+	public LiquidAssetAllocation(int id, LocalDate allocatedDate, double allocatedAmount, Employee employee,
+			LiquidAsset liquidAsset) {
+		super();
+		this.id = id;
+		this.allocatedDate = allocatedDate;
+		this.allocatedAmount = allocatedAmount;
+		this.employee = employee;
+		this.liquidAsset = liquidAsset;
+	}
+
+	public LiquidAssetAllocation(LocalDate allocatedDate, double allocatedAmount, Employee employee,
+			LiquidAsset liquidAsset) {
+		super();
+		this.allocatedDate = allocatedDate;
+		this.allocatedAmount = allocatedAmount;
+		this.employee = employee;
+		this.liquidAsset = liquidAsset;
+	}
+
+
 	public Employee getEmployee() {
 		return employee;
 	}

@@ -23,16 +23,17 @@ public class ManagerService {
 	Logger logger=LoggerFactory.getLogger("ManagerService");
 	
 	public Manager add(Manager manager, String username) throws InvalidContactException {
-		//get the user from user name
-		User user=userRepository.findByUsername(username);
-		//check whether the contact number is correct are not
-		if(manager.getContact().length() != 10)
-			throw new InvalidContactException("Invalid contact number...");
-		//set the user in the Manager
-		manager.setUser(user);
-		logger.info("Manager is added"+ username);
-		return managerRepository.save(manager);
-	}
+	    // Get the user by username
+	    User user = userRepository.findByUsername(username);
+	    // Validate contact number
+	    if (manager.getContact().length() != 10) {
+	        throw new InvalidContactException("Invalid contact number...");
+	    }
+	    // Attach the user to manager
+	    manager.setUser(user);
+	    logger.info("Manager is added: " + username);
+	    return managerRepository.save(manager);
+	} 
 
 	public List<Manager> getAll() {
 		//get all the manager details
@@ -66,5 +67,7 @@ public class ManagerService {
 		logger.info("Manager" +manager1.getName()+"Updated Manager sucessfully");
 		return managerRepository.save(manager1);
 	}
+	
+	
 }
 

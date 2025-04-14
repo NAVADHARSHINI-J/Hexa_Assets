@@ -20,6 +20,7 @@ public class LiquidAssetService {
 	@Autowired
 	private LiquidAssetRepository liquidAssetRepository;
 	
+	@Autowired
 	private LiquidAssetAllocationRepository liquidAssetAllocationRepository;
 	
 	Logger logger = LoggerFactory.getLogger("LiquidAssetService");

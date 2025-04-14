@@ -3,13 +3,11 @@ package com.hexa.assetmanagement.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
 import com.hexa.assetmanagement.exception.AssetUnavailableException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
@@ -107,7 +105,7 @@ public class LiquidAssetAllocationService {
             // delete all retrieved allocations
 		    liquidAssetAllocationRepository.deleteAll(del);
 		    logger.info("Deleted " + del.size() + " allocations for LiquidAsset ID: " + id);
-		    return "All allocations deleted successfully.";
+		    return ("All allocations deleted successfully.");
 		}
 
 		public String deleteByEmployeeId(int employeeId) throws InvalidIdException {

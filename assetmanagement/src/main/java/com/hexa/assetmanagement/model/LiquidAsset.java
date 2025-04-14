@@ -22,6 +22,31 @@ public class LiquidAsset {
 	private String description;
 	private String status;
 
+	
+	public LiquidAsset(String name, double totalAmount, double remainingAmount, String description, String status) {
+		super();
+		this.name = name;
+		this.totalAmount = totalAmount;
+		this.remainingAmount = remainingAmount;
+		this.description = description;
+		this.status = status;
+	}
+
+	public LiquidAsset(int id, String name, double totalAmount, double remainingAmount, String description,
+			String status) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.totalAmount = totalAmount;
+		this.remainingAmount = remainingAmount;
+		this.description = description;
+		this.status = status;
+	}
+
+	public LiquidAsset() {
+		super();
+	}
+
 	public int getId() {
 		return id;
 	}

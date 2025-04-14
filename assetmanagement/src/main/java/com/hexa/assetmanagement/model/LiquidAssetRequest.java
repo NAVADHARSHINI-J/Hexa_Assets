@@ -25,7 +25,30 @@ public class LiquidAssetRequest {
   @ManyToOne
   private LiquidAsset liquidAsset;
   
-  
+public LiquidAssetRequest(int i, LocalDate localDate, String string, Employee employee2, int j) {
+	super();
+}
+public LiquidAssetRequest(int id, LocalDate requestDate, double requestedAmount, String reason, String status,
+		Employee employee, LiquidAsset liquidAsset) {
+	super();
+	this.id = id;
+	this.requestDate = requestDate;
+	this.requestedAmount = requestedAmount;
+	this.reason = reason;
+	this.status = status;
+	this.employee = employee;
+	this.liquidAsset = liquidAsset;
+}
+public LiquidAssetRequest(int id, LocalDate requestDate, double requestedAmount, String reason, String status,
+		Employee employee) {
+	super();
+	this.id = id;
+	this.requestDate = requestDate;
+	this.requestedAmount = requestedAmount;
+	this.reason = reason;
+	this.status = status;
+	this.employee = employee;
+}
 public Employee getEmployee() {
 	return employee;
 }

@@ -44,6 +44,7 @@ public class Employee {
 		this.department = department;
 		this.user = user;
 	}
+
 	public Employee(int id, String name, String email, String contact, String address, Department department) {
 		super();
 		this.id = id;
@@ -58,6 +59,9 @@ public class Employee {
 		super();
 	}
 	
+	public Employee(int i, String string, String string2, String string3, String string4, String string5) {
+	}
+
 	public int getId() {
 		return id;
 	}
