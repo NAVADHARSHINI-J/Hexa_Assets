@@ -38,6 +38,7 @@ public class AssetRequestService {
 
 	Logger logger = LoggerFactory.getLogger("AssetRequestService");
 
+
 	public AssetRequest addAssetRequest(int assetId, String username, AssetRequest assetRequest)
 			throws InvalidIdException {
 
@@ -63,6 +64,7 @@ public class AssetRequestService {
 		logger.info("Asset Request for " + asset.getName() + "is made");
 		return assetRequestRepository.save(assetRequest);
 	}
+
 
 	public AssetRequest getById(int assetRequestId) throws InvalidIdException {
 		//check if the asset request is found or not.

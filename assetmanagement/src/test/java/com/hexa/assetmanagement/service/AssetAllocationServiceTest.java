@@ -284,6 +284,8 @@ public class AssetAllocationServiceTest {
 		//expected : aa1
 		//actual:assetAllocationService.update(aa1, 1);
 		//use case 1: correct output
+		//set the asset for allocation
+		aa1.setAsset(a1);
 		when(assetAllocationRepository.findById(1)).thenReturn(Optional.of(aa1));
 		when(assetAllocationRepository.save(aa1)).thenReturn(aa1);
 		//check that the output is correct or not
@@ -291,13 +293,19 @@ public class AssetAllocationServiceTest {
 			assertEquals(aa1,assetAllocationService.update(aa1, 1));
 		} catch (InvalidIdException e) {	}
 		
+		
 		//usecase 2: check that the value is changed for the status and return date
 		//for return date
 		assertEquals(LocalDate.now(), aa1.getReturnDate());
 		//for status
 		assertEquals("RETURNED", aa1.getStatus());
 		
-		//usecase : 3 (throws InvalidIdException)
+		//usecase : 3
+		//check the quantity of the asset is increased by 1
+		when(assetService.addAsset(a1)).thenReturn(a1);
+		assertEquals(11,a1.getQuantity());
+		
+		//usecase : 4 (throws InvalidIdException)
 		//10 is not the valid id
 		try {
 			assertEquals(aa1,assetAllocationService.update(aa1, 10));
@@ -305,12 +313,13 @@ public class AssetAllocationServiceTest {
 			assertEquals("Asset Allocation Id is invalid",e.getMessage());
 		}
 		
-		//usecase : 4 (check for wrong output)
+		//usecase : 5(check for wrong output)
 		//the update of aa1 return the aa1 but it is aa2 so it make the assertion 
 		//not equal
 		try {
 			assertNotEquals(aa2,assetAllocationService.update(aa1, 1));
 		} catch (InvalidIdException e) {	}
+		
 		
 	}
 	
