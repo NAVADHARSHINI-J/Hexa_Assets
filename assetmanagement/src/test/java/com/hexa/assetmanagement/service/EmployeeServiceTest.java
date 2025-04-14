@@ -1,7 +1,7 @@
 package com.hexa.assetmanagement.service;
-
+ 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals; 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -15,12 +15,14 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
@@ -42,12 +44,17 @@ public class EmployeeServiceTest {
 
 	@Mock
 	private UserRepository userRepository;
+	
+	@Mock
+    private BCryptPasswordEncoder encoder;
 
 	Employee e1;
 	Employee e2;
 	Employee e3;
 	Employee e4;
 	Employee e5;
+	Employee e6;
+	Employee e66;
 	Employee oldEmployee;
 	Employee newEmployee;
 
@@ -65,6 +72,12 @@ public class EmployeeServiceTest {
 				new User(4, "pooja", "1234", "EMPLOYEE"));
 		e5 = new Employee(5, "pooja", "pooja@123.com", "8167230291", "no.29, 1st street", new Department(2, "FINANCE"),
 				new User(5, "pooja", "1234", "EMPLOYEE"));
+		
+		//employee for checking add() method 
+		//which adds an employee through their login
+		e6 = new Employee(6, "varshaa", "varshaa@gmail.com", "9127392681", "address", new Department(1, "IT"));
+		e66=new Employee(6, "varshaa", "varshaa@gmail.com", "9127392681", "address", new Department(1, "IT"), new User(6, "varshaa@gmail.com", "1234", "EMPLOYEE"));
+		
 	}
 
 	@Test
@@ -216,32 +229,124 @@ public class EmployeeServiceTest {
 				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
 		newEmployee = new Employee(6, "sri", "sri@gmail.com", "9092407442", "no.154, anna nagar",
 				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
-		
-		// case 1: full successfull update.
 
-		when(employeeRepository.save(oldEmployee)).thenReturn(newEmployee);
+		// case 1: full successfull update.
+ 		
+		//writing this once is enough for passing any method of type employee.
+		//no need for writing again for each use cases.
+		//telling mockito to allow passing of any methods of employee
+		//since .save() is a generic method declaring <Employee> so that mockito would know.
+		//if not declaring <Employee> mockito throws an TypeMismatchError. 
+		when(employeeRepository.save(Mockito.<Employee>any()))
+	    .thenAnswer(invocation -> invocation.getArgument(0));
+
+ 
 		Employee updated;
 		try {
 			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
-			assertEquals("sri", updated.getName()); //updated
-			assertEquals("sri@gmail.com", updated.getEmail()); //updated
-			assertEquals("9092407442", updated.getContact()); //updated
-			assertEquals("no.154, anna nagar", updated.getAddress()); //updated
-		} catch (InvalidContactException e) { 
-		}
-		
-		//case 2: partial update
-		newEmployee = new Employee(6, null , null , "9092407442", "no.154, anna nagar",
-				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
-		
-		when(employeeRepository.save(oldEmployee)).thenReturn(newEmployee); 
-		try {
-			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
-		 
-			assertEquals("9092407442", updated.getContact()); //updated
-			assertEquals("no.154, anna nagar", updated.getAddress()); //updated
-		} catch (InvalidContactException e) { 
+			assertEquals("sri", updated.getName()); // updated
+			assertEquals("sri@gmail.com", updated.getEmail()); // updated
+			assertEquals("9092407442", updated.getContact()); // updated
+			assertEquals("no.154, anna nagar", updated.getAddress()); // updated
+		} catch (InvalidContactException e) {
 		}
 
+		// case 2: partial update
+		oldEmployee = new Employee(6, "charu", "charu@gmail.com", "9128371293", "2, 5th street",
+				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
+		newEmployee = new Employee(6, null, null, "9092407442", "no.154, anna nagar", new Department(1, "IT"),
+				new User(6, "charu", "1234", "EMPLOYEE"));
+
+		try {
+			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
+
+			assertEquals("charu", updated.getName()); // not - updated
+			assertEquals("9092407442", updated.getContact()); // updated
+			assertEquals("no.154, anna nagar", updated.getAddress()); // updated
+		} catch (InvalidContactException e) {
+		}
+		
+		//case 3: intentionally passing invalid contact
+		oldEmployee = new Employee(6, "charu", "charu@gmail.com", "9128371293", "2, 5th street",
+				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
+		newEmployee = new Employee(6, null, null, "90442", "no.154, anna nagar", new Department(1, "IT"),
+				new User(6, "charu", "1234", "EMPLOYEE"));
+
+		try {
+			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
+		} catch (InvalidContactException e) {
+			 assertEquals("Invalid Contact number....", e.getMessage());
+		}
+		
+		//case 4: null contact , updating name
+		oldEmployee = new Employee(6, "charu", "charu@gmail.com", "9128371293", "2, 5th street",
+				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
+		newEmployee = new Employee(6, "sri", null, null, "no.154, anna nagar", new Department(1, "IT"),
+				new User(6, "charu", "1234", "EMPLOYEE"));
+
+		try {
+			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
+			assertEquals("sri", updated.getName());
+		} catch (InvalidContactException e) { 
+		}
+		
+		//case 5: no updates, passing only null.
+
+		oldEmployee = new Employee(6, "charu", "charu@gmail.com", "9128371293", "2, 5th street",
+				new Department(1, "IT"), new User(6, "charu", "1234", "EMPLOYEE"));
+		newEmployee = new Employee();
+		
+		try {
+			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
+			assertEquals("charu", updated.getName());  
+			assertEquals("charu@gmail.com", updated.getEmail());  
+			assertEquals("9128371293", updated.getContact());  
+			assertEquals("2, 5th street", updated.getAddress());  
+		} catch (InvalidContactException e) { 
+		}
+	 	
+	}
+	
+	@Test
+	public void add() {
+		  
+		//adding employee through their login 
+		//admin and employee has authority.
+	    when(encoder.encode("1234")).thenReturn("encryptedPassword1234"); 
+	    
+	    when(employeeRepository.save(e6))
+	             .thenReturn(e6); 
+ 
+	    Employee actual = employeeService.add(e6);
+
+	    assertEquals(e66.getName(), actual.getName());
+	    assertEquals(e66.getEmail(), actual.getEmail());
+	    assertEquals(e66.getContact(), actual.getContact());
+	    assertEquals(e66.getAddress(), actual.getAddress());
+	    
+	}
+	@Test
+	public void deleteByEmployee() {
+		
+		//case 1: performing deletion correctly. 
+		
+		assertEquals("Employee deleted successfully", employeeService.deleteByEmployee(e1));
+		
+		verify(employeeRepository, times(1)).delete(e1);
+	}
+	
+	@Test
+	public void findByUsername() {
+		
+		//case 1: getting the correct output
+		when(employeeRepository.findByUserUsername("sheryl")).thenReturn(e1);
+		
+		assertEquals(e1, employeeService.findByUsername("sheryl")); 
+		
+		//case 2: checking for incorrect output
+		
+		assertNotEquals(e2, employeeService.findByUsername("sheryl"));
+		
+		verify(employeeRepository, times(2)).findByUserUsername("sheryl");
 	}
 }
