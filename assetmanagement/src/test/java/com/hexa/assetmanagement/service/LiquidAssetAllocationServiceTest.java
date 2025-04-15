@@ -56,67 +56,64 @@ public class LiquidAssetAllocationServiceTest {
 
     @Test
     public void addLiquidAssetAllocationTest() throws InvalidIdException, AssetUnavailableException {
-        // Setup valid LiquidAssets and Employees
+        // Mock valid asset and employee fetches
         when(liquidAssetService.getById(1)).thenReturn(a1);
         when(employeeService.getById(1)).thenReturn(e1);
         when(liquidAssetService.getById(2)).thenReturn(a2);
         when(employeeService.getById(2)).thenReturn(e2);
 
-        // Use case 1: Correct output
-        when(liquidAssetAllocationRepository.save(aa1)).thenReturn(aa1);
-        LiquidAssetAllocation actual = liquidAssetAllocationService.add(1, 1, aa1);
-
-        assertEquals(aa1, actual);
-        assertEquals(1, actual.getEmployee().getId());
-        assertEquals(1, actual.getLiquidAsset().getId());
-
-        // Use case 2: Check default allocation date when it's null
-        aa2.setAllocatedDate(null);
+        //  Use case 1: Valid allocation
         when(liquidAssetAllocationRepository.save(any(LiquidAssetAllocation.class)))
                 .thenAnswer(invocation -> {
                     LiquidAssetAllocation allocation = invocation.getArgument(0);
-                    // Simulate the service setting the date
-                    if (allocation.getAllocatedDate() == null) {
-                        allocation.setAllocatedDate(LocalDate.now());
-                    }
+                    allocation.setId(101); // simulate DB-generated ID
                     return allocation;
                 });
 
-        actual = liquidAssetAllocationService.add(2, 2, aa2);
-        assertEquals(LocalDate.now(), actual.getAllocatedDate());
+        LiquidAssetAllocation result1 = liquidAssetAllocationService.add(1, 1, aa1);
 
-        // Use case 3: Insufficient asset amount
-        a2.setRemainingAmount(100.0);  // make available amount less than allocation amount
+        assertNotNull(result1);
+        assertEquals(101, result1.getId());
+        assertEquals(e1.getId(), result1.getEmployee().getId());
+        assertEquals(a1.getId(), result1.getLiquidAsset().getId());
+
+        //  Use case 2: Null allocatedDate → should be set to today
+        aa2.setAllocatedDate(null);
+        LiquidAssetAllocation result2 = liquidAssetAllocationService.add(2, 2, aa2);
+        assertNotNull(result2.getAllocatedDate());
+        assertEquals(LocalDate.now(), result2.getAllocatedDate());
+
+        // Use case 3: Insufficient amount (asset total less than allocation)
+        a2.setTotalAmount(100.0); // less than aa3.allocatedAmount (3000.0)
         try {
-            actual = liquidAssetAllocationService.add(2, 2, aa3);  // assuming aa3.amount > 100
+            liquidAssetAllocationService.add(2, 2, aa3);
             fail("Expected AssetUnavailableException was not thrown");
         } catch (AssetUnavailableException e) {
             assertEquals("Insufficient liquid asset amount.", e.getMessage());
         }
 
-        // Use case 4: Asset not available (total amount is 0)
+        //  Use case 4: Asset total amount is 0
         a2.setTotalAmount(0.0);
-        a2.setRemainingAmount(0.0);
         try {
-            actual = liquidAssetAllocationService.add(2, 1, aa2);
+            liquidAssetAllocationService.add(2, 1, aa2);
             fail("Expected AssetUnavailableException was not thrown");
         } catch (AssetUnavailableException e) {
             assertEquals("Liquid asset is not available for allocation.", e.getMessage());
         }
 
-        // Use case 5: Invalid LiquidAsset ID
+        //  Use case 5: Invalid LiquidAsset ID
         when(liquidAssetService.getById(5)).thenThrow(new InvalidIdException("Liquid Asset Id is invalid..."));
         try {
-            actual = liquidAssetAllocationService.add(5, 1, aa2);
+            liquidAssetAllocationService.add(5, 1, aa2);
             fail("Expected InvalidIdException was not thrown");
         } catch (InvalidIdException e) {
             assertEquals("Liquid Asset Id is invalid...", e.getMessage());
         }
 
-        // Use case 6: Invalid Employee ID
+        //  Use case 6: Invalid Employee ID
         when(employeeService.getById(5)).thenThrow(new InvalidIdException("Employee Id is invalid..."));
         try {
-            actual = liquidAssetAllocationService.add(1, 5, aa2);
+            liquidAssetAllocationService.add(1, 5, aa2);
             fail("Expected InvalidIdException was not thrown");
         } catch (InvalidIdException e) {
             assertEquals("Employee Id is invalid...", e.getMessage());

@@ -65,14 +65,14 @@ public class LiquidAssetRequestController {
         return liquidAssetRequestService.getAll(pageable);
     }
     
-    @GetMapping("/bystatus")
-    public List<LiquidAssetRequest> filterByStatus(@RequestParam String status) {
+    @GetMapping("/bystatus/{status}")
+    public List<LiquidAssetRequest> filterByStatus(@PathVariable String status) {
     	// get liquid asset request by status
     	return liquidAssetRequestService.filterByStatus(status);
     }
     
-    @GetMapping("/byliquidAssetId/{id}")
-    public List<LiquidAssetRequest> filterByLiquidAssetId(@RequestParam int liquidAssetId) 
+    @GetMapping("/byliquidAssetId/{liquidAssetId}")
+    public List<LiquidAssetRequest> filterByLiquidAssetId(@PathVariable int liquidAssetId) 
     		throws InvalidIdException {
     	//check asset with id is present in database or not
     	liquidAssetRequestService.getById(liquidAssetId);

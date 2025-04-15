@@ -40,7 +40,8 @@ public class LiquidAssetServiceTest {
     public void init() {
         la1 = new LiquidAsset(1, "Asset1", 1000, 500, "Active", "Description1");
         la2 = new LiquidAsset(2, "Asset2", 1500, 1000, "Inactive", "Description2");
-        la3 = new LiquidAsset(3, "Asset3", 2000, 0, "Active", "Description3");  // Invalid Remaining Amount
+        // Invalid Remaining Amount
+        la3 = new LiquidAsset(3, "Asset3", 2000, 0, "Active", "Description3"); 
         la4 = new LiquidAsset(4, "Asset4", 1200, 800, "Active", "Description4");
     }
 
