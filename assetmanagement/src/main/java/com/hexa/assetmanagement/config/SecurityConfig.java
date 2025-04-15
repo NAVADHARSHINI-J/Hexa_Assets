@@ -93,7 +93,6 @@ public class SecurityConfig {
 	            .requestMatchers("/api/employee/getbyname").authenticated()
 	            .requestMatchers("/api/employee/getbydepartment").authenticated()
  
-	            .requestMatchers("/api/employee/update/{id}").hasAuthority("ADMIN")
 	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN")
 	            .requestMatchers("/api/manager/add").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/manager/getall").hasAnyAuthority("ADMIN","MANAGER")
