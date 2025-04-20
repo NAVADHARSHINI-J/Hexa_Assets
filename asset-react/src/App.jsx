@@ -1,10 +1,11 @@
-import Login from "./components/auth/Login"
+
+import Audit from "./components/admin/Audit"
 
 function App() {
 
   return (
     <div>
-       <Login/>
+      <Audit />
     </div>
   )
 }
