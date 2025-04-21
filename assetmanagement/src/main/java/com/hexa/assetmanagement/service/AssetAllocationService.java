@@ -46,8 +46,6 @@ public class AssetAllocationService {
 		Employee employee = employeeService.getById(empId);
 		assetAllocation.setEmployee(employee);
 		//After allocation reduce the one quantity of the asset 
-		asset.setQuantity(asset.getQuantity()-1);
-
 		asset.setQuantity((asset.getQuantity())-1);
 
 		assetService.addAsset(asset);

@@ -32,7 +32,7 @@ public class EmployeeController {
 	private DepartmentService departmentService;
 
 	@PostMapping("/add-by-employee/{departmentId}")
-	//adding employee using employee signup -> employee alone has authority.
+	//adding employee using employee signup -> employee has authority.
 	public Employee addEmployee(@RequestBody Employee employee, @PathVariable int departmentId, Principal principal) throws InvalidIdException, InvalidContactException {
 		//getting the department using department id.
 		Department department = departmentService.getById(departmentId);
@@ -40,15 +40,6 @@ public class EmployeeController {
 		String username=principal.getName();
 		employee.setDepartment(department);
 		return employeeService.addEmployee(employee, username);
-	}
-	
-	@PostMapping("/add/{departmentId}")
-	//adding employee -> admin and employee has authority
-	public Employee add(@RequestBody Employee employee, @PathVariable int departmentId) throws InvalidIdException {
-		//getting the department using department id.
-	    Department department = departmentService.getById(departmentId);
-	    employee.setDepartment(department);
-		return employeeService.add(employee);
 	}
 
 	@GetMapping("/getbyid/{empId}")

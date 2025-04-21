@@ -308,24 +308,6 @@ public class EmployeeServiceTest {
 	}
 	
 	@Test
-	public void add() {
-		  
-		//adding employee through their login 
-		//admin and employee has authority.
-	    when(encoder.encode("1234")).thenReturn("encryptedPassword1234"); 
-	    
-	    when(employeeRepository.save(e6))
-	             .thenReturn(e6); 
- 
-	    Employee actual = employeeService.add(e6);
-
-	    assertEquals(e66.getName(), actual.getName());
-	    assertEquals(e66.getEmail(), actual.getEmail());
-	    assertEquals(e66.getContact(), actual.getContact());
-	    assertEquals(e66.getAddress(), actual.getAddress());
-	    
-	}
-	@Test
 	public void deleteByEmployee() {
 		
 		//case 1: performing deletion correctly. 

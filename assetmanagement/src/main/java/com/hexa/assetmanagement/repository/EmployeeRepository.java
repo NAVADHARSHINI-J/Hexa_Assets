@@ -21,5 +21,4 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 	
 	//find the employee by the username
 	Employee findByUserUsername(String username);
-
 }

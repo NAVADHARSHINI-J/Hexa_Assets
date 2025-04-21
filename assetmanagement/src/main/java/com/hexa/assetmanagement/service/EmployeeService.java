@@ -6,8 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.data.domain.Pageable; 
 import org.springframework.stereotype.Service;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
@@ -24,9 +23,7 @@ public class EmployeeService {
 
 	@Autowired
 	private UserRepository userRepository;
-
-	@Autowired
-	private BCryptPasswordEncoder encoder;
+ 
 
 	Logger logger = LoggerFactory.getLogger("EmployeeService");
 
@@ -92,23 +89,6 @@ public class EmployeeService {
 		//saving the changes made.
 		return employeeRepository.save(oldEmployee);
 
-	}
-
-	public Employee add(Employee employee) {
-		// setting up the username from the employee email
-		String username = employee.getEmail();
-		// setting up the password , later the employee can reset it
-		String password = "1234";
-		//encrypting password.
-		String encryptedPassword = encoder.encode(password);
-		// creating a user object
-		User user = new User(username, encryptedPassword, "EMPLOYEE");
-		user = userRepository.save(user);
-		// setting up the user in employee
-		employee.setUser(user);
-
-		logger.info("Employee {} added successfully", employee.getName());
-		return employeeRepository.save(employee);
 	}
 
 	public String deleteByEmployee(Employee employee) {
