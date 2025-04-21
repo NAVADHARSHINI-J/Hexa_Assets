@@ -106,7 +106,6 @@ public class ManagerServiceTest {
         verify(managerRepository, times(2)).findById(2);
         verify(managerRepository, times(1)).findById(10);
     }
-
     @Test
     public void updateTest() {
         Manager m33 = new Manager();
@@ -145,7 +144,6 @@ public class ManagerServiceTest {
             assertEquals(m3, managerService.update(m33, 3));
         } catch (InvalidIdException | InvalidContactException e) {
         }
-
         verify(managerRepository, times(2)).save(m3);
     }
 }
