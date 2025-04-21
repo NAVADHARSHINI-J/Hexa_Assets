@@ -1,14 +1,15 @@
 
-import Audit from "./components/admin/Audit"
-import HomeAsset from "./components/employee/HomeAsset"
-import AssetDetails from './components/employee/AssetDetails'
+import LiquidAssetAllocation from "./components/manager/LiquidAssetAllocation.jsx"
+import LiquidAssetDashboard from "./components/manager/LiquidAssetDashboard.jsx"
+import LiquidAssetPage from "./components/manager/LiquidassetPage.jsx"
+import LiquidAssetRequest from "./components/manager/LiquidAssetRequest.jsx"
+import LiquidAssetUnallocated from "./components/manager/LiquidAssetUnallocated.jsx"
 
 function App() {
 
   return (
     <div>
-      <AssetDetails />
-
+       <LiquidAssetUnallocated/>  
     </div>
   )
 }
