@@ -46,7 +46,7 @@ public class LiquidAssetServiceTest {
     }
 
     @Test
-    public void addLiquidAssetTest() {
+    public void addTest() {
         // Use case 1: Valid Liquid Asset
         when(liquidAssetRepository.save(la1)).thenReturn(la1);
         assertEquals(la1, liquidAssetService.addliquidAsset(la1));
@@ -83,7 +83,7 @@ public class LiquidAssetServiceTest {
     }
 
     @Test
-    public void updateLiquidAssetTest() {
+    public void updateTest() {
         LiquidAsset laUpdate = new LiquidAsset();
         laUpdate.setName("Updated Asset");
         laUpdate.setRemainingAmount(300);
