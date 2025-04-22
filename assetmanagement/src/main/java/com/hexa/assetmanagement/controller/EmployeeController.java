@@ -1,6 +1,5 @@
 package com.hexa.assetmanagement.controller;
-
-import java.security.Principal;
+ 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,29 +16,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
-import com.hexa.assetmanagement.exception.InvalidIdException; 
-import com.hexa.assetmanagement.model.Department;
-import com.hexa.assetmanagement.model.Employee;
-import com.hexa.assetmanagement.service.DepartmentService;
+import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
+import com.hexa.assetmanagement.model.Employee; 
 import com.hexa.assetmanagement.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api/employee")
 public class EmployeeController {
 	@Autowired
-	private EmployeeService employeeService;
-	@Autowired
-	private DepartmentService departmentService;
+	private EmployeeService employeeService; 
 
-	@PostMapping("/add-by-employee/{departmentId}")
-	//adding employee using employee signup -> employee has authority.
-	public Employee addEmployee(@RequestBody Employee employee, @PathVariable int departmentId, Principal principal) throws InvalidIdException, InvalidContactException {
-		//getting the department using department id.
-		Department department = departmentService.getById(departmentId);
-		//getting the username by principal.
-		String username=principal.getName();
-		employee.setDepartment(department);
-		return employeeService.addEmployee(employee, username);
+	@PostMapping("/add-employee") 
+	//adding an employee - admin and employee has authority.
+	public Employee addEmployee(@RequestBody Employee employee) throws InvalidIdException, InvalidContactException, UsernameInvalidException {
+		return employeeService.addEmployee(employee);
 	}
 
 	@GetMapping("/getbyid/{empId}")
