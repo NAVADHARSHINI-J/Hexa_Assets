@@ -85,7 +85,7 @@ public class SecurityConfig {
 	            .requestMatchers("/api/admin/getall").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/getbyid/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/update/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
-	            .requestMatchers("/api/employee/add-by-employee/{departmentId}").hasAuthority("EMPLOYEE") 
+	            .requestMatchers("/api/employee/add-employee").hasAnyAuthority("EMPLOYEE", "ADMIN") 
 	            .requestMatchers("/api/employee/getbyid/{empId}").authenticated()
 	            .requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
  

@@ -1,14 +1,10 @@
-
-import Audit from "./components/admin/Audit"
-import HomeAsset from "./components/employee/HomeAsset"
-import AssetDetails from './components/employee/AssetDetails'
+import TrackingRequest from "./components/employee/TrackingRequest"
 
 function App() {
 
   return (
     <div>
-      <AssetDetails />
-
+       <TrackingRequest/>
     </div>
   )
 }

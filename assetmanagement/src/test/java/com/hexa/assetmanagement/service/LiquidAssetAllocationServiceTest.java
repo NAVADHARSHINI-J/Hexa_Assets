@@ -55,7 +55,7 @@ public class LiquidAssetAllocationServiceTest {
     }
 
     @Test
-    public void addLiquidAssetAllocationTest() throws InvalidIdException, AssetUnavailableException {
+    public void addTest() throws InvalidIdException, AssetUnavailableException {
         // Mock valid asset and employee fetches
         when(liquidAssetService.getById(1)).thenReturn(a1);
         when(employeeService.getById(1)).thenReturn(e1);

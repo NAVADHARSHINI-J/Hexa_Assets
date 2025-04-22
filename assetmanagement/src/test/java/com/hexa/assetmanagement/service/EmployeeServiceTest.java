@@ -26,6 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Department;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.User;
@@ -88,17 +89,22 @@ public class EmployeeServiceTest {
 		when(employeeRepository.save(e1)).thenReturn(e1);
 
 		try {
-			assertEquals(e1, employeeService.addEmployee(e1, "sheryl"));
+			assertEquals(e1, employeeService.addEmployee(e1));
 		} catch (InvalidIdException e) {
 
 		} catch (InvalidContactException e) {
 
+		} catch (UsernameInvalidException e) { 
+			e.printStackTrace();
 		}
 
 		// case 2: intentionally passing invalid contact
 
 		try {
-			assertEquals(e3, employeeService.addEmployee(e3, "dharshini"));
+			try {
+				assertEquals(e3, employeeService.addEmployee(e3));
+			} catch (UsernameInvalidException e) {  
+			}
 		} catch (InvalidIdException e) {
 
 		} catch (InvalidContactException e) {
@@ -112,10 +118,12 @@ public class EmployeeServiceTest {
 		when(employeeRepository.save(e4)).thenReturn(e4);
 
 		try {
-			assertNotEquals(e2, employeeService.addEmployee(e4, "pooja"));
+			assertNotEquals(e2, employeeService.addEmployee(e4));
 		} catch (InvalidContactException e) {
 			e.printStackTrace();
 		} catch (InvalidIdException e) {
+			e.printStackTrace();
+		} catch (UsernameInvalidException e) { 
 			e.printStackTrace();
 		}
 
@@ -124,12 +132,16 @@ public class EmployeeServiceTest {
 		when(userRepository.findByUsername("nava")).thenReturn(e2.getUser());
 		when(employeeRepository.save(e2)).thenReturn(e2);
 		try {
-			assertEquals(e2, employeeService.addEmployee(e2, "nava"));
+			assertEquals(e2, employeeService.addEmployee(e2));
 		} catch (InvalidContactException e) {
 			e.printStackTrace();
 		} catch (InvalidIdException e) {
 			e.printStackTrace();
+		} catch (UsernameInvalidException e) { 
+			
 		}
+		
+		
 
 		verify(employeeRepository, times(1)).save(e1);
 		verify(employeeRepository, times(1)).save(e2);

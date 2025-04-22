@@ -52,7 +52,7 @@ public class LiquidAssetRequestServiceTest{
         request = new LiquidAssetRequest(1, LocalDate.now(), "PENDING", employee, 101);
     }
     @Test
-    void testAddLiquidAssetRequest_WithNullDate_SetsCurrentDate() {
+    void addTest() {
         request.setRequestDate(null);
         when(requestRepository.save(any())).thenReturn(request);
 
@@ -64,7 +64,7 @@ public class LiquidAssetRequestServiceTest{
     }
 
     @Test
-    void testGetById_Valid() throws InvalidIdException {
+    void getByIdTest() throws InvalidIdException {
         when(requestRepository.findById(1)).thenReturn(Optional.of(request));
 
         LiquidAssetRequest result = requestService.getById(1);
@@ -101,7 +101,7 @@ public class LiquidAssetRequestServiceTest{
     }
 
     @Test
-    void testFilterByLiquidAssetId() {
+    void filterByLiquidAssetIdTest() {
         when(requestRepository.findByLiquidAssetId(101)).thenReturn(List.of(request));
 
         List<LiquidAssetRequest> result = requestService.filterByLiquidAssetId(101);
@@ -110,7 +110,7 @@ public class LiquidAssetRequestServiceTest{
     }
 
     @Test
-    void testFilterByRequestDate() {
+    void filterByRequestDateTest() {
         LocalDate today = LocalDate.now();
         when(requestRepository.findByRequestDate(today)).thenReturn(List.of(request));
 
@@ -130,7 +130,7 @@ public class LiquidAssetRequestServiceTest{
     }
 
     @Test
-    void testDeleteByLiquidAssetId() throws InvalidIdException {
+    void deleteByLiquidAssetId() throws InvalidIdException {
         when(liquidAssetService.getById(101)).thenReturn(null);
         when(requestRepository.findByLiquidAssetId(101)).thenReturn(List.of(request));
 
@@ -141,7 +141,7 @@ public class LiquidAssetRequestServiceTest{
     }
 
     @Test
-    void testDeleteByEmployeeId() throws InvalidIdException {
+    void deleteByEmployeeId() throws InvalidIdException {
         when(employeeService.getById(1)).thenReturn(employee);
         when(requestRepository.findByEmployee(employee)).thenReturn(List.of(request));
 
