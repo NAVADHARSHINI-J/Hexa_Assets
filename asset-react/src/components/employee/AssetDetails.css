@@ -6,6 +6,10 @@
     --dark-text: #2C3333;
 }
 
+.secondary-bg {
+    background-color: var(--secondary-color);
+}
+
 .sidebar {
     min-height: 100vh;
     background-color: var(--primary-color);
