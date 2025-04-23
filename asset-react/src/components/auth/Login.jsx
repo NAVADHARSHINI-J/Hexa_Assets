@@ -1,5 +1,6 @@
-import { useState } from "react" 
+import { useState } from "react"
 import users from "../../data/users";
+import { useNavigate } from "react-router";
 
 function Login() {
     const [username, setUsername] = useState(null);
@@ -7,6 +8,8 @@ function Login() {
     const [msgUsername, setMsgUsername] = useState(null);
     const [msgPassword, setMsgPassword] = useState(null);
     const [userData, setUserData] = useState(users);
+    const navigate = useNavigate();
+
     const login = () => {
         let isCorrect = false;
         if (username === null || username === "" || username === undefined) {
@@ -20,8 +23,24 @@ function Login() {
         userData.forEach(u => {
             if (u.username === username && u.password === password) {
                 isCorrect = true;
-                alert("alright u r legit, u role is  " + u.role)
+                switch (u.role) {
+                    case 'EMPLOYEE':
+                        //navigate to employee dashboard
+                        navigate("/employee")
+                        break;
+                    case 'ADMIN':
+                        //navigate to admin dashboard
+                        navigate("/admin")
+                        break;
+                    case 'MANAGER':
+                        //navigate to manager dashboard
+                        navigate("/manager")
+                        break;
+                    default:
+                        break;
+                }
             }
+
         });
         if (isCorrect == false) {
             setMsgUsername("Invalid Credentials");

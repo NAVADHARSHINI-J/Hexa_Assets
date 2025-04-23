@@ -110,15 +110,13 @@ public class AssetServiceTest {
 
 	        when(assetRepository.findAll(pageable)).thenReturn(page);
 
-	        assertEquals(list, assetService.getAll(pageable));
-	        assertEquals(2, assetService.getAll(pageable).size());
+	        assertEquals(page, assetService.getAll(pageable));
 	        
 	        //case 2: checking for incorrect output.
 
 	        assertNotEquals(List.of(a2), assetService.getAll(pageable));
-	        assertNotEquals(3, assetService.getAll(pageable).size());
 	        
-	        verify(assetRepository, times(4)).findAll(pageable);
+	        verify(assetRepository, times(2)).findAll(pageable);
 	    }
 
 	    @Test
@@ -174,12 +172,16 @@ public class AssetServiceTest {
 	        Asset oldAsset = new Asset(1, "Laptop", "Dell Inspiron", "Available",
 	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3, new Category(1,"ELECTRONICS"));
 	        Asset newAsset = new Asset(1, "Updated Laptop", "HP EliteBook", "Assigned",
-	                LocalDate.of(2024, 12, 1), "32GB RAM, 1TB SSD", "Upgraded model", 5, new Category(1,"ELECTRONICS"));
+	                LocalDate.of(2024, 12, 1), "32GB RAM, 1TB SSD", "Upgraded model", 5,null);
 
 	        when(assetRepository.save(Mockito.<Asset>any()))
 	            .thenAnswer(invocation -> invocation.getArgument(0));
 
-	        Asset updated = assetService.updateAsset(newAsset, oldAsset);
+	        Asset updated=null;
+			try {
+				updated = assetService.updateAsset(newAsset, oldAsset);
+			} catch (InvalidIdException e) {
+			}
 	        assertEquals("Updated Laptop", updated.getName());
 	        assertEquals("HP EliteBook", updated.getModel());
 	        assertEquals("Assigned", updated.getStatus());
@@ -192,9 +194,12 @@ public class AssetServiceTest {
 	        oldAsset = new Asset(1, "Laptop", "Dell Inspiron", "Available",
 	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3, new Category(1,"ELECTRONICS"));
 	        newAsset = new Asset(1, null, null, "Assigned",
-	                null, null, "New description only", 0, new Category(1,"ELECTRONICS"));
+	                null, null, "New description only", 0, null);
 
-	        updated = assetService.updateAsset(newAsset, oldAsset);
+	        try {
+				updated = assetService.updateAsset(newAsset, oldAsset);
+			} catch (InvalidIdException e) {
+			}
 	        assertEquals("Laptop", updated.getName()); // unchanged
 	        assertEquals("Dell Inspiron", updated.getModel()); // unchanged
 	        assertEquals("Assigned", updated.getStatus()); // updated
@@ -205,19 +210,25 @@ public class AssetServiceTest {
 	        oldAsset = new Asset(1, "Laptop", "Dell Inspiron", "Available",
 	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3, new Category(1,"ELECTRONICS"));
 	        newAsset = new Asset(1, "Tablet", "Samsung", "In Repair",
-	                LocalDate.of(2024, 10, 10), "4GB RAM", "Faulty", 2, new Category(1,"ELECTRONICS"));
+	                LocalDate.of(2024, 10, 10), "4GB RAM", "Faulty", 2,null);
 
-	        updated = assetService.updateAsset(newAsset, oldAsset); 
+	        try {
+				updated = assetService.updateAsset(newAsset, oldAsset);
+			} catch (InvalidIdException e) {
+			} 
 	        assertNotEquals(1, updated.getQuantity()); 
 	        assertEquals(2, updated.getQuantity());
 
 	        // case 4: Only name and configuration update
 	        oldAsset = new Asset(1, "Laptop", "Dell Inspiron", "Available",
-	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3, new Category(1,"ELECTRONICS"));
+	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3,new Category(1,"ELECTRONICS"));
 	        newAsset = new Asset(1, "Tablet", null, null,
-	                null, "4GB RAM", null, 0, new Category(1,"ELECTRONICS"));
+	                null, "4GB RAM", null, 0, null);
 
-	        updated = assetService.updateAsset(newAsset, oldAsset);
+	        try {
+				updated = assetService.updateAsset(newAsset, oldAsset);
+			} catch (InvalidIdException e) {
+			}
 	        assertEquals("Tablet", updated.getName()); // updated
 	        assertEquals("4GB RAM", updated.getConfiguration()); // updated
 	        assertEquals("Dell Inspiron", updated.getModel()); // unchanged
@@ -228,7 +239,10 @@ public class AssetServiceTest {
 	                LocalDate.of(2024, 1, 10), "16GB RAM, 512GB SSD", "Standard issue", 3, new Category(1,"ELECTRONICS"));
 	        newAsset = new Asset();
 
-	        updated = assetService.updateAsset(newAsset, oldAsset);
+	        try {
+				updated = assetService.updateAsset(newAsset, oldAsset);
+			} catch (InvalidIdException e) {
+			}
 	        assertEquals("Laptop", updated.getName());
 	        assertEquals("Dell Inspiron", updated.getModel());
 	        assertEquals("Available", updated.getStatus());

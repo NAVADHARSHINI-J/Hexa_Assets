@@ -11,6 +11,7 @@ body {
 }
 
 .sidebar {
+    display: flex;
     min-height: 100vh;
     background-color: var(--primary-color);
     color: white;
@@ -26,17 +27,6 @@ body {
     background-color: var(--accent-color);
 }
 
-.card-header {
-    background-color: var(--secondary-color);
-    color: white;
-}
-
-.hover-effect:hover {
-    transform: scale(1.02);
-    transition: transform 0.3s ease;
-}
-
-.detail-label {
-    font-weight: bold;
-    color: var(--primary-color);
-}
+.profile {
+    background-color: #124559; 
+}  

@@ -7,17 +7,21 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Asset;
+import com.hexa.assetmanagement.model.Category;
 import com.hexa.assetmanagement.repository.AssetRepository;
 
 @Service
 public class AssetService {
 	@Autowired
 	private AssetRepository assetRepository;
+	@Autowired
+	private CategoryService categoryService;
 
 	Logger logger = LoggerFactory.getLogger("AssetService");
 
@@ -38,9 +42,9 @@ public class AssetService {
 		return op.get();
 	}
 
-	public List<Asset> getAll(Pageable pageable) {
+	public Page<Asset> getAll(Pageable pageable) {
 		//returning the lists of assets.
-		return assetRepository.findAll(pageable).getContent();
+		return assetRepository.findAll(pageable);
 	}
 
 	public List<Asset> filterByName(String name) {
@@ -58,7 +62,7 @@ public class AssetService {
 		return assetRepository.findByStatus(status);
 	}
 
-	public Asset updateAsset(Asset newAsset, Asset oldAsset) {
+	public Asset updateAsset(Asset newAsset, Asset oldAsset) throws InvalidIdException {
 
 		// check whether the name is not null and update
 		if (newAsset.getName() != null)
@@ -87,7 +91,11 @@ public class AssetService {
 		// check whether the quantity is not null and update
 		if (newAsset.getQuantity() != 0)
 			oldAsset.setQuantity(newAsset.getQuantity());
-
+		//check whether the category is changed
+		if(newAsset.getCategory() != null) {
+			Category cat=categoryService.getById(newAsset.getCategory().getId());
+			oldAsset.setCategory(cat);
+		}
 		logger.info("Asset " + newAsset.getName() + "updated successfully!");
 		return assetRepository.save(oldAsset);
 	}
