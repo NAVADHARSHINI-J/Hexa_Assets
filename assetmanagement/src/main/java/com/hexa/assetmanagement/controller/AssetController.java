@@ -3,8 +3,10 @@ package com.hexa.assetmanagement.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexa.assetmanagement.dto.AssetDto;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Asset;
 import com.hexa.assetmanagement.model.Category;
@@ -23,12 +26,15 @@ import com.hexa.assetmanagement.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/asset")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class AssetController {
 
 	@Autowired
 	private AssetService assetService;
 	@Autowired
 	private CategoryService categoryService;
+	@Autowired
+	private AssetDto assetDto;
 
 	@GetMapping("/public/hello")
 	public String sayHello() {
@@ -56,9 +62,15 @@ public class AssetController {
 
 	@GetMapping("/getall")
 	// getting the list of assets
-	public List<Asset> getAll(@RequestParam int page, @RequestParam int size) {
+	public AssetDto getAll(@RequestParam int page, @RequestParam int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		return assetService.getAll(pageable);
+		Page<Asset> asset=assetService.getAll(pageable); 
+		assetDto.setCurrentPage(page);
+		assetDto.setList(asset.getContent());
+		assetDto.setSize(size);
+		assetDto.setTotalElements((int)asset.getTotalElements());
+		assetDto.setTotalPages(asset.getTotalPages());
+		return assetDto;
 	}
 
 	@GetMapping("/getbyname")
@@ -81,7 +93,8 @@ public class AssetController {
 
 	@PutMapping("/update-asset/{assetId}")
 	// update an existing asset with its id:
-	public Asset updateAsset(@RequestBody Asset newAsset, @PathVariable int assetId) throws InvalidIdException {
+	public Asset updateAsset(@RequestBody Asset newAsset, @PathVariable int assetId)
+			throws InvalidIdException {
 
 		Asset oldAsset = assetService.getById(assetId);
 		return assetService.updateAsset(newAsset, oldAsset);

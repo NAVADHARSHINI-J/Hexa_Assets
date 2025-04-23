@@ -21,7 +21,7 @@ public class Asset {
 	@Column(nullable = false)
 	private String model;
 	@Column(nullable = false)
-	private String status;
+	private String status = "Available";
 	@Column(nullable = false)
 	private LocalDate date;
 	@Column(nullable = false,length = 1000)
