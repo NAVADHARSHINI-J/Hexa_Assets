@@ -30,6 +30,7 @@ public class SecurityConfig {
 		 //cross site reference forgery to run post we have to disable this
 				.csrf(csrf ->csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize
+
 //				.requestMatchers("/api/user/token/generate").permitAll()
 //				.requestMatchers("/api/user/user/details").authenticated()
 //				.requestMatchers("/api/asset/public/hello").permitAll()
@@ -123,6 +124,7 @@ public class SecurityConfig {
 //				.requestMatchers("/api/servicerequest/delete-empId/{empId}").hasAuthority("ADMIN")
 //				.requestMatchers("/api/servicerequest/update/{requestId}").hasAuthority("ADMIN")
 //				.requestMatchers("/api/servicerequest/image/upload/{requestId}").hasAuthority("EMPLOYEE")
+
  
 				.anyRequest().permitAll()
 			)

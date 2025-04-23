@@ -1,5 +1,4 @@
-import './AssetDetils.css'
-import MacbookPro from './images/MacbookPro.jpg'
+import './AssetDetails.css' 
 function AssetDetails(){
     return (
         <div class="container-fluid">
@@ -11,12 +10,12 @@ function AssetDetails(){
                 </div>
                 <ul class="nav flex-column">
                     <li class="nav-item">
-                        <a class="nav-link" href="home-assets.html">
+                        <a class="nav-link active" href="home-assets.html">
                             <i class="bi bi-house me-2"></i>Home Assets
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="liquid-assets.html">
+                        <a class="nav-link" href="liquid-assets.html">
                             <i class="bi bi-cash-coin me-2"></i>Liquid Assets
                         </a>
                     </li>
@@ -41,15 +40,16 @@ function AssetDetails(){
            {/* <!-- Main Content --> */}
             <div class="col-md-10 p-4">
                 <div class="card">
-                    <div class="card-header bg-secondary text-white">
+                    <div class="card-header secondary-bg text-white">
                         Asset Details
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                <img src={MacbookPro} class="img-fluid rounded mb-3" alt="MacBook Pro"/>
-                                <div class="d-grid">
+                            <div class="col-md-6"> 
                                     <a href="new-asset-request.html?asset=macbook-pro" class="btn btn-success">Request Asset</a>
+                                </div> 
+                                <div class="row mb-3">
+
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -91,6 +91,8 @@ function AssetDetails(){
                 </div>
             </div>
         </div>
-    </div>
+    
     )
 }
+
+export default AssetDetails;

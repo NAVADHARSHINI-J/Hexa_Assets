@@ -1,20 +1,4 @@
-import "./HomeAsset.css";
-import MSOffice from "./images/MSOffice.webp";
-import samsungSignage from "./images/SamsungSignage.jpg";
-import UbiquitiDream from "./images/UbiquitiDream.webp";
-import MacbookPro from "./images/MacbookPro.jpg";
-import DellXps from "./images/DellXps.avif";
-import LenovoThinkpad from "./images/LenovoThinkpad.jpg";
-import Iphone14pro from "./images/Iphone14pro.webp";
-import SamsungS23 from "./images/SamsungS23.webp";
-import GooglePixel from "./images/GooglePixel.webp";
-import DellPowerEdge from "./images/DellPowerEdge.webp"; 
-import CiscoCatalyst from "./images/CiscoCatalyst.webp"; 
-import HardDisk from "./images/HardDisk.webp";
-import LGUltraFine from "./images/LGUltraFine.webp"; 
-import CalDigitTS3 from "./images/CalDigitTS3.webp";
-import FormlabsForm3 from "./images/FormlabsForm3.webp";
-import MetaQuestPro from "./images/MetaQuestPro.jpg";
+import "./HomeAsset.css"; 
 
 function HomeAsset() {
     return (
@@ -58,15 +42,14 @@ function HomeAsset() {
 
                 <div className="col-md-10 p-4">
                     <div className="card">
-                        <div className="card-header bg-secondary text-white">
+                        <div className="card-header  text-white">
                             Company Assets
                         </div>
                         <div className="card-body">
                             <div className="asset-grid">
                                 {/*<!-- Existing Assets -->  */}
 
-                                <div className="card asset-card">
-                                    <img src={MSOffice} className="card-img-top" alt="Toyota Cabriolet" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">MS Office</h5>
                                         <p className="card-text"> MS office software license</p>
@@ -82,8 +65,7 @@ function HomeAsset() {
 
                                 {/*<!-- Laptops --> */}
 
-                                <div className="card asset-card">
-                                    <img src={MacbookPro} className="card-img-top" alt="MacBook Pro" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">MacBook Pro</h5>
                                         <p className="card-text">16" M2 Pro Laptop</p>
@@ -97,8 +79,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={DellXps} className="card-img-top" alt="Dell XPS" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Dell XPS</h5>
                                         <p className="card-text">Developer Edition Laptop</p>
@@ -112,8 +93,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={LenovoThinkpad} className="card-img-top" alt="Lenovo ThinkPad" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Lenovo ThinkPad</h5>
                                         <p className="card-text">X1 Carbon Gen 10</p>
@@ -128,8 +108,7 @@ function HomeAsset() {
                                 </div>
 
                                 {/*<!-- Mobile Devices -->*/}
-                                <div className="card asset-card">
-                                    <img src={Iphone14pro} className="card-img-top" alt="iPhone 14 Pro" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">iPhone 14 Pro</h5>
                                         <p className="card-text">256GB Space Black</p>
@@ -143,8 +122,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={SamsungS23} className="card-img-top" alt="Samsung Galaxy S23" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Samsung Galaxy S23</h5>
                                         <p className="card-text">Ultra 512GB</p>
@@ -158,8 +136,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={GooglePixel} className="card-img-top" alt="Google Pixel 7 Pro" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Google Pixel 7 Pro</h5>
                                         <p className="card-text">128GB Obsidian</p>
@@ -174,8 +151,7 @@ function HomeAsset() {
                                 </div>
                                 {/*<!-- IT Infrastructure -->*/}
 
-                                <div className="card asset-card">
-                                    <img src={DellPowerEdge} className="card-img-top" alt="Dell PowerEdge Server" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Dell PowerEdge</h5>
                                         <p className="card-text">R740 Rack Server</p>
@@ -189,8 +165,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={CiscoCatalyst} className="card-img-top" alt="Cisco Network Switch" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Cisco Catalyst</h5>
                                         <p className="card-text">9300 Network Switch</p>
@@ -204,8 +179,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={HardDisk} className="card-img-top" alt="Palo Alto Firewall" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Seagate HardDisk</h5>
                                         <p className="card-text">Seagate 4TB External Hard Drive</p>
@@ -220,8 +194,7 @@ function HomeAsset() {
                                 </div>
                                 {/*<!-- Additional Specialized Equipment -->*/}
 
-                                <div className="card asset-card">
-                                    <img src={LGUltraFine} className="card-img-top" alt="LG UltraFine Monitor" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">LG UltraFine</h5>
                                         <p className="card-text">5K 27" Display</p>
@@ -235,8 +208,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={CalDigitTS3} className="card-img-top" alt="CalDigit Dock" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">CalDigit TS3</h5>
                                         <p className="card-text">Thunderbolt 3 Dock</p>
@@ -250,8 +222,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={MetaQuestPro} className="card-img-top" alt="Meta Quest Pro" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Meta Quest Pro</h5>
                                         <p className="card-text">Professional VR Headset</p>
@@ -265,8 +236,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={FormlabsForm3} className="card-img-top" alt="Formlabs 3D Printer" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Formlabs Form 3</h5>
                                         <p className="card-text">Professional 3D Printer</p>
@@ -280,8 +250,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={UbiquitiDream} className="card-img-top" alt="Ubiquiti Router" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Ubiquiti Dream</h5>
                                         <p className="card-text">Dream Machine Pro Router</p>
@@ -295,8 +264,7 @@ function HomeAsset() {
                                     </div>
                                 </div>
 
-                                <div className="card asset-card">
-                                    <img src={samsungSignage} alt="Samsung Digital Signage" className="card-img-top" />
+                                <div className="card asset-card"> 
                                     <div className="card-body">
                                         <h5 className="card-title">Samsung Signage</h5>
                                         <p className="card-text">55" 4K Digital Display</p>
