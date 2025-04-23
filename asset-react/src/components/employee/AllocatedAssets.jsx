@@ -1,43 +1,12 @@
-import "./AllocatedAssets.css"
+import "./css/AllocatedAssets.css"
+import Sidebar from "./Sidebar.jsx"
 function AllocatedAssets() {
     return (
         <div>
             <div class="container-fluid">
                 <div class="row">
                     {/* <!-- Sidebar --> */}
-                    <div class="col-md-2 sidebar text-white">
-                        <div class="text-center mb-4">
-                            <h3>HexaAssets</h3>
-                        </div>
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link" href="home-assets.html">
-                                    <i class="bi bi-house me-2"></i>Home Assets
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="liquid-assets.html">
-                                    <i class="bi bi-cash-coin me-2"></i>Liquid Assets
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link active" href="allocated-assets.html">
-                                    <i class="bi bi-clipboard-check me-2"></i>Allocated Assets
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="new-asset-request.html">
-                                    <i class="bi bi-plus-circle me-2"></i>New Asset Request
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="tracking-request.html">
-                                    <i class="bi bi-truck me-2"></i>Tracking Request
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-
+                    <Sidebar/>
                     {/* <!-- Main Content --> */}
                     <div class="col-md-10 p-4">
                         <div class="card">
