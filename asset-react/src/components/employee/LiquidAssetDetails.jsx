@@ -1,43 +1,12 @@
 import "./LiquidAssetDetails.css"
+import Sidebar from './Sidebar'
 function LiquidAssetDetails(){
     return(
         <div>
              <div className="container-fluid">
         <div className="row">
             {/* <!-- Sidebar --> */}
-            <div className="col-md-2 sidebar text-white">
-                <div className="text-center mb-4">
-                    <h3>HexaAssets</h3>
-                </div>
-                <ul className="nav flex-column">
-                    <li className="nav-item">
-                        <a className="nav-link" href="home-assets.html">
-                            <i className="bi bi-house me-2"></i>Home Assets
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link active" >
-                            <i className="bi bi-cash-coin me-2"></i>Liquid Assets
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="allocated-assets.html">
-                            <i className="bi bi-clipboard-check me-2"></i>Allocated Assets
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="new-asset-request.html">
-                            <i className="bi bi-plus-circle me-2"></i>New Asset Request
-                        </a>
-                    </li>
-                    <li className="nav-item">
-                        <a className="nav-link" href="tracking-request.html">
-                            <i className="bi bi-truck me-2"></i>Tracking Request
-                        </a>
-                    </li>
-                </ul>
-            </div>
-
+            <Sidebar/>
             {/* <!-- Main Content --> */}
             <div className="col-md-10 p-4">
                 <div className="card">
