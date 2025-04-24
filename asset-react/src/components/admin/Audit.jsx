@@ -1,4 +1,5 @@
-import './Audit.css'
+import './css/Audit.css'
+import Sidebar from './Sidebar';
 function Audit() {
 
     return (
@@ -6,38 +7,7 @@ function Audit() {
             <div className="container-fluid">
                 <div className="row">
                     {/* <!-- Sidebar Component --> */}
-                    <div className="col-md-2 sidebar py-4">
-                        <div className="text-center mb-4">
-                            <h3 className="text-white">HexaAssets Admin</h3>
-                        </div>
-                        <ul className="nav flex-column">
-                            <li className="nav-item">
-                                <a className="nav-link" href="dashboard.html">
-                                    <i className="bi bi-speedometer2 me-2"></i>Dashboard
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="employees.html">
-                                    <i className="bi bi-people me-2"></i>Employees
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="assets.html">
-                                    <i className="bi bi-laptop me-2"></i>Assets
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="requests.html">
-                                    <i className="bi bi-file-earmark-text me-2"></i>Requests
-                                </a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link active" href="audit.html">
-                                    <i className="bi bi-shield-check me-2"></i>Audit
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
+                    <Sidebar />
                     {/* <!-- Main Content Area --> */}
                     <div className="col-md-10 p-4">
                         <div className="card">

@@ -6,15 +6,19 @@
     --dark-text: #2C3333;
 }
 
+body {
+    background-color: var(--light-background);
+}
+
 .sidebar {
+    display: flex;
     min-height: 100vh;
     background-color: var(--primary-color);
-    padding-top: 20px;
+    color: white;
 }
 
 .sidebar .nav-link {
     color: white;
-    padding: 10px 15px;
     transition: all 0.3s ease;
 }
 
@@ -22,7 +26,7 @@
 .sidebar .nav-link.active {
     background-color: var(--accent-color);
 }
-body {
-    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
-    background-color: var(--light-background);
-}
+
+.profile {
+    background-color: #124559; 
+}  

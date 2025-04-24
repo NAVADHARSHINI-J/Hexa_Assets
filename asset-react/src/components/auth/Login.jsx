@@ -1,4 +1,4 @@
-import { useState } from "react" 
+import { useState } from "react"
 import users from "../../data/users";
 import { useNavigate } from "react-router";
 
@@ -8,7 +8,11 @@ function Login() {
     const [msgUsername, setMsgUsername] = useState(null);
     const [msgPassword, setMsgPassword] = useState(null);
     const [userData, setUserData] = useState(users);
+<<<<<<< HEAD
     const navigate=useNavigate();
+=======
+    const navigate = useNavigate();
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
 
     const login = () => {
         let isCorrect = false;
@@ -23,17 +27,29 @@ function Login() {
         userData.forEach(u => {
             if (u.username === username && u.password === password) {
                 isCorrect = true;
+<<<<<<< HEAD
                 alert("alright u r legit, u role is  " + u.role)
                 switch (u.role) {
                     case 'EMPLOYEE':
                         //navigate to employee dashboard
                     case 'CUSTOMER':
                         //navigate to customer dashboard
+=======
+                switch (u.role) {
+                    case 'EMPLOYEE':
+                        //navigate to employee dashboard
+                        navigate("/employee")
+                        break;
+                    case 'ADMIN':
+                        //navigate to admin dashboard
+                        navigate("/admin")
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
                         break;
                     case 'MANAGER':
                         //navigate to manager dashboard
                         navigate("/manager")
                         break;
+<<<<<<< HEAD
                     case 'ADMIN':
                         //navigate to executive dashboard
                         break;
@@ -43,7 +59,13 @@ function Login() {
             } 
             if(isCorrect === false){
                 setMsgUsername("Invalid Credentials")
+=======
+                    default:
+                        break;
+                }
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
             }
+
         });
        
     }

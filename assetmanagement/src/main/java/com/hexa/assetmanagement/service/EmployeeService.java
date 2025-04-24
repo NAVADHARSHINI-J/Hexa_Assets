@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.User;
-import com.hexa.assetmanagement.repository.EmployeeRepository;
-import com.hexa.assetmanagement.repository.UserRepository;
+import com.hexa.assetmanagement.repository.EmployeeRepository; 
 
 @Service
 public class EmployeeService {
@@ -22,17 +22,20 @@ public class EmployeeService {
 	private EmployeeRepository employeeRepository;
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
  
 
 	Logger logger = LoggerFactory.getLogger("EmployeeService");
 
-	public Employee addEmployee(Employee employee, String username) throws InvalidContactException, InvalidIdException {
+	public Employee addEmployee(Employee employee) throws InvalidContactException, InvalidIdException, UsernameInvalidException {
 		// check if the contact is valid or throw an exception.
 		if (employee.getContact().length() != 10)
 			throw new InvalidContactException("Invalid Contact number....");
-		// get the user by username and add it in the employee model
-		User user = userRepository.findByUsername(username);
+		// get the user from employee
+		User user = employee.getUser(); 
+		//save the user in user repository to save the user for generating id of the user.
+		user= userService.signup(user);
+		//setting the user with user-id in employee.
 		employee.setUser(user);
 		logger.info("Employee added successfully ");
 		return employeeRepository.save(employee);

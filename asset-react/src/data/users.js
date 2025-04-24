@@ -3,36 +3,37 @@ const users = [
         "id" : 1,
         "username" : "user1@gmail.com", 
         "password" : "user1",
-        "role" : "CUSTOMER"
+        "role" : "EMPLOYEE"
     }, 
     {
         "id" : 2,
         "username" : "user2@gmail.com", 
         "password" : "user2",
-        "role" : "CUSTOMER"
+        "role" : "EMPLOYEE"
     }, 
     {
         "id" : 3,
-        "username" : "vendor1@gmail.com", 
-        "password" : "vendor1",
-        "role" : "VENDOR"
+        "username" : "admin1@gmail.com", 
+        "password" : "admin1",
+        "role" : "ADMIN"
     }, 
     {
         "id" : 4,
-        "username" : "vendor2@gmail.com", 
-        "password" : "vendor2",
-        "role" : "VENDOR"
+        "username" : "admin2@gmail.com", 
+        "password" : "admin2",
+        "role" : "ADMIN"
     }, 
     {
         "id" : 5,
         "username" : "executive1@gmail.com", 
         "password" : "executive1",
-        "role" : "EXECUTIVE"
+        "role" : "MANAGER"
     },
     {
         "id" : 6,
         "username" : "executive2@gmail.com", 
         "password" : "executive2",
+<<<<<<< HEAD
         "role" : "EXECUTIVE"
     },
     {
@@ -41,6 +42,10 @@ const users = [
         "password" : "manager1",
         "role" : "MANAGER"
     },
+=======
+        "role" : "MANAGER"
+    }
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
 ]
 
 export default users; 

@@ -6,6 +6,10 @@
 --dark-text: #2C3333; /* Dark Text */
 }
 
+.secondary-bg {
+    background-color: var(--secondary-color);
+}
+
 body {
 font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
 background-color: var(--light-background);
