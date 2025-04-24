@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hexa.assetmanagement.dto.AssetDto;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Asset;
+import com.hexa.assetmanagement.model.AssetAllocation;
 import com.hexa.assetmanagement.model.Category;
 import com.hexa.assetmanagement.service.AssetService;
 import com.hexa.assetmanagement.service.CategoryService;
@@ -35,6 +36,12 @@ public class AssetController {
 	private CategoryService categoryService;
 	@Autowired
 	private AssetDto assetDto;
+	@Autowired
+	private ServiceRequestController serviceRequestController;
+	@Autowired
+	private AssetRequestController assetRequestController;
+	@Autowired
+	private AssetAllocationController assetAllocationController;
 
 	@GetMapping("/public/hello")
 	public String sayHello() {
@@ -105,6 +112,13 @@ public class AssetController {
 	public String deleteAssetById(@PathVariable int assetId) throws InvalidIdException {
 		Asset asset = assetService.getById(assetId);
 
+		//deleting in service request
+		serviceRequestController.deleteByAssetId(asset.getId());
+		//deleting in asset request
+		assetRequestController.deleteAssetRequestByAsset(asset.getId());
+		//deleting in asset allocation
+		assetAllocationController.deleteByAssetId(asset.getId());
+		
 		return assetService.deleteAssetById(asset);
 	}
 }
