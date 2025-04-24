@@ -16,7 +16,7 @@ function AssetList() {
     const [employee, setEmployee] = useState({});
     const [employeeId, setEmployeeId] = useState();
     const [allocationDate, setAllocationDate] = useState();
-    // const [assetObj,setAssetObj] = useState()
+
     //to get all the records
     const getAsset = async () => {
         //call the api
@@ -24,7 +24,6 @@ function AssetList() {
             .get(`http://localhost:8081/api/asset/getall?page=${page}&size=${size}`);
         setAssets(response.data.list);
         setTotalpage(response.data.totalPages);
-        setPageArray([]);
         let tp = response.data.totalPages;
         setPageArray([]);
         let temp = [];
@@ -144,7 +143,7 @@ function AssetList() {
                             <div className="card-body">
                                 <div className="row">
                                     {
-                                        assets.sort((a, b) => a - b).map((a, index) => (
+                                        assets.sort((a, b) => a.id - b.id).map((a, index) => (
                                             <div className="col-md-4 mb-3" key={index}>
                                                 <div className="card hover-effect">
                                                     <div className="card-body">
@@ -456,6 +455,7 @@ function AssetList() {
                                     <label className="form-label">Asset Type</label><span style={{ color: "red" }}>*</span>
                                     <select className="form-select"
                                         onChange={(e) => { setCategoryId(e.target.value) }}>
+                                        <option value="">-- Select Category --</option>
                                         {
                                             category.map((c, index) => (
                                                 <option value={c.id} key={index} >{c.name}</option>

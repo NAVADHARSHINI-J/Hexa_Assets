@@ -3,6 +3,7 @@ package com.hexa.assetmanagement.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hexa.assetmanagement.dto.EmployeeDto;
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.exception.UsernameInvalidException;
@@ -27,7 +29,10 @@ import com.hexa.assetmanagement.service.ServiceRequestService;
 @RequestMapping("/api/employee")
 @CrossOrigin(origins = "http://localhost:5173/")
 public class EmployeeController {
+
 	@Autowired
+	private EmployeeDto employeeDto;
+  @Autowired
 	private EmployeeService employeeService;
 
 	@Autowired
@@ -45,24 +50,35 @@ public class EmployeeController {
 	@Autowired
 	private LiquidAssetAllocationController liquidAssetAllocationController;
 
-	@PostMapping("/add-employee")
-	// adding an employee - admin and employee has authority.
-	public Employee addEmployee(@RequestBody Employee employee)
-			throws InvalidIdException, InvalidContactException, UsernameInvalidException {
-		return employeeService.addEmployee(employee);
-	}
 
+
+
+	@PostMapping("/add-employee/{departId}") 
+	//adding an employee - admin and employee has authority.
+	public Employee addEmployee(@RequestBody Employee employee,@PathVariable int departId) throws InvalidIdException, InvalidContactException, UsernameInvalidException {
+		return employeeService.addEmployee(employee,departId);
+	}
 	@GetMapping("/getbyid/{empId}")
 	// getting an employee by his/her id.
 	public Employee getById(@PathVariable int empId) throws InvalidIdException {
 		return employeeService.getById(empId);
 	}
 
-	@GetMapping("/getall")
-	// getting the list of employees -> admin and manager has authority for this.
-	public List<Employee> getAll(@RequestParam int page, @RequestParam int size) {
+
+
+	//getting the list of employees -> admin and manager has authority for this.
+  @GetMapping("/getall")
+	public EmployeeDto getAll(@RequestParam int page, @RequestParam int size) {
+
 		Pageable pageable = PageRequest.of(page, size);
-		return employeeService.getAll(pageable);
+		 Page<Employee> employee = employeeService.getAll(pageable);
+		 employeeDto.setCurrentPage(page);
+		 employeeDto.setList(employee.getContent());
+		 employeeDto.setSize(size);
+		 employeeDto.setTotalElements((int)employee.getTotalElements());
+		 employeeDto.setTotalPages(employee.getTotalPages());
+			return employeeDto;
+		 
 	}
 
 	@GetMapping("/getbyname")

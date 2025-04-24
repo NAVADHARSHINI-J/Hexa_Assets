@@ -32,6 +32,9 @@ public class Employee {
 
 	@OneToOne
 	private User user;
+	public Employee() {
+		super();
+	}
 
 	public Employee(int id, String name, String email, String contact, String address, Department department,
 			User user) {
@@ -55,9 +58,7 @@ public class Employee {
 		this.department = department;
 	}
 
-	public Employee() {
-		super();
-	}
+	
 	
 	public Employee(int i, String string, String string2, String string3, String string4, String string5) {
 	}

@@ -89,7 +89,7 @@ public class EmployeeServiceTest {
 		when(employeeRepository.save(e1)).thenReturn(e1);
 
 		try {
-			assertEquals(e1, employeeService.addEmployee(e1));
+			assertEquals(e1, employeeService.addEmployee(e1,1));
 		} catch (InvalidIdException e) {
 
 		} catch (InvalidContactException e) {
@@ -102,7 +102,7 @@ public class EmployeeServiceTest {
 
 		try {
 			try {
-				assertEquals(e3, employeeService.addEmployee(e3));
+				assertEquals(e3, employeeService.addEmployee(e3,1));
 			} catch (UsernameInvalidException e) {  
 			}
 		} catch (InvalidIdException e) {
@@ -118,7 +118,7 @@ public class EmployeeServiceTest {
 		when(employeeRepository.save(e4)).thenReturn(e4);
 
 		try {
-			assertNotEquals(e2, employeeService.addEmployee(e4));
+			assertNotEquals(e2, employeeService.addEmployee(e4,1));
 		} catch (InvalidContactException e) {
 			e.printStackTrace();
 		} catch (InvalidIdException e) {
@@ -132,7 +132,7 @@ public class EmployeeServiceTest {
 		when(userRepository.findByUsername("nava")).thenReturn(e2.getUser());
 		when(employeeRepository.save(e2)).thenReturn(e2);
 		try {
-			assertEquals(e2, employeeService.addEmployee(e2));
+			assertEquals(e2, employeeService.addEmployee(e2,1));
 		} catch (InvalidContactException e) {
 			e.printStackTrace();
 		} catch (InvalidIdException e) {
@@ -182,16 +182,13 @@ public class EmployeeServiceTest {
 
 		when(employeeRepository.findAll(pageable)).thenReturn(page);
 
-		assertEquals(list, employeeService.getAll(pageable));
-
-		assertEquals(3, employeeService.getAll(pageable).size());
+		assertEquals(page, employeeService.getAll(pageable));
 
 		// case 2: checking for incorrect output.
 		list = Arrays.asList(e1, e2);
 		page = new PageImpl<>(list);
-		when(employeeRepository.findAll(pageable)).thenReturn(page);
-		assertNotEquals(3, employeeService.getAll(pageable).size());
-		verify(employeeRepository, times(3)).findAll(pageable);
+		assertNotEquals(page, employeeService.getAll(pageable));
+		verify(employeeRepository, times(2)).findAll(pageable);
 	}
 
 	@Test
