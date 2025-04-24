@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Admin;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.AdminRepository;
@@ -20,21 +21,22 @@ public class AdminService {
 	@Autowired
 	private AdminRepository adminRepository;
 	@Autowired
-	private UserRepository userRepository;
+	private UserService userService;
 
 	Logger logger=LoggerFactory.getLogger("AdminService");
 	
-	public Admin add(Admin admin, String username) 
-			throws InvalidContactException {
-		//get the user from username
-		User user=userRepository.findByUsername(username);
-		//check whether the contact number is correct are not
+	public Admin add(Admin admin) 
+			throws InvalidContactException, UsernameInvalidException {
+		//get the user from admin
+		User user=admin.getUser();
+		//save this user
+		userService.signup(user);
+		//check the contact
 		if(admin.getContact().length() != 10)
 			throw new InvalidContactException("Invalid contact number...");
 		//set the user in the admin
 		admin.setUser(user);
-		logger.info("Admin is added with username "+ username);
-		
+		logger.info("Admin is added with username "+ user.getUsername());
 		return adminRepository.save(admin);
 	}
 

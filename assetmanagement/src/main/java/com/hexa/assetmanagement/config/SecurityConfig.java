@@ -31,11 +31,11 @@ public class SecurityConfig {
 				.csrf(csrf ->csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize
 
-//				.requestMatchers("/api/user/token/generate").permitAll()
-//				.requestMatchers("/api/user/user/details").authenticated()
-//				.requestMatchers("/api/asset/public/hello").permitAll()
-//				.requestMatchers("/api/asset/private/hello").authenticated()
-//				.requestMatchers("/api/user/signup").permitAll()
+				.requestMatchers("/api/user/token/generate").permitAll()
+				.requestMatchers("/api/user/user/details").authenticated()
+				.requestMatchers("/api/asset/public/hello").permitAll()
+				.requestMatchers("/api/asset/private/hello").authenticated()
+				.requestMatchers("/api/user/signup").permitAll()
 //				.requestMatchers("/api/user/reset").authenticated()
 //				.requestMatchers("/api/user/login").authenticated()
 //				.requestMatchers("/api/assetallocation/add/{assetId}/{empId}").hasAuthority("ADMIN")

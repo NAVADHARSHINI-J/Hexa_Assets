@@ -1,6 +1,7 @@
 import { useState } from "react"
 import users from "../../data/users";
 import { useNavigate } from "react-router";
+import axios from "axios";
 
 function Login() {
     const [username, setUsername] = useState(null);
@@ -20,10 +21,29 @@ function Login() {
             setMsgPassword("password should not be blank")
             return
         }
-        userData.forEach(u => {
-            if (u.username === username && u.password === password) {
-                isCorrect = true;
-                switch (u.role) {
+        //get the token
+        axios.post("http://localhost:8081/api/user/token/generate",
+            {
+                "username": username,
+                "password": password
+            }
+        ).then(response => {
+            // console.log(response)
+            //store them in a local storage
+            let token = response.data.token
+            localStorage.setItem("token", token);
+            localStorage.setItem("username", username);
+            //call the api to get userdetails
+            axios.get("http://localhost:8081/api/user/user/details",
+                {
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            ).then(resp => {
+                // console.log(resp.data.role)
+                // console.log(resp)
+                switch (resp.data.role) {
                     case 'EMPLOYEE':
                         //navigate to employee dashboard
                         navigate("/employee")
@@ -39,12 +59,35 @@ function Login() {
                     default:
                         break;
                 }
-            }
 
-        });
-        if (isCorrect == false) {
-            setMsgUsername("Invalid Credentials");
-        }
+            })
+                .catch(err => console.log(err))
+        }).catch(err => console.log(err))
+        // userData.forEach(u => {
+        //     if (u.username === username && u.password === password) {
+        //         isCorrect = true;
+        //         switch (u.role) {
+        //             case 'EMPLOYEE':
+        //                 //navigate to employee dashboard
+        //                 navigate("/employee")
+        //                 break;
+        //             case 'ADMIN':
+        //                 //navigate to admin dashboard
+        //                 navigate("/admin")
+        //                 break;
+        //             case 'MANAGER':
+        //                 //navigate to manager dashboard
+        //                 navigate("/manager")
+        //                 break;
+        //             default:
+        //                 break;
+        //         }
+        //     }
+
+        // });
+        // if (isCorrect == false) {
+        //     setMsgUsername("Invalid Credentials");
+        // }
     }
     return (
         <div>
@@ -59,7 +102,7 @@ function Login() {
                         <div className="col-sm-4">
                             <div class="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
-                                    <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3>
+                                    <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3><br />
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
                                 </div>
                                 <div className="card-body">
