@@ -35,7 +35,14 @@ public class ServiceRequestService {
 	
 	Logger logger = LoggerFactory.getLogger("ServiceRequestService");
 
-    public ServiceRequest addServiceRequest(ServiceRequest serviceRequest) {
+    public ServiceRequest addServiceRequest(ServiceRequest serviceRequest, String username, int assetId) throws InvalidIdException {
+    	 //get the employee by using the useername
+        Employee employee = employeeService.findByUsername(username);
+      //get the asset by id to validate the id
+        Asset asset = assetService.getById(assetId);
+        //add the employee and asset in the serviceRequest
+        serviceRequest.setEmployee(employee);
+        serviceRequest.setAsset(asset);
     	//check whether the request date is present are not if not
 //    	set the request date with the present date
     	if(serviceRequest.getRequestDate()==null)

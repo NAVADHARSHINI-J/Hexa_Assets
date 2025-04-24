@@ -34,25 +34,19 @@ public class ServiceRequestController {
 	@Autowired
     private ServiceRequestService serviceRequestService;
     
-    @Autowired
-    private EmployeeService employeeService;
-    
-    @Autowired
-    private AssetService assetService;
+	@Autowired
+	private AssetService assetService;
+	@Autowired
+	private EmployeeService employeeService;
 
     @PostMapping("/add/{assetId}")
     public ServiceRequest addServiceRequest(
             @RequestBody ServiceRequest serviceRequest,
             Principal principal,
             @PathVariable int assetId) throws InvalidIdException {
-        //get the employee by using the useername
-        Employee employee = employeeService.findByUsername(principal.getName());
-      //get the asset by id to validate the id
-        Asset asset = assetService.getById(assetId);
-        //add the employee and asset in the serviceRequest
-        serviceRequest.setEmployee(employee);
-        serviceRequest.setAsset(asset);
-        return serviceRequestService.addServiceRequest(serviceRequest);
+    	//getting the username by principal
+       String username=principal.getName();
+        return serviceRequestService.addServiceRequest(serviceRequest, username, assetId);
     }
 
     @GetMapping("/getbyid/{RequestId}")
