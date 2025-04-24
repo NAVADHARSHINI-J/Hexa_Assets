@@ -12,27 +12,27 @@ function LiquidAssetPage() {
                         </div>
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link" href="HexaAssets Dashboard Page.html">
+                                <a class="nav-link" href="manager">
                                     <i class="bi bi-speedometer2 me-2"></i>Dashboard
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active" href="HexaAssets Liquid Assets Page.html">
+                                <a class="nav-link active" href="/dashassetpage">
                                     <i class="bi bi-cash-stack me-2"></i>Liquid Assets
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="HexaAssets Liquid Asset Request Page.html">
+                                <a class="nav-link" href="/dashassetreq">
                                     <i class="bi bi-plus-circle me-2"></i>Liquid Asset Request
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="HexaAssets Liquid Asset Allocation Page.html">
+                                <a class="nav-link" href="/dashassetall">
                                     <i class="bi bi-clipboard-check me-2"></i>Liquid Asset Allocation
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="HexaAssets Unallocated Assets Page.html">
+                                <a class="nav-link" href="/dashassetunall">
                                     <i class="bi bi-archive me-2"></i>Unallocated Liquid Assets
                                 </a>
                             </li>
