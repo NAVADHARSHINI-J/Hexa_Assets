@@ -25,7 +25,7 @@ public class AdminController {
 	@PostMapping("/add")
 	public Admin add(@RequestBody Admin admin,
 			Principal principal) throws InvalidContactException {
-		//get the username by using the principal
+		//get the user name by using the principal
 		 String username=principal.getName();
 		 return adminService.add(admin,username);
 	}
