@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Manager;
 import com.hexa.assetmanagement.service.ManagerService;
 
@@ -25,7 +26,7 @@ public class ManagerController {
 	private ManagerService managerService;
 	
     @PostMapping("/add")
-    public Manager add(@RequestBody Manager manager, Principal principal) throws InvalidContactException {
+    public Manager add(@RequestBody Manager manager, Principal principal) throws InvalidContactException, UsernameInvalidException {
         // Get username of logged-in user
         String username = principal.getName();
         return managerService.add(manager, username);
