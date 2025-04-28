@@ -33,19 +33,14 @@ const users = [
         "id" : 6,
         "username" : "executive2@gmail.com", 
         "password" : "executive2",
-<<<<<<< HEAD
         "role" : "EXECUTIVE"
     },
     {
         "id" : 7,
         "username" : "manager@gmail.com", 
         "password" : "manager1",
-        "role" : "MANAGER"
-    },
-=======
-        "role" : "MANAGER"
+        "role" :     "MANAGER"
     }
->>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
 ]
 
 export default users; 
