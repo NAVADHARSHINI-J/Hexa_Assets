@@ -62,11 +62,11 @@ public class ServiceRequestService {
         return optional.get();
     }
 
-    public List<ServiceRequest> getAll(Pageable pageable) {
+    public List<ServiceRequest> getAll() {
     	//get all the service request by using the findall method which takes the 
     	//pageable object to list it in a page manner 
     	logger.info("All Service request are retrieved");
-        return serviceRequestRepository.findAll(pageable).getContent();
+        return serviceRequestRepository.findAll();
     }
 
 	public List<ServiceRequest> filterByStatus(String status) {

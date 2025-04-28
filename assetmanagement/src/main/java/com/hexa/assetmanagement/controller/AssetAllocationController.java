@@ -86,6 +86,13 @@ public class AssetAllocationController {
 		//filter the allocation by employee id
 		return assetAllocationService.getAssetAllocationByEmployeeId(empId);
 	}
+	
+	//get the allocation by using the empid and asset id in service request
+	@GetMapping("/{assetId}/{empId}")
+	public AssetAllocation getAllocationByAssetEmpId(@PathVariable int assetId,
+			@PathVariable int empId) {
+		return assetAllocationService.getAllocationByAssetEmpId(assetId,empId);
+	}
 }
 
 

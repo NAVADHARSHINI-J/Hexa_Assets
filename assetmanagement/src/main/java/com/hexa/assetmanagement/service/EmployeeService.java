@@ -70,9 +70,9 @@ public class EmployeeService {
 		return employeeRepository.findByName(name);
 	}
 
-	public List<Employee> filterByDepartment(String department) {
+	public Page<Employee> filterByDepartment(String department,Pageable pageable) {
 		//returning the list of employee with his/her name.
-		return employeeRepository.findByDepartmentName(department);
+		return employeeRepository.findByDepartmentName(department, pageable);
 	}
 
 	public Employee updateEmployee(Employee oldEmployee, Employee newEmployee) throws InvalidContactException, InvalidIdException {
@@ -113,9 +113,12 @@ public class EmployeeService {
 
 	public String deleteByEmployee(Employee employee) throws InvalidIdException {
 		
+		//delete the username
+		User user=employee.getUser();
 		logger.info("Employee {} deleted successfully!", employee.getName());
 		//deleting an employee.
 		employeeRepository.delete(employee);
+		userService.deleteUser(user);
 		
 		return "Employee deleted successfully";
 

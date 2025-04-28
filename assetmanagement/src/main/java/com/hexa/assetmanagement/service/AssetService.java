@@ -52,9 +52,9 @@ public class AssetService {
 		return assetRepository.findByName(name);
 	}
 
-	public List<Asset> filterByCategory(String category) {
+	public  Page<Asset> filterByCategory(String category, Pageable pageable) {
         //returning the lists of assets found through it's category.
-		return assetRepository.findByCategoryName(category);
+		return assetRepository.findByCategoryName(category,pageable);
 	}
 
 	public List<Asset> filterByStatus(String status) {

@@ -257,7 +257,7 @@ public class EmployeeServiceTest {
 			assertEquals("sri@gmail.com", updated.getEmail()); // updated
 			assertEquals("9092407442", updated.getContact()); // updated
 			assertEquals("no.154, anna nagar", updated.getAddress()); // updated
-		} catch (InvalidContactException e) {
+		} catch (InvalidContactException | InvalidIdException e) {
 		}
 
 		// case 2: partial update
@@ -272,7 +272,7 @@ public class EmployeeServiceTest {
 			assertEquals("charu", updated.getName()); // not - updated
 			assertEquals("9092407442", updated.getContact()); // updated
 			assertEquals("no.154, anna nagar", updated.getAddress()); // updated
-		} catch (InvalidContactException e) {
+		} catch (InvalidContactException | InvalidIdException e) {
 		}
 		
 		//case 3: intentionally passing invalid contact
@@ -283,7 +283,7 @@ public class EmployeeServiceTest {
 
 		try {
 			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
-		} catch (InvalidContactException e) {
+		} catch (InvalidContactException | InvalidIdException e) {
 			 assertEquals("Invalid Contact number....", e.getMessage());
 		}
 		
@@ -296,7 +296,7 @@ public class EmployeeServiceTest {
 		try {
 			updated = employeeService.updateEmployee(oldEmployee, newEmployee);
 			assertEquals("sri", updated.getName());
-		} catch (InvalidContactException e) { 
+		} catch (InvalidContactException | InvalidIdException e) { 
 		}
 		
 		//case 5: no updates, passing only null.
@@ -311,7 +311,7 @@ public class EmployeeServiceTest {
 			assertEquals("charu@gmail.com", updated.getEmail());  
 			assertEquals("9128371293", updated.getContact());  
 			assertEquals("2, 5th street", updated.getAddress());  
-		} catch (InvalidContactException e) { 
+		} catch (InvalidContactException | InvalidIdException e) { 
 		}
 	 	
 	}
@@ -321,7 +321,10 @@ public class EmployeeServiceTest {
 		
 		//case 1: performing deletion correctly. 
 		
-		assertEquals("Employee deleted successfully", employeeService.deleteByEmployee(e1));
+		try {
+			assertEquals("Employee deleted successfully", employeeService.deleteByEmployee(e1));
+		} catch (InvalidIdException e) {
+		}
 		
 		verify(employeeRepository, times(1)).delete(e1);
 	}

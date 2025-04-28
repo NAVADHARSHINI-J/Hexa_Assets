@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.hexa.assetmanagement.dto.AssetDto;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Asset;
-import com.hexa.assetmanagement.model.AssetAllocation;
 import com.hexa.assetmanagement.model.Category;
 import com.hexa.assetmanagement.service.AssetService;
 import com.hexa.assetmanagement.service.CategoryService;
@@ -88,8 +87,15 @@ public class AssetController {
 
 	@GetMapping("/getbycategory")
 	// filtering assets by category
-	public List<Asset> filterByCategory(@RequestParam String category) {
-		return assetService.filterByCategory(category);
+	public AssetDto filterByCategory(@RequestParam String category,@RequestParam int page, @RequestParam int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Asset> asset=assetService.filterByCategory(category,pageable); 
+		assetDto.setCurrentPage(page);
+		assetDto.setList(asset.getContent());
+		assetDto.setSize(size);
+		assetDto.setTotalElements((int)asset.getTotalElements());
+		assetDto.setTotalPages(asset.getTotalPages());
+		return assetDto;
 	}
 
 	@GetMapping("/getbystatus")

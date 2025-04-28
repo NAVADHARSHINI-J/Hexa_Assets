@@ -89,8 +89,15 @@ public class EmployeeController {
 
 	@GetMapping("/getbydepartment")
 	// filtering employees by their department
-	public List<Employee> filterByDepartment(@RequestParam String department) {
-		return employeeService.filterByDepartment(department);
+	public EmployeeDto filterByDepartment(@RequestParam String department,@RequestParam int page, @RequestParam int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		 Page<Employee> employee = employeeService.filterByDepartment(department,pageable);
+		 employeeDto.setCurrentPage(page);
+		 employeeDto.setList(employee.getContent());
+		 employeeDto.setSize(size);
+		 employeeDto.setTotalElements((int)employee.getTotalElements());
+		 employeeDto.setTotalPages(employee.getTotalPages());
+		return employeeDto;
 	}
 
 	@PutMapping("/update/{empId}")
