@@ -22,7 +22,15 @@ public class AssetAllocation {
 	private LocalDate allocationDate;
 	private LocalDate returnDate;
 	private String status = "ALLOCATED";
+	@Column(length = 2000)
+	private String reason;
 
+	public String getReason() {
+		return reason;
+	}
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
 	@ManyToOne
 	private Asset asset;  //findByAssetId 
 

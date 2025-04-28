@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.hexa.assetmanagement.exception.InvalidIdException;
-import com.hexa.assetmanagement.model.Asset;
-import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.ServiceRequest;
 import com.hexa.assetmanagement.service.AssetService;
 import com.hexa.assetmanagement.service.EmployeeService;
@@ -30,6 +29,7 @@ import com.hexa.assetmanagement.service.ServiceRequestService;
 
 @RestController
 @RequestMapping("/api/servicerequest")
+@CrossOrigin(origins = "http://localhost:5173")
 public class ServiceRequestController {
 	@Autowired
     private ServiceRequestService serviceRequestService;
@@ -55,11 +55,8 @@ public class ServiceRequestController {
     }
 
     @GetMapping("/getall")
-    public List<ServiceRequest> getAll(@RequestParam int page, @RequestParam int size) {
-    	//create a pageable object to store the page and size 
-    	//and findall method get the pageable object
-        Pageable pageable = PageRequest.of(page, size);
-        return serviceRequestService.getAll(pageable);
+    public List<ServiceRequest> getAll() {
+        return serviceRequestService.getAll();
     }
     
     @GetMapping("/bystatus")

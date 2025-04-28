@@ -113,12 +113,13 @@ public class AssetAllocationService {
 		//if return date is not null
 		if(assetAllocation.getReturnDate()!=null)
 			assetAllocation1.setReturnDate(assetAllocation.getReturnDate());
+		if(assetAllocation.getReason()!=null)
+			assetAllocation1.setReason(assetAllocation.getReason());
 		System.out.println(assetAllocation.getStatus());
 		//make the status as returned if they not give anything
-		assetAllocation1.setStatus(
-			    "ALLOCATED".equalsIgnoreCase(assetAllocation.getStatus()) ?
-			    		"RETURNED" : assetAllocation.getStatus()
-			);
+		if(assetAllocation.getStatus()!=null) {
+			assetAllocation1.setStatus(assetAllocation.getStatus());
+		}
 		//if the asset is returned then increase the quantity of the asset by one
 		//get the asset
 		Asset asset=assetAllocation1.getAsset();
@@ -136,7 +137,10 @@ public class AssetAllocationService {
 		Asset asset=assetService.getById(assetId);
 		logger.info("Asset allocation is retrieved by assetId "+asset.getId());
 		//get all the records by asset
-		return assetAllocationRepository.findByAsset(asset);
+		List<AssetAllocation> assetallocate = assetAllocationRepository.findByAsset(asset);
+		return assetallocate
+				.stream().
+				filter(e->e.getStatus().equalsIgnoreCase("ALLOCATED")).toList();
 	}
 	public List<AssetAllocation> getAssetAllocationByEmployeeId(int empId) 
 			throws InvalidIdException {
@@ -144,7 +148,18 @@ public class AssetAllocationService {
 		Employee employee=employeeService.getById(empId);
 		logger.info("Asset allocation is retrieved by employee Id "+employee.getId());
 		//get all the records by employee
-		return assetAllocationRepository.findByEmployee(employee);
+		List<AssetAllocation> assetallocate=assetAllocationRepository.findByEmployee(employee);
+		return assetallocate
+				.stream().
+				filter(e->e.getStatus().equalsIgnoreCase("ALLOCATED")).toList();
+	}
+
+	public AssetAllocation getAllocationByAssetEmpId(int assetId, int empId) {
+		List<AssetAllocation> assetAllocation = assetAllocationRepository.findAll()
+				.stream().filter(a->a.getAsset().getId()==assetId)
+				.filter(aa->aa.getEmployee().getId()==empId)
+				.filter(a->a.getStatus().equalsIgnoreCase("ALLOCATED")).toList();
+		return assetAllocation.getFirst();
 	}
 
 }
