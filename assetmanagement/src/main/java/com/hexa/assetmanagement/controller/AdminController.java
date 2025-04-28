@@ -26,6 +26,11 @@ public class AdminController {
 	private AdminService adminService;
 	
 	@PostMapping("/add")
+	public Admin add(@RequestBody Admin admin,
+			Principal principal) throws InvalidContactException {
+		//get the user name by using the principal
+		 String username=principal.getName();
+		 return adminService.add(admin,username);
 	public Admin add(@RequestBody Admin admin) throws InvalidContactException, UsernameInvalidException {
 		 return adminService.add(admin);
 	}
@@ -46,9 +51,3 @@ public class AdminController {
 		return adminService.update(admin,AdminId);
 	}
 }
-
-
-
-
-
-

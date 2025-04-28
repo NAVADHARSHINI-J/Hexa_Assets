@@ -3,6 +3,7 @@ package com.hexa.assetmanagement.controller;
 import java.security.Principal;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,18 +13,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Manager;
 import com.hexa.assetmanagement.service.ManagerService;
 
 @RestController
 @RequestMapping("/api/manager")
+@CrossOrigin(origins = {"http://localhost:5173"})
 public class ManagerController {
 	
     @Autowired
 	private ManagerService managerService;
 	
     @PostMapping("/add")
-    public Manager add(@RequestBody Manager manager, Principal principal) throws InvalidContactException {
+    public Manager add(@RequestBody Manager manager, Principal principal) throws InvalidContactException, UsernameInvalidException {
         // Get username of logged-in user
         String username = principal.getName();
         return managerService.add(manager, username);

@@ -1,3 +1,12 @@
+<<<<<<< HEAD
+import { Route, Routes } from "react-router";
+import Login from './components/auth/Login';
+import LiquidAssetDashboard from './components/manager/LiquidAssetDashboard';
+import LiquidAssetPage from './components/manager/LiquidAssetPage';
+import LiquidAssetRequest from './components/manager/LiquidAssetRequest';
+import LiquidAssetAllocation from './components/manager/LiquidAssetAllocation';
+import LiquidAssetUnallocated from './components/manager/LiquidAssetUnallocated';
+=======
 
 import { Routes, Route } from "react-router"
 import AssetList from "./components/admin/AssetList"
@@ -12,10 +21,20 @@ import RequestList from "./components/admin/RequestList"
 import Audit from "./components/admin/Audit"
 // import SignupAdmin from "./components/auth/SignupAdmin"
 
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
 
 function App() {
-
   return (
+<<<<<<< HEAD
+    <Routes>
+    <Route index path="" element={<Login />} />
+    <Route path="manager" element={<LiquidAssetDashboard/>} />
+    <Route path="/dashassetpage" element={<LiquidAssetPage/>}/>
+    <Route path="/dashassetreq" element={<LiquidAssetRequest/>}/>
+    <Route path="/dashassetall" element={<LiquidAssetAllocation/>}/>
+    <Route path="/dashassetunall" element={<LiquidAssetUnallocated/>}/>
+  </Routes>
+=======
     <div>
       <Routes>
         <Route index path="" element={<Login />} />
@@ -34,6 +53,7 @@ function App() {
 
 
     </div>
+>>>>>>> 88ed036026f9ffee1ff924c35e732f262a431a95
   )
 }
 
