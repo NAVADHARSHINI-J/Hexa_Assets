@@ -35,6 +35,12 @@ public class AssetController {
 	private CategoryService categoryService;
 	@Autowired
 	private AssetDto assetDto;
+	@Autowired
+	private ServiceRequestController serviceRequestController;
+	@Autowired
+	private AssetRequestController assetRequestController;
+	@Autowired
+	private AssetAllocationController assetAllocationController;
 
 	@GetMapping("/public/hello")
 	public String sayHello() {
@@ -81,8 +87,15 @@ public class AssetController {
 
 	@GetMapping("/getbycategory")
 	// filtering assets by category
-	public List<Asset> filterByCategory(@RequestParam String category) {
-		return assetService.filterByCategory(category);
+	public AssetDto filterByCategory(@RequestParam String category,@RequestParam int page, @RequestParam int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Asset> asset=assetService.filterByCategory(category,pageable); 
+		assetDto.setCurrentPage(page);
+		assetDto.setList(asset.getContent());
+		assetDto.setSize(size);
+		assetDto.setTotalElements((int)asset.getTotalElements());
+		assetDto.setTotalPages(asset.getTotalPages());
+		return assetDto;
 	}
 
 	@GetMapping("/getbystatus")
@@ -105,6 +118,13 @@ public class AssetController {
 	public String deleteAssetById(@PathVariable int assetId) throws InvalidIdException {
 		Asset asset = assetService.getById(assetId);
 
+		//deleting in service request
+		serviceRequestController.deleteByAssetId(asset.getId());
+		//deleting in asset request
+		assetRequestController.deleteAssetRequestByAsset(asset.getId());
+		//deleting in asset allocation
+		assetAllocationController.deleteByAssetId(asset.getId());
+		
 		return assetService.deleteAssetById(asset);
 	}
 }

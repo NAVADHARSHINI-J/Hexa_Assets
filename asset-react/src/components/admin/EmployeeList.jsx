@@ -1,7 +1,96 @@
-// import './css/EmployeeList.css'
+import { useEffect, useState } from 'react';
+import './css/EmployeeList.css'
 import Sidebar from './Sidebar';
+import axios from 'axios';
 
 function EmployeeList() {
+    const [employees, setEmployees] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(2);
+    const [pageArray, setPageArray] = useState([]);
+    const [totalpage, setTotalpage] = useState(0);
+    const [department, setDepartment] = useState([]);
+    const [departmentId, setDepartmentId] = useState();
+    const [disable, setDisable] = useState(true);
+    const [selectedEmployee, setSelectedEmployee] = useState({});
+
+    //useeffect
+    useEffect(() => {
+        const getEmployees = async () => {
+            //call the api
+            try {
+                const response = await axios.get(`http://localhost:8081/api/employee/getall?page=${page}&size=${size}`);
+                setEmployees(response.data.list);
+                setTotalpage(response.data.totalPages);
+                let tp = response.data.totalPages;
+                let temp = []
+                while (tp > 0) {
+                    temp.push(1);
+                    tp = tp - 1;
+                }
+                setPageArray(temp);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        const getDepartment = async () => {
+            try {
+                const response = await axios.get("http://localhost:8081/api/department/getall");
+                setDepartment(response.data);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+        getEmployees();
+        getDepartment();
+    }, [page])
+
+    //add the employee
+    const addEmployee = async (employee, departId) => {
+        try {
+            const response = await axios
+                .post(`http://localhost:8081/api/employee/add-employee/${departId}`, employee)
+            console.log(employee);
+            //add it to the list
+            let temp = [...employees];
+            temp.push(response.data);
+            setEmployees(temp);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    //edit the employee
+    const editEmployee = async (employee) => {
+        try {
+            console.log(employee)
+            const response = await axios.put(`http://localhost:8081/api/employee/update/${employee.id}`, {
+                "name": employee.name,
+                "email": employee.email,
+                "contact": employee.contact,
+                "address": employee.address,
+                "department": {
+                    "id": employee.department.id
+                }
+            })
+            //update in ui
+            //delete the updated and add this
+            let temp = [...employees]
+            temp = temp.filter(e => e.id !== employee.id)
+            temp.push(response.data)
+            setEmployees(temp)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const deleteEmployee = async (empId) => {
+        try {
+            const response = await axios.delete(`http://`)
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div>
             <div className="container-fluid">
@@ -22,30 +111,65 @@ function EmployeeList() {
                             </div>
                             <div className="card-body">
                                 <div className="row">
-                                    <div className="col-md-4 mb-3">
-                                        <div className="card employee-card hover-effect">
-                                            <div className="card-body">
-                                                <div className="d-flex justify-content-between mb-3">
-                                                    <h5 className="card-title">John Doe</h5>
-                                                    <span className="badge bg-primary">IT</span>
-                                                </div>
-                                                <p className="card-text">
-                                                    <i className="bi bi-envelope me-2"></i>john.doe@hexaassets.com<br />
-                                                    <i className="bi bi-telephone me-2"></i>+1 (555) 123-4567
-                                                </p>
-                                                <div className="d-flex justify-content-between">
-                                                    <button className="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">
-                                                        <i className="bi bi-eye"></i>
-                                                    </button>
-                                                    <button className="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal">
-                                                        <i className="bi bi-pencil"></i>
-                                                    </button>
-                                                    <button className="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal">
-                                                        <i className="bi bi-trash"></i>
-                                                    </button>
+                                    {employees.sort((a, b) => a.id - b.id).map((e, index) => (
+                                        <div className="col-md-4 mb-3">
+                                            <div className="card employee-card hover-effect" key={index}>
+                                                <div className="card-body">
+                                                    <div className="d-flex justify-content-between mb-3">
+                                                        <h5 className="card-title">{e.name}</h5>
+                                                        <span className="badge bg-primary">{e.department.name}</span>
+                                                    </div>
+                                                    <p className="card-text">
+                                                        <i className="bi bi-envelope me-2"></i>{e.email}<br />
+                                                        <i className="bi bi-telephone me-2"></i>{e.contact}
+                                                    </p>
+                                                    <div className="d-flex justify-content-between">
+                                                        <button className="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#viewEmployeeModal">
+                                                            <i className="bi bi-eye"></i>
+                                                        </button>
+                                                        <button className="btn btn-sm btn-warning" data-bs-toggle="modal" data-bs-target="#editEmployeeModal"
+                                                            onClick={() => { setSelectedEmployee(e) }}>
+                                                            <i className="bi bi-pencil"></i>
+                                                        </button>
+                                                        <button className="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmModal"
+                                                            onClick={() => { setSelectedEmployee(e) }}>
+                                                            <i className="bi bi-trash"></i>
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="card-footer">
+                                <div className="row">
+                                    <div className="col-sm-4"></div>
+                                    <div className="col-sm-6">
+                                        <nav aria-label="Page navigation">
+                                            <ul class="pagination">
+                                                {
+                                                    page === 0 ? <li className="page-item disabled">
+                                                        <a className="page-link" href="#" tabIndex="-1" aria-disabled="true">Prev</a>
+                                                    </li> : <li className="page-item">
+                                                        <a className="page-link" href="#" onClick={() => { setPage(page - 1) }}>Prev</a>
+                                                    </li>
+                                                }
+                                                {pageArray.map((e, index) => (
+                                                    <li key={index}
+                                                        className={`page-item ${page === index ? "active" : ""}`}>
+                                                        <a class="page-link" href="#"
+                                                            onClick={() => { setPage(index) }}>{index + 1}</a></li>
+                                                ))}
+                                                {
+                                                    page === totalpage - 1 ? <li class="page-item disabled">
+                                                        <a class="page-link" href="#" aria-disabled="true">Next</a>
+                                                    </li> : <li class="page-item">
+                                                        <a class="page-link" href="#" onClick={() => { setPage(page + 1) }}>Next</a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        </nav>
                                     </div>
                                 </div>
                             </div>
@@ -237,54 +361,64 @@ function EmployeeList() {
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Full Name</label>
-                                                    <input type="text" className="form-control" required />
+                                                    <input type="text" className="form-control"
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "name": e.target.value }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Username</label>
-                                                    <input type="text" className="form-control" required />
+                                                    <input type="text" className="form-control"
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "user": { "username": e.target.value } }) }} required />
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Email</label>
-                                                    <input type="email" className="form-control" required />
+                                                    <input type="email" className="form-control"
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "email": e.target.value }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Phone</label>
-                                                    <input type="tel" className="form-control" />
+                                                    <input type="tel" className="form-control"
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "contact": e.target.value }) }} />
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Password</label>
-                                                    <input type="password" className="form-control" />
+                                                    <input type="password" className="form-control"
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "user": { ...selectedEmployee.user, "password": e.target.value } }) }} />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Department</label>
-                                                    <select className="form-select">
-                                                        <option value="">Select Department</option>
-                                                        <option value="IT">IT</option>
-                                                        <option value="HR">HR</option>
-                                                        <option value="Finance">Finance</option>
-                                                        <option value="Marketing">Marketing</option>
+                                                    <select className="form-select"
+                                                        onChange={(e) => {
+                                                            setDepartmentId(e.target.value)
+                                                        }}>
+                                                        <option value="">-- Select Department --</option>
+                                                        {
+                                                            department.map((d, index) => (
+                                                                <option key={index} value={d.id}>{d.name}</option>
+                                                            ))
+                                                        }
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="mb-3">
                                                 <label className="form-label">Address</label>
-                                                <textarea className="form-control" rows="3"></textarea>
+                                                <textarea className="form-control" rows="3"
+                                                    onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "address": e.target.value }) }}></textarea>
                                             </div>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" className="btn btn-success">Add Employee</button>
+                                        <button type="button" className="btn btn-success" onClick={() => { addEmployee(selectedEmployee, departmentId) }} data-bs-dismiss="modal">Add Employee</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         {/* <!-- Edit Employee Modal --> */}
-                        <div className="modal fade" id="editEmployeeModal" tabIndex="-1">
+                        {selectedEmployee && <div className="modal fade" id="editEmployeeModal" tabIndex="-1">
                             <div className="modal-dialog modal-lg">
                                 <div className="modal-content">
                                     <div className="modal-header bg-warning">
@@ -296,43 +430,57 @@ function EmployeeList() {
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Full Name</label>
-                                                    <input type="text" className="form-control" value="John" required />
+                                                    <input type="text" className="form-control" value={selectedEmployee.name}
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "name": e.target.value }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Email</label>
-                                                    <input type="email" className="form-control" value="john.doe@hexaassets.com" required />
+                                                    <input type="email" className="form-control" value={selectedEmployee.email}
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "email": e.target.value }) }} required />
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Phone</label>
-                                                    <input type="tel" className="form-control" value="+1 (555) 123-4567" />
+                                                    <input type="tel" className="form-control" value={selectedEmployee.contact}
+                                                        onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "contact": e.target.value }) }} />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Department</label>
-                                                    <select className="form-select">
-                                                        <option value="IT" selected>IT</option>
-                                                        <option value="HR">HR</option>
-                                                        <option value="Finance">Finance</option>
-                                                        <option value="Marketing">Marketing</option>
+                                                    <select className="form-select" value={selectedEmployee.department?.id}
+                                                        onChange={(e) => {
+                                                            setSelectedEmployee({
+                                                                ...selectedEmployee,
+                                                                "department": {
+                                                                    "id": e.target.value
+                                                                }
+                                                            })
+                                                        }}>
+                                                        {
+                                                            department.map((d, index) => (
+                                                                <option key={index} value={d.id}>{d.name}</option>
+                                                            ))
+                                                        }
                                                     </select>
                                                 </div>
                                             </div>
                                             <div className="mb-3">
                                                 <label className="form-label">Address</label>
-                                                <textarea className="form-control" rows="3">123 Tech Lane, Silicon Valley, CA 94000</textarea>
+                                                <textarea className="form-control" rows="3"
+                                                    value={selectedEmployee.address}
+                                                    onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "address": e.target.value }) }}></textarea>
                                             </div>
                                         </form>
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" className="btn btn-warning">Save Changes</button>
+                                        <button type="button" className="btn btn-warning" onClick={() => { editEmployee(selectedEmployee) }} data-bs-dismiss="modal">Save Changes</button>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         {/* <!-- Delete Confirmation Modal --> */}
-                        <div className="modal fade" id="deleteConfirmModal" tabIndex="-1">
+                        {selectedEmployee && <div className="modal fade" id="deleteConfirmModal" tabIndex="-1">
                             <div className="modal-dialog">
                                 <div className="modal-content">
                                     <div className="modal-header bg-danger text-white">
@@ -341,11 +489,13 @@ function EmployeeList() {
                                     </div>
                                     <div className="modal-body">
                                         <div className="alert alert-danger">
-                                            <strong>Warning:</strong> You are about to permanently delete the employee record for John Doe.
+                                            <strong>Warning:</strong> You are about to permanently delete the employee record for {selectedEmployee.name}.
                                         </div>
                                         <p>This action cannot be undone. All associated data will be removed from the system.</p>
                                         <div className="form-check">
-                                            <input className="form-check-input" type="checkbox" id="confirmDelete" />
+
+                                            <input className="form-check-input" type="checkbox"
+                                                onChange={() => { disable ? setDisable(false) : setDisable(true) }} id="confirmDelete" />
                                             <label className="form-check-label" htmlFor="confirmDelete">
                                                 I understand this action is irreversible
                                             </label>
@@ -353,11 +503,16 @@ function EmployeeList() {
                                     </div>
                                     <div className="modal-footer">
                                         <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                        <button type="button" className="btn btn-danger" disabled id="deleteEmployeeBtn">Delete Employee</button>
+                                        {
+                                            disable ? <button type="button" className="btn btn-danger" disabled id="deleteEmployeeBtn">Delete Employee</button>
+                                                : <button type="button" className="btn btn-danger" id="deleteEmployeeBtn"
+                                                    onClick={() => { deleteEmployee(selectedEmployee.id) }}>Delete Employee</button>
+                                        }
+
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         {/* <!-- Allocate Asset Modal --> */}
                         <div className="modal fade" id="allocateAssetModal" tabIndex="-1">
                             <div className="modal-dialog">
