@@ -29,7 +29,7 @@ import com.hexa.assetmanagement.service.ServiceRequestService;
 @RequestMapping("/api/employee")
 @CrossOrigin(origins = "http://localhost:5173/")
 public class EmployeeController {
-
+	
 	@Autowired
 	private EmployeeDto employeeDto;
   @Autowired
@@ -100,6 +100,11 @@ public class EmployeeController {
 		return employeeDto;
 	}
 
+	@GetMapping("/getbyuser/{userId}")
+	//filtering employee by their user id
+	public Employee filterByUser(@PathVariable int userId) throws InvalidIdException {
+		return employeeService.filterByUser(userId);
+	}
 	@PutMapping("/update/{empId}")
 	// updating employee with employee id
 	public Employee updateEmployee(@RequestBody Employee newEmployee, @PathVariable int empId)

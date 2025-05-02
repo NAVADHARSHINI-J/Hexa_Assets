@@ -50,18 +50,27 @@ function AssetDetails() {
                                 <h3 >{assetdetails.name}</h3>
                                 <hr />
                                 <div className="row mb-3">
-                                    <div className="col-6">
+                                    <div className="col-12">
+                                        <strong>Asset ID:</strong> {assetdetails.id}
+                                    </div>
+                                </div>
+                                <div className="row mb-3">
+                                    <div className="col-12">
                                         <strong>Model:</strong> {assetdetails.model}
                                     </div>
-                                    <div className="col-6">
+                                </div>
+                                <div className="row mb-3">
+                                <div className="col-12">
                                         <strong>Date:</strong> {assetdetails.date}
                                     </div>
                                 </div>
                                 <div className="row mb-3">
-                                    <div className="col-6">
+                                    <div className="col-12">
                                         <strong>Configuration:</strong> {assetdetails.configuration}
                                     </div>
-                                    <div className="col-6">
+                                </div>
+                                <div className ="row mb-3">
+                                <div className="col-12">
                                         <strong>Available Units:</strong> {assetdetails.quantity}
                                     </div>
                                 </div>
@@ -73,7 +82,7 @@ function AssetDetails() {
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-12">
-                                        <strong>Status</strong> {assetdetails.status}
+                                        <strong>Status:</strong> {assetdetails.status}
                                     </div>
                                 </div>
                             </div>

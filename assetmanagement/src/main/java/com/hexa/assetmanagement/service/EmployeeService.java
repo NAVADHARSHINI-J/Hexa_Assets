@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -126,6 +124,15 @@ public class EmployeeService {
 	
 	public Employee findByUsername(String username) {
 		return employeeRepository.findByUserUsername(username);
+	}
+
+	public Employee filterByUser(int userId) throws InvalidIdException {  
+		Optional<Employee> optional = employeeRepository.findByUser_Id(userId); 
+
+		if(optional.isEmpty()) {
+			throw new InvalidIdException("Invalid user id");
+		}
+		return optional.get();
 	}
 
 }

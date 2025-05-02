@@ -67,10 +67,10 @@ public class SecurityConfig {
 				.requestMatchers("/api/liquidassetreq/bydate/{date}").permitAll()
 				.requestMatchers("/api/liquidassetreq/delete/byliquidasset/{id}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetreq/delete/byemployee/{id}").hasAuthority("MANAGER")
-				.requestMatchers("api/liquidassetallocation/add/{employeeId}/{liquidAssetId}").hasAuthority("MANAGER")
+				.requestMatchers("/api/liquidassetallocation/add/{assetId}/{empId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").permitAll()
 				.requestMatchers("/api/liquidassetallocation/getall").permitAll()
-				.requestMatchers("/api/liquidassetallocation/employee/{employeeId}").permitAll()
+				.requestMatchers("/api/liquidassetallocation/employee/{employeeId}").authenticated()
 				.requestMatchers("/api/liquidassetallocation/liquidAsset/{liquidAssetId}/employees").permitAll()
 				.requestMatchers("/api/liquidassetallocation//delete/by-liquid-asset/{id}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetallocation/delete/by-employee/{id}").hasAuthority("MANAGER")
@@ -86,12 +86,13 @@ public class SecurityConfig {
 	            .requestMatchers("/api/admin/getall").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/getbyid/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/update/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
-	            .requestMatchers("/api/employee/add-by-employee/{departmentId}").hasAuthority("EMPLOYEE") 
+	            .requestMatchers("/api/employee/add-employee/{departmentId}").permitAll() 
 	            .requestMatchers("/api/employee/getbyid/{empId}").authenticated()
 	            .requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
  
 	            .requestMatchers("/api/employee/getbyname").authenticated()
 	            .requestMatchers("/api/employee/getbydepartment").authenticated()
+	            .requestMatchers("/api/employee/getbyuser/{userId}").authenticated()
  
 	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN")
 	            .requestMatchers("/api/manager/add").hasAnyAuthority("ADMIN","MANAGER")
@@ -114,7 +115,7 @@ public class SecurityConfig {
  
 	            .requestMatchers("/api/department/add").authenticated()
 	            .requestMatchers("/api/department/getbyid/{departmentId}").authenticated()
-	            .requestMatchers("/api/department/getall").authenticated()
+	            .requestMatchers("/api/department/getall").permitAll()
  
 				.requestMatchers("/api/assetallocation/delete-empId/{empId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/assetallocation/update/{allocationId}").hasAnyAuthority("ADMIN","EMPLOYEE")

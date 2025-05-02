@@ -1,6 +1,6 @@
 import { useState } from "react"
-import users from "../../data/users";
-import { useNavigate } from "react-router";
+import users from "../../data/users"; 
+import { Link, useNavigate } from "react-router";
 import axios from "axios";
 
 function Login() {
@@ -40,9 +40,19 @@ function Login() {
                         "Authorization": `Bearer ${token}`
                     }
                 }
-            ).then(resp => {
-                // console.log(resp.data.role)
-                // console.log(resp)
+            ).then(resp => { 
+                const userId=resp.data.id; 
+                axios.get(`http://localhost:8081/api/employee/getbyuser/${userId}`,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                ).then(empResp=>{
+                    let employeeId = empResp.data.id;
+                    console.log(employeeId);
+                    localStorage.setItem("employeeId", employeeId);
+                })
                 switch (resp.data.role) {
                     case 'EMPLOYEE':
                         //navigate to employee dashboard
@@ -100,7 +110,7 @@ function Login() {
 
                         </div>
                         <div className="col-sm-4">
-                            <div class="card" >
+                            <div className="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
                                     <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3><br />
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
@@ -135,13 +145,14 @@ function Login() {
                                             }} />
                                     </div>
                                     <div className="mb-4 text-center">
-                                        <button type="button" class="btn btn-primary "
+                                        <button type="button" className="btn btn-primary "
                                             onClick={() => { login() }}>Login</button>
                                     </div>
                                 </div>
                                 <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
-                                    <p > Don't have an Account? <a href="#" style={{ color: "white" }}>Sign Up </a><br />
-                                        <a href="#" style={{ color: "white" }}>Reset Password</a></p>
+                                    <p > Don't have an Account? </p> 
+                                    <Link to={"/employee/signup"}>Sign Up </Link><br />
+                                      <p> <a href="#" style={{ color: "white" }}>Reset Password</a></p>
                                 </div>
                             </div>
                         </div>
