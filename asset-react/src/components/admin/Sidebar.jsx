@@ -32,9 +32,9 @@ function Sidebar() {
                         <i className="bi bi-shield-check me-2"></i>Audit
                     </Link>
                 </li>
-                <li class="nav-item mt-auto profile">
+                <li className="nav-item mt-auto profile">
                     <Link to={"/admin/profile"} className="nav-link">
-                        <i class="bi bi-person me-2"></i>Profile
+                        <i className="bi bi-person me-2"></i>Profile
                     </Link>
                 </li>
             </ul>

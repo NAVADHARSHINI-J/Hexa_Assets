@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import './css/AssetList.css'
+import '../css/AssetList.css'
 import axios from 'axios';
-import Sidebar from './Sidebar';
+import Sidebar from '../Sidebar';
 
-function AssetList() {
+function AssetList1() {
     const [assets, setAssets] = useState([]);
     const [page, setPage] = useState(0);
     const [size, setSize] = useState(3);
@@ -719,4 +719,4 @@ function AssetList() {
         </div >
     )
 }
-export default AssetList;
+export default AssetList1;
