@@ -18,6 +18,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Manager;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.ManagerRepository;
@@ -49,7 +50,7 @@ public class ManagerServiceTest {
     }
 
     @Test
-    public void addTest() {
+    public void addTest() throws UsernameInvalidException {
         // Use case 1: Valid manager
         when(userRepository.findByUsername("sam")).thenReturn(m1.getUser());
         when(managerRepository.save(m1)).thenReturn(m1);

@@ -9,27 +9,27 @@ function LiquidAssetUnallocated() {
           </div>
           <ul className="nav flex-column">
             <li className="nav-item">
-              <a className="nav-link" href="HexaAssets Dashboard Page.html">
+              <a className="nav-link" href="manager">
                 <i className="bi bi-speedometer2 me-2"></i>Dashboard
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="HexaAssets Liquid Assets Page.html">
+              <a className="nav-link" href="/dashassetpage">
                 <i className="bi bi-cash-stack me-2"></i>Liquid Assets
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="HexaAssets Liquid Asset Request Page.html">
+              <a className="nav-link" href="/dashassetreq">
                 <i className="bi bi-plus-circle me-2"></i>Liquid Asset Request
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="HexaAssets Liquid Asset Allocation Page.html">
+              <a className="nav-link" href="/dashassetall">
                 <i className="bi bi-clipboard-check me-2"></i>Liquid Asset Allocation
               </a>
             </li>
             <li className="nav-item">
-              <a className="nav-link active" href="HexaAssets Unallocated Liquid Assets Page.html">
+              <a className="nav-link active" href="/dashassetunall">
                 <i className="bi bi-archive me-2"></i>Unallocated Liquid Assets
               </a>
             </li>

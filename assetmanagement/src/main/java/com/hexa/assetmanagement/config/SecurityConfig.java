@@ -49,8 +49,10 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicerequest/byEmployeeId").authenticated()
 				.requestMatchers("/api/servicerequest/byAssetId").authenticated()
 				.requestMatchers("/api/category/add").hasAuthority("ADMIN")
+				.requestMatchers("/api/category/getbyid/{CategoryId}").permitAll()
+				.requestMatchers("/api/category/getall").permitAll()
 				.requestMatchers("/api/category/getbyid/{CategoryId}").authenticated()
-				.requestMatchers("/api/category/getall").authenticated()
+				.requestMatchers("/api/category/getall").authenticated(
 				.requestMatchers("/api/liquidasset/add").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidasset/getall").permitAll()
 				.requestMatchers("/api/liquidasset/get/{id}").permitAll()

@@ -1,4 +1,5 @@
-import './LiquidAsset.css'
+import './LiquidAsset.css';
+import { Link } from "react-router-dom";
 
 function LiquidAssetDashboard() {
     return (
@@ -11,27 +12,27 @@ function LiquidAssetDashboard() {
                     </div>
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link active" href="HexaAssets Dashboard Page.html">
+                            <a class="nav-link active" href="manager">
                                 <i class="bi bi-speedometer2 me-2"></i>Dashboard
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="HexaAssets Liquid Assets Page.html">
+                            <a class="nav-link" href="/dashassetpage">
                                 <i class="bi bi-cash-stack me-2"></i>Liquid Assets
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="HexaAssets Liquid Asset Request Page.html">
+                            <a class="nav-link" href="/dashassetreq">
                                 <i class="bi bi-plus-circle me-2"></i>Liquid Asset Request
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="HexaAssets Liquid Asset Allocation Page.html">
+                            <a class="nav-link" href="/dashassetall">
                                 <i class="bi bi-clipboard-check me-2"></i>Liquid Asset Allocation
                             </a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="HexaAssets Unallocated Assets Page.html">
+                            <a class="nav-link" href="/dashassetunall">
                                 <i class="bi bi-archive me-2"></i>Unallocated Liquid Assets
                             </a>
                         </li>
@@ -71,7 +72,7 @@ function LiquidAssetDashboard() {
                             <div class="card dashboard-card">
                                 <div class="card-header">
                                     <span>Recent Requests</span>
-                                    <a href="HexaAssets Liquid Asset Request Page.html" class="btn btn-sm btn-light">View All</a>
+                                    <a href="/dashassetreq" class="btn btn-sm btn-light">View All</a>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group">
@@ -97,7 +98,7 @@ function LiquidAssetDashboard() {
                             <div class="card dashboard-card">
                                 <div class="card-header">
                                     <span>Liquid Assets</span>
-                                    <a href="HexaAssets Liquid Assets Page.html" class="btn btn-sm btn-light">View All</a>
+                                    <a href="/dashassetpage" class="btn btn-sm btn-light">View All</a>
                                 </div>
                                 <div class="card-body">
                                     <ul class="list-group">
