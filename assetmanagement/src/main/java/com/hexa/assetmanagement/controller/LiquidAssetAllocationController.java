@@ -21,7 +21,7 @@ import com.hexa.assetmanagement.model.LiquidAssetAllocation;
 import com.hexa.assetmanagement.service.LiquidAssetAllocationService;
 
 @RestController
-@RequestMapping("api/liquidassetallocation")
+@RequestMapping("/api/liquidassetallocation")
 public class LiquidAssetAllocationController {
 
 	@Autowired

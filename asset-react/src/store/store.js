@@ -1,9 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import ServiceSlice from "./ServiceSlice"
+import ProfileSlice from "./ProfileSlice"
 
 const store = configureStore({
     reducer:{
-        services : ServiceSlice
+        profile : ProfileSlice
     }
 })
 export default store;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/EmployeeList.css'
-import Sidebar from './Sidebar';
+import Sidebar from './SidebarAdmin';
 import axios from 'axios';
 
 function EmployeeList() {
@@ -644,31 +644,31 @@ function EmployeeList() {
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Full Name</label>
-                                                    <input type="text" className="form-control" value={selectedEmployee.name || ""}
+                                                    <input type="text" className="form-control"
                                                         onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "name": e.target.value }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Username</label>
-                                                    <input type="text" className="form-control" value={selectedEmployee.user?.username || ""}
+                                                    <input type="text" className="form-control"
                                                         onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "user": { "username": e.target.value } }) }} required />
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Email</label>
-                                                    <input type="email" className="form-control" value={selectedEmployee.email || ""}
+                                                    <input type="email" className="form-control"
                                                         onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "email": e.target.value }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Phone</label>
-                                                    <input type="tel" maxLength={10} className="form-control" value={selectedEmployee.contact || ""}
+                                                    <input type="tel" maxLength={10} className="form-control"
                                                         onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "contact": e.target.value }) }} required />
                                                 </div>
                                             </div>
                                             <div className="row">
                                                 <div className="col-md-6 mb-3">
                                                     <label className="form-label">Password</label>
-                                                    <input type="password" className="form-control" value={selectedEmployee.user?.password || ""}
+                                                    <input type="password" className="form-control"
                                                         onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "user": { ...selectedEmployee.user, "password": e.target.value } }) }} required />
                                                 </div>
                                                 <div className="col-md-6 mb-3">
@@ -688,7 +688,7 @@ function EmployeeList() {
                                             </div>
                                             <div className="mb-3">
                                                 <label className="form-label">Address</label>
-                                                <textarea className="form-control" rows="3" value={selectedEmployee.address || ""}
+                                                <textarea className="form-control" rows="3"
                                                     onChange={(e) => { setSelectedEmployee({ ...selectedEmployee, "address": e.target.value }) }}></textarea>
                                             </div>
 

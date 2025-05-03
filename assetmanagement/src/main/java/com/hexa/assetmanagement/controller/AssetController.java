@@ -127,4 +127,9 @@ public class AssetController {
 		
 		return assetService.deleteAssetById(asset);
 	}
+	@GetMapping("/getAssetSize")
+	//get the size of the total assets
+	public int getAssetSize() {
+		return assetService.getAssetSize();
+	}
 }

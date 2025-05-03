@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import './css/RequestList.css'
-import Sidebar from './Sidebar';
+import Sidebar from './SidebarAdmin';
 import axios from 'axios';
-import { useSelector } from 'react-redux';
+
 function RequestList() {
     const [servicerequests, setServicerequests] = useState([])
     const [newrequests, setNewrequests] = useState([])

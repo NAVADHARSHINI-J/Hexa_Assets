@@ -6,4 +6,6 @@ import com.hexa.assetmanagement.model.Admin;
 
 public interface AdminRepository extends JpaRepository<Admin, Integer>{
 
+	Admin findByUserUsername(String user);
+
 }

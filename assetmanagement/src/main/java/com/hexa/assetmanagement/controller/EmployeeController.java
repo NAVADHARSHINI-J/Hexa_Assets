@@ -126,4 +126,11 @@ public class EmployeeController {
 		assetAllocationController.deleteByEmployeeId(employee.getId());
 		return employeeService.deleteByEmployee(employee);
 	}
+	
+	//get the size of the employee
+	@GetMapping("/getEmpSize")
+	public int getEmployeeSize() {
+		return employeeService.getEmployeeSize();
+	}
+	
 }
