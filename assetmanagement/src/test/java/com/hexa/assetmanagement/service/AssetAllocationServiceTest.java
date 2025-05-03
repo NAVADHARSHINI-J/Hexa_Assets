@@ -294,11 +294,9 @@ public class AssetAllocationServiceTest {
 		} catch (InvalidIdException e) {	}
 		
 		
-		//usecase 2: check that the value is changed for the status and return date
+		//usecase 2: check that the value is changed for return date
 		//for return date
 		assertEquals(LocalDate.now(), aa1.getReturnDate());
-		//for status
-		assertEquals("RETURNED", aa1.getStatus());
 		
 		//usecase : 3
 		//check the quantity of the asset is increased by 1

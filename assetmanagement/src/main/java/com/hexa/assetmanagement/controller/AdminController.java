@@ -25,29 +25,35 @@ public class AdminController {
 	@Autowired
 	private AdminService adminService;
 	
+	/* adding the admin in the signup page*/
 	@PostMapping("/add")
-	public Admin add(@RequestBody Admin admin,
-			Principal principal) throws InvalidContactException {
-		//get the user name by using the principal
-		 String username=principal.getName();
-		 return adminService.add(admin,username);
-	public Admin add(@RequestBody Admin admin) throws InvalidContactException, UsernameInvalidException {
+	public Admin add(@RequestBody Admin admin) throws InvalidContactException,
+	UsernameInvalidException {
 		 return adminService.add(admin);
 	}
 	
+	//getting all the admin in the table
 	@GetMapping("/getall")
 	public List<Admin> getall() {
 		return adminService.getAll();
 	}
 	
-	@GetMapping("/getbyid/{AdminId}")
-	public Admin getById(@PathVariable int AdminId) throws InvalidIdException {
-		return adminService.getById(AdminId);
+	//get admin by the id
+	@GetMapping("/getbyid/{adminId}")
+	public Admin getById(@PathVariable int adminId) throws InvalidIdException {
+		return adminService.getById(adminId);
 	}
 	
-	@PutMapping("/update/{AdminId}")
+	//update the admin
+	@PutMapping("/update/{adminId}")
 	public Admin update(@RequestBody Admin admin,
-			@PathVariable int AdminId) throws InvalidIdException, InvalidContactException {
-		return adminService.update(admin,AdminId);
+			@PathVariable int adminId) throws InvalidIdException, InvalidContactException {
+		return adminService.update(admin,adminId);
+	}
+	
+	//get the admin by using the username
+	@GetMapping("/byuser/{user}")
+	public Admin getByUser(@PathVariable String user) {
+		return adminService.getByUser(user);
 	}
 }
