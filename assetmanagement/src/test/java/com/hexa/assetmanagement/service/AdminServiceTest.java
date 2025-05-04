@@ -19,6 +19,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Admin;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.AdminRepository;
@@ -54,14 +55,14 @@ public class AdminServiceTest {
 		//usecase 1: correct output
 		when(adminRepository.save(a1)).thenReturn(a1);
 		try {
-			assertEquals(a1,adminService.add(a1,"julie"));
-		} catch (InvalidContactException e) {		}
+			assertEquals(a1,adminService.add(a1));
+		} catch (InvalidContactException | UsernameInvalidException e) {		}
 		
 		//usecase 2: throw exception
 		//I expect to throw exception because the contect number of a3 is invalid
 		try {
-			assertEquals(a3,adminService.add(a3,"harry"));
-		} catch (InvalidContactException e) {	
+			assertEquals(a3,adminService.add(a3));
+		} catch (InvalidContactException | UsernameInvalidException e) {	
 			assertEquals("Invalid contact number...", e.getMessage());
 		}
 		
@@ -70,17 +71,17 @@ public class AdminServiceTest {
 		//it give the wrong output because when save the a2 will give a2
 		//but here we gave expected as a1
 		try {
-			assertNotEquals(a1,adminService.add(a2,"robert"));
-		} catch (InvalidContactException e) {	}
+			assertNotEquals(a1,adminService.add(a2));
+		} catch (InvalidContactException | UsernameInvalidException e) {	}
 		
 		//usercase 4:check findByUsername()
 		when(userRepository.findByUsername("admin4")).thenReturn(u1);
 		//here we check whether the method findByUsername() method is working fine or not
 		try {
-			assertEquals(a4,adminService.add(a4,"admin4"));
-		} catch (InvalidContactException e) {		}
+			assertEquals(a4,adminService.add(a4));
+		} catch (InvalidContactException | UsernameInvalidException e) {		}
 		
-		verify(userRepository,times(1)).findByUsername("admin4");
+		
 		verify(adminRepository,times(1)).save(a1);
 		verify(adminRepository,never()).save(a3);
 		

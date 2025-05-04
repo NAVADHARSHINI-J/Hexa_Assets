@@ -1,8 +1,9 @@
 package com.hexa.assetmanagement.controller;
 
-import java.security.Principal;
+
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,11 +14,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Admin;
 import com.hexa.assetmanagement.service.AdminService;
 
 @RestController
 @RequestMapping("/api/admin")
+@CrossOrigin(origins = "http://localhost:5173/")
 public class AdminController {
 	@Autowired
 	private AdminService adminService;
@@ -28,6 +31,8 @@ public class AdminController {
 		//get the user name by using the principal
 		 String username=principal.getName();
 		 return adminService.add(admin,username);
+	public Admin add(@RequestBody Admin admin) throws InvalidContactException, UsernameInvalidException {
+		 return adminService.add(admin);
 	}
 	
 	@GetMapping("/getall")
@@ -46,9 +51,3 @@ public class AdminController {
 		return adminService.update(admin,AdminId);
 	}
 }
-
-
-
-
-
-

@@ -6,12 +6,16 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Pageable; 
+
+import org.springframework.data.domain.Page;
+
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.exception.UsernameInvalidException;
+import com.hexa.assetmanagement.model.Department;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.EmployeeRepository; 
@@ -23,11 +27,17 @@ public class EmployeeService {
 
 	@Autowired
 	private UserService userService;
- 
+
+	@Autowired
+	private DepartmentService departmentService;
 
 	Logger logger = LoggerFactory.getLogger("EmployeeService");
 
-	public Employee addEmployee(Employee employee) throws InvalidContactException, InvalidIdException, UsernameInvalidException {
+	public Employee addEmployee(Employee employee,int departId) throws InvalidContactException, InvalidIdException, UsernameInvalidException {
+		//get the department by id
+		Department department=departmentService.getById(departId);
+		//add the department
+		employee.setDepartment(department);
 		// check if the contact is valid or throw an exception.
 		if (employee.getContact().length() != 10)
 			throw new InvalidContactException("Invalid Contact number....");
@@ -50,9 +60,9 @@ public class EmployeeService {
 		return op.get();
 	}
 
-	public List<Employee> getAll(Pageable pageable) {
+	public Page<Employee> getAll(Pageable pageable) {
 		//returning the list of employee.
-		return employeeRepository.findAll(pageable).getContent();
+		return employeeRepository.findAll(pageable);
 	}
 
 	public List<Employee> filterByName(String name) {
@@ -60,12 +70,12 @@ public class EmployeeService {
 		return employeeRepository.findByName(name);
 	}
 
-	public List<Employee> filterByDepartment(String department) {
+	public Page<Employee> filterByDepartment(String department,Pageable pageable) {
 		//returning the list of employee with his/her name.
-		return employeeRepository.findByDepartmentName(department);
+		return employeeRepository.findByDepartmentName(department, pageable);
 	}
 
-	public Employee updateEmployee(Employee oldEmployee, Employee newEmployee) throws InvalidContactException {
+	public Employee updateEmployee(Employee oldEmployee, Employee newEmployee) throws InvalidContactException, InvalidIdException {
 
 		// check whether the name is not null and update
 		if (newEmployee.getName() != null)
@@ -87,6 +97,13 @@ public class EmployeeService {
 		// check whether the address is not null and update
 		if (newEmployee.getAddress() != null)
 			oldEmployee.setAddress(newEmployee.getAddress());
+		//check the department
+		if(newEmployee.getDepartment() != null) {
+			//get the department by id
+			Department department=departmentService.getById(newEmployee.getDepartment().getId());
+			//set the department
+			oldEmployee.setDepartment(department);
+		}
 
 		logger.info("Employee " + oldEmployee.getName() + " updated successfully ");
 		//saving the changes made.
@@ -94,11 +111,14 @@ public class EmployeeService {
 
 	}
 
-	public String deleteByEmployee(Employee employee) {
-
+	public String deleteByEmployee(Employee employee) throws InvalidIdException {
+		
+		//delete the username
+		User user=employee.getUser();
 		logger.info("Employee {} deleted successfully!", employee.getName());
 		//deleting an employee.
 		employeeRepository.delete(employee);
+		userService.deleteUser(user);
 		
 		return "Employee deleted successfully";
 

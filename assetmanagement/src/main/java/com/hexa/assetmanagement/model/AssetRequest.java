@@ -20,7 +20,7 @@ public class AssetRequest {
 	private LocalDate requestDate;
 	@Column(nullable = false)
 	private String reason;
-	private String status = "pending";
+	private String status = "PENDING";
 	@ManyToOne
 	private Employee employee;
 	@ManyToOne

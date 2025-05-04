@@ -35,7 +35,14 @@ public class ServiceRequestService {
 	
 	Logger logger = LoggerFactory.getLogger("ServiceRequestService");
 
-    public ServiceRequest addServiceRequest(ServiceRequest serviceRequest) {
+    public ServiceRequest addServiceRequest(ServiceRequest serviceRequest, String username, int assetId) throws InvalidIdException {
+    	 //get the employee by using the useername
+        Employee employee = employeeService.findByUsername(username);
+      //get the asset by id to validate the id
+        Asset asset = assetService.getById(assetId);
+        //add the employee and asset in the serviceRequest
+        serviceRequest.setEmployee(employee);
+        serviceRequest.setAsset(asset);
     	//check whether the request date is present are not if not
 //    	set the request date with the present date
     	if(serviceRequest.getRequestDate()==null)
@@ -55,11 +62,11 @@ public class ServiceRequestService {
         return optional.get();
     }
 
-    public List<ServiceRequest> getAll(Pageable pageable) {
+    public List<ServiceRequest> getAll() {
     	//get all the service request by using the findall method which takes the 
     	//pageable object to list it in a page manner 
     	logger.info("All Service request are retrieved");
-        return serviceRequestRepository.findAll(pageable).getContent();
+        return serviceRequestRepository.findAll();
     }
 
 	public List<ServiceRequest> filterByStatus(String status) {

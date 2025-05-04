@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./css/Dashboard.css"
-import Sidebar from "./Sidebar";
+//import Sidebar from "./Sidebar";
 function AdminDashboard() {
 
     const [totalAsset, setTotalAsset] = useState(null);
@@ -11,7 +11,7 @@ function AdminDashboard() {
             <div className="container-fluid">
                 <div className="row">
                     {/* <!-- Sidebar (Original) -->*/}
-                    <Sidebar />
+                    {/* <Sidebar /> */}
                     {/* <!-- Main Content Area --> */}
                     <div className="col-md-10 p-4">
                         <h1 className="mb-4">Dashboard</h1>
