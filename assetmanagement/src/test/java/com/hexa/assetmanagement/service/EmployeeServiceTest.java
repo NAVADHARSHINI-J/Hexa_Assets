@@ -1,7 +1,7 @@
 package com.hexa.assetmanagement.service;
  
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals; 
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -47,6 +47,12 @@ public class EmployeeServiceTest {
 	private UserRepository userRepository;
 	
 	@Mock
+	private UserService userService;
+	
+	@Mock
+	private DepartmentService departmentService;
+	
+	@Mock
     private BCryptPasswordEncoder encoder;
 
 	Employee e1;
@@ -57,10 +63,10 @@ public class EmployeeServiceTest {
 	Employee e6;
 	Employee e66;
 	Employee oldEmployee;
-	Employee newEmployee;
+	Employee newEmployee; 
 
 	@BeforeEach
-	public void init() {
+	public void init() { 
 		e1 = new Employee(1, "sheryl", "sheryl@gmail.com", "9076234187", "no.22, 4th street", new Department(1, "IT"),
 				new User(1, "sheryl", "1234", "EMPLOYEE"));
 		e2 = new Employee(2, "nava", "nava@gmail.com", "8025671893", "no.32, 5th street", new Department(2, "FINANCE"),
@@ -128,8 +134,6 @@ public class EmployeeServiceTest {
 		}
 
 		// case 4: checking for getting the username correctly
-
-		when(userRepository.findByUsername("nava")).thenReturn(e2.getUser());
 		when(employeeRepository.save(e2)).thenReturn(e2);
 		try {
 			assertEquals(e2, employeeService.addEmployee(e2,1));
@@ -141,8 +145,6 @@ public class EmployeeServiceTest {
 			
 		}
 		
-		
-
 		verify(employeeRepository, times(1)).save(e1);
 		verify(employeeRepository, times(1)).save(e2);
 
@@ -216,19 +218,21 @@ public class EmployeeServiceTest {
 
 		// case 1: getting the correct output.
 		List<Employee> list = Arrays.asList(e1, e4);
+		Pageable pageable = PageRequest.of(0, 2);
+		Page<Employee> page = new PageImpl<>(list);
 
-		when(employeeRepository.findByDepartmentName("IT")).thenReturn(list);
+		when(employeeRepository.findByDepartmentName("IT", pageable)).thenReturn(page);
 
-		assertEquals(list, employeeService.filterByDepartment("IT"));
+		assertEquals(page, employeeService.filterByDepartment("IT", pageable));
 
-		assertEquals(2, employeeService.filterByDepartment("IT").size());
+		assertEquals(2, employeeService.filterByDepartment("IT", pageable).getNumberOfElements());
 
 		// case 2: checking for incorrect output.
-		assertNotEquals(3, employeeService.filterByDepartment("IT").size());
+		assertNotEquals(3, employeeService.filterByDepartment("IT", pageable).getNumberOfElements());
 
-		assertNotEquals(list, employeeService.filterByDepartment("HR"));
+		assertNotEquals(page, employeeService.filterByDepartment("HR", pageable));
 
-		verify(employeeRepository, times(3)).findByDepartmentName("IT");
+		verify(employeeRepository, times(3)).findByDepartmentName("IT", pageable);
 	}
 
 	@Test

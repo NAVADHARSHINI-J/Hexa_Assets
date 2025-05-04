@@ -25,6 +25,9 @@ public class AssetService {
 
 	Logger logger = LoggerFactory.getLogger("AssetService");
 
+	/*
+	 * adding an asset if the asset date is not given set it to the current date.
+	 */
 	public Asset addAsset(Asset asset) {
 		// if the date is null then setting it with localdate
 		if (asset.getDate() == null)
@@ -33,35 +36,55 @@ public class AssetService {
 		return assetRepository.save(asset);
 	}
 
+	/*
+	 * filtering an asset by it's id check whether the id is valid or not then
+	 * proceed
+	 */
 	public Asset getById(int assetId) throws InvalidIdException {
-		//check if the asset is present or not.
+		// check if the asset is present or not.
 		Optional<Asset> op = assetRepository.findById(assetId);
-		//if not throw an exception.
+		// if not throw an exception.
 		if (op.isEmpty())
 			throw new InvalidIdException("Asset Id is invalid....");
 		return op.get();
 	}
 
+	/*
+	 * return all the assets as the page of assets
+	 */
 	public Page<Asset> getAll(Pageable pageable) {
-		//returning the lists of assets.
+		// returning the lists of assets.
 		return assetRepository.findAll(pageable);
 	}
 
+	/*
+	 * returning the list of assets filtered by their name
+	 */
 	public List<Asset> filterByName(String name) {
-        //returning the lists of assets found through it's name.
 		return assetRepository.findByName(name);
 	}
 
-	public  Page<Asset> filterByCategory(String category, Pageable pageable) {
-        //returning the lists of assets found through it's category.
-		return assetRepository.findByCategoryName(category,pageable);
+	/*
+	 * returning the list of assets based on its category as a page of asset
+	 */
+	public Page<Asset> filterByCategory(String category, Pageable pageable) {
+		// returning the lists of assets found through it's category.
+		return assetRepository.findByCategoryName(category, pageable);
 	}
 
+	/*
+	 * returning the list of assets based on the status of an asset
+	 */
 	public List<Asset> filterByStatus(String status) {
-        //returning the lists of assets found through it's status.
+		// returning the lists of assets found through it's status.
 		return assetRepository.findByStatus(status);
 	}
 
+	/*
+	 * updating an asset with checking the new asset constraints, if it is not null
+	 * then update it to the old asset reference at last save the old asset
+	 * reference.
+	 */
 	public Asset updateAsset(Asset newAsset, Asset oldAsset) throws InvalidIdException {
 
 		// check whether the name is not null and update
@@ -91,17 +114,21 @@ public class AssetService {
 		// check whether the quantity is not null and update
 		if (newAsset.getQuantity() != 0)
 			oldAsset.setQuantity(newAsset.getQuantity());
-		//check whether the category is changed
-		if(newAsset.getCategory() != null) {
-			Category cat=categoryService.getById(newAsset.getCategory().getId());
+		// check whether the category is changed
+		if (newAsset.getCategory() != null) {
+			Category cat = categoryService.getById(newAsset.getCategory().getId());
 			oldAsset.setCategory(cat);
 		}
 		logger.info("Asset " + newAsset.getName() + "updated successfully!");
 		return assetRepository.save(oldAsset);
 	}
 
+	/*
+	 * deleting an asset with its id, here it is passed as an asset reference and
+	 * deleting it .
+	 */
 	public String deleteAssetById(Asset asset) {
-        //delete an asset with it's id.
+		// delete an asset with it's id.
 		logger.info("Asset {} deleted successfully!", asset.getName());
 		assetRepository.delete(asset);
 		return "Asset deleted successfully";
