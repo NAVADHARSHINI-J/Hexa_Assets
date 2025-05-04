@@ -28,11 +28,16 @@ public class AdminController {
 	/* adding the admin in the signup page*/
 	@PostMapping("/add")
 <<<<<<< HEAD
+<<<<<<< HEAD
 	public Admin add(@RequestBody Admin admin) throws InvalidContactException, UsernameInvalidException {
 =======
 	public Admin add(@RequestBody Admin admin) throws InvalidContactException,
 	UsernameInvalidException {
 >>>>>>> 352c588786706697ddb2acd89f08faa5afdca60a
+=======
+	public Admin add(@RequestBody Admin admin) throws InvalidContactException,
+	UsernameInvalidException {
+>>>>>>> 36b5ffad85cf33920b41c3ea012aeada7fcf5cf8
 		 return adminService.add(admin);
 	}
 	
