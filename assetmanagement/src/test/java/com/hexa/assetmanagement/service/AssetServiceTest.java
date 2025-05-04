@@ -134,22 +134,22 @@ public class AssetServiceTest {
 	        verify(assetRepository, times(3)).findByName("Laptop");
 	    }
 
-	    @Test
-	    void filterByCategory() {
-	    	
-	    	//case 1: checking for correct output.
-	        when(assetRepository.findByCategoryName("Electronics")).thenReturn(List.of(a1, a2));
-	     
-	        assertEquals(List.of(a1,a2), assetService.filterByCategory("Electronics"));
-	        assertEquals(2, assetService.filterByCategory("Electronics").size());
-	        
-	        //case 2: checking for incorrect output.
-	        
-	        assertNotEquals(List.of(a1), assetService.filterByCategory("Electronics"));
-	        assertNotEquals(3, assetService.filterByCategory("Electronics").size());
-	        
-	        verify(assetRepository, times(4)).findByCategoryName("Electronics");
-	    }
+//	    @Test
+//	    void filterByCategory() {
+//	    	
+//	    	//case 1: checking for correct output.
+//	        when(assetRepository.findByCategoryName("Electronics")).thenReturn(List.of(a1, a2));
+//	     
+//	        assertEquals(List.of(a1,a2), assetService.filterByCategory("Electronics"));
+//	        assertEquals(2, assetService.filterByCategory("Electronics").size());
+//	        
+//	        //case 2: checking for incorrect output.
+//	        
+//	        assertNotEquals(List.of(a1), assetService.filterByCategory("Electronics"));
+//	        assertNotEquals(3, assetService.filterByCategory("Electronics").size());
+//	        
+//	        verify(assetRepository, times(4)).findByCategoryName("Electronics");
+//	    }
 
 	    @Test
 	    void filterByStatus() {

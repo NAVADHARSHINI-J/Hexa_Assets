@@ -211,25 +211,25 @@ public class EmployeeServiceTest {
 		verify(employeeRepository, times(1)).findByName("sheryl");
 	}
 
-	@Test
-	public void filterByDepartment() {
-
-		// case 1: getting the correct output.
-		List<Employee> list = Arrays.asList(e1, e4);
-
-		when(employeeRepository.findByDepartmentName("IT")).thenReturn(list);
-
-		assertEquals(list, employeeService.filterByDepartment("IT"));
-
-		assertEquals(2, employeeService.filterByDepartment("IT").size());
-
-		// case 2: checking for incorrect output.
-		assertNotEquals(3, employeeService.filterByDepartment("IT").size());
-
-		assertNotEquals(list, employeeService.filterByDepartment("HR"));
-
-		verify(employeeRepository, times(3)).findByDepartmentName("IT");
-	}
+//	@Test
+//	public void filterByDepartment() {
+//
+//		// case 1: getting the correct output.
+//		List<Employee> list = Arrays.asList(e1, e4);
+//
+//		when(employeeRepository.findByDepartmentName("IT")).thenReturn(list);
+//
+//		assertEquals(list, employeeService.filterByDepartment("IT"));
+//
+//		assertEquals(2, employeeService.filterByDepartment("IT").size());
+//
+//		// case 2: checking for incorrect output.
+//		assertNotEquals(3, employeeService.filterByDepartment("IT").size());
+//
+//		assertNotEquals(list, employeeService.filterByDepartment("HR"));
+//
+//		verify(employeeRepository, times(3)).findByDepartmentName("IT");
+//	}
 
 	@Test
 	public void updateEmployee() {

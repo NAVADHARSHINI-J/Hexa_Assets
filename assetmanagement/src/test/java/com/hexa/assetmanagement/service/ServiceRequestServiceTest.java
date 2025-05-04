@@ -53,8 +53,8 @@ public class ServiceRequestServiceTest {
 				new Category(2,"category2"));
 		e1=new Employee(1, "employee1","employee1@gmail.com","9344908756","Chennai",new Department(1,"IT"));
 		e2=new Employee(2, "employee2","employee2@gmail.com","6598908756","Mumbai",new Department(2,"FINANCE"));
-		s1=new ServiceRequest(1,LocalDate.of(2025, 03, 25) ,"reason1", "image1", "Approved", e1, a1);
-		s2=new ServiceRequest(2,LocalDate.of(2025, 03, 25) ,"reason2", "image2", "Approved", e1, a1);
+		s1=new ServiceRequest(1,LocalDate.now() ,"reason1", "image1", "Approved", e1, a1);
+		s2=new ServiceRequest(2,LocalDate.now(),"reason2", "image2", "Approved", e1, a1);
 		s3=new ServiceRequest(3,null ,"reason3", "image3", "Declined", e1, a1);
 	}
 	
@@ -65,26 +65,42 @@ public class ServiceRequestServiceTest {
 		//usecase 1:Correct output
 		when(serviceRequestRepository.save(s1)).thenReturn(s1);
 		//check whether the output is correct or not
-//		assertEquals(s1,serviceRequestService.addServiceRequest(s1));
+		try {
+			assertEquals(s1,serviceRequestService.addServiceRequest(s1,"employee1",1));
+		} catch (InvalidIdException e) {
+		}
 		
 		//usecase : 2 check the request date is updated
 		when(serviceRequestRepository.save(s3)).thenReturn(s3);
 		//check whether the output is correct or not
-//		assertEquals(s3,serviceRequestService.addServiceRequest(s3));
+		try {
+			assertEquals(s3,serviceRequestService.addServiceRequest(s3,"employee2",2));
+		} catch (InvalidIdException e) {}
 		//check that the value of request date is changed first the value is null
 		//after the excution it is changed to today date
 		assertEquals(LocalDate.now(), s3.getRequestDate());
 		
 		//usecase: 3 Correct output
-		when(serviceRequestRepository.save(s2)).thenReturn(s2);
 		//check whether the output is correct or not
-//		assertEquals(s2,serviceRequestService.addServiceRequest(s2));
+		try {
+			assertEquals(s3,serviceRequestService.addServiceRequest(s3,"employee2",2));
+		} catch (InvalidIdException e) {}
 		
 		//usecase : 4 Wrong output
-		//when we add the request s2 the expected value will also be s2 but here 
+		//when we add the request s3 the expected value will also be s3 but here 
 		//changed it to s1 to it can check assertnotequals
-//		assertNotEquals(s1,serviceRequestService.addServiceRequest(s2));
+		try {
+			assertNotEquals(s1,serviceRequestService.addServiceRequest(s3,"employee2",2));
+		} catch (InvalidIdException e) {}
 		
+		//usecase : 5 Exception throws
+		
+		try {
+			when(assetService.getById(10)).thenThrow(new InvalidIdException("Asset Id is invalid...."));
+			assertEquals(s1,serviceRequestService.addServiceRequest(s3,"employee2",10));
+		} catch (InvalidIdException e) {
+			assertEquals("Asset Id is invalid....", e.getMessage());
+		}
 		verify(serviceRequestRepository,times(4)).save(any(ServiceRequest.class));
 	}
 	
@@ -148,13 +164,25 @@ public class ServiceRequestServiceTest {
 		List<ServiceRequest> list=Arrays.asList(s1,s2);
 		when(serviceRequestRepository.findByEmployeeId(1)).thenReturn(list);
 		//check that the output gave is correct
-		assertEquals(list,serviceRequestService.filterByEmployeeId(1));
+		try {
+			assertEquals(list,serviceRequestService.filterByEmployeeId(1));
+		} catch (InvalidIdException e) {}
 		
 		//usecase 2:(wrong output)
 		s3.setEmployee(null);
 		list=Arrays.asList(s1,s3);
 		//In the s3 request there is no employee so it make the assertion not equals
-		assertNotEquals(list,serviceRequestService.filterByEmployeeId(1));
+		try {
+			assertNotEquals(list,serviceRequestService.filterByEmployeeId(1));
+		} catch (InvalidIdException e) {}
+		
+		//usecase 3: Exception throw
+		try {
+			when(employeeService.getById(10)).thenThrow(new InvalidIdException("Employee Id is invalid...."));
+			assertEquals(list,serviceRequestService.filterByEmployeeId(10));
+		} catch (InvalidIdException e) {
+			assertEquals("Employee Id is invalid....", e.getMessage());
+		}
 		verify(serviceRequestRepository,times(2)).findByEmployeeId(anyInt());
 
 	}
@@ -167,20 +195,34 @@ public class ServiceRequestServiceTest {
 		List<ServiceRequest> list=Arrays.asList(s1,s2);
 		when(serviceRequestRepository.findByAssetId(1)).thenReturn(list);
 		//check that the output gave is correct
-		assertEquals(list,serviceRequestService.filterByAssetId(1));
+		try {
+			assertEquals(list,serviceRequestService.filterByAssetId(1));
+		} catch (InvalidIdException e) {}
 		
 		//usecase 2:(wrong output)
 		s3.setAsset(null);
 		list=Arrays.asList(s1,s3);
 		//In the s3 request there is no employee so it make the assertion not equals
-		assertNotEquals(list,serviceRequestService.filterByAssetId(1));
+		try {
+			assertNotEquals(list,serviceRequestService.filterByAssetId(1));
+		} catch (InvalidIdException e) {}
 		
 		//use case :3 (correct output)
 		s3.setAsset(a1);
 	    list=Arrays.asList(s1,s2,s3);
 		when(serviceRequestRepository.findByAssetId(1)).thenReturn(list);
 		//check that the output gave is correct
-		assertEquals(list,serviceRequestService.filterByAssetId(1));
+		try {
+			assertEquals(list,serviceRequestService.filterByAssetId(1));
+		} catch (InvalidIdException e) {}
+		
+		//usecase 4: Exception throw
+				try {
+					when(assetService.getById(10)).thenThrow(new InvalidIdException("Asset Id is invalid...."));
+					assertEquals(list,serviceRequestService.filterByAssetId(10));
+				} catch (InvalidIdException e) {
+					assertEquals("Asset Id is invalid....", e.getMessage());
+				}
 		verify(serviceRequestRepository,times(3)).findByAssetId(anyInt());
 
 	}

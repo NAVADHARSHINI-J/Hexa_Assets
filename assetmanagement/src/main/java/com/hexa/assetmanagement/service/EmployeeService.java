@@ -128,4 +128,8 @@ public class EmployeeService {
 		return employeeRepository.findByUserUsername(username);
 	}
 
+	public int getEmployeeSize() {
+		return employeeRepository.findAll().size();
+	}
+
 }
