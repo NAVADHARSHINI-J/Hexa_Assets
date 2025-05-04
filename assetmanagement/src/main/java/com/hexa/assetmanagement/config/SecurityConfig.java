@@ -126,7 +126,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicerequest/image/upload/{requestId}").hasAuthority("EMPLOYEE")
 
  
-				.anyRequest().permitAll()
+				.anyRequest().authenticated()
 			)
 			.sessionManagement(session->session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -14,7 +14,6 @@ import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Admin;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.AdminRepository;
-import com.hexa.assetmanagement.repository.UserRepository;
 
 @Service
 public class AdminService {
@@ -25,6 +24,11 @@ public class AdminService {
 
 	Logger logger=LoggerFactory.getLogger("AdminService");
 	
+	/*1. get the user from admin
+	 * 2. save the user using signup method
+	 * 3. set the user in admin
+	 * 4. check the contact length
+	 * 5. save the admin*/
 	public Admin add(Admin admin) 
 			throws InvalidContactException, UsernameInvalidException {
 		//get the user from admin
@@ -40,11 +44,14 @@ public class AdminService {
 		return adminRepository.save(admin);
 	}
 
+	/* get all the admin using the findAll method */
 	public List<Admin> getAll() {
 		//get all the admin in the db
 		return adminRepository.findAll();
 	}
 
+	/*1.get the admin by using the findById method 
+	 * 2.if found return it else throw the invalidIdException*/
 	public Admin getById(int AdminId) throws InvalidIdException {
 		//check whether the admin found with the given id
 		Optional<Admin> op=adminRepository.findById(AdminId);
@@ -54,10 +61,14 @@ public class AdminService {
 		return op.get();
 	}
 
-	public Admin update(Admin admin, int AdminId) 
+	/*1.get the admin by using the id
+	 * 2.check the field of new admin is null if not null set the values for old admin
+	 * 3.also check the conatct length 
+	 * 4. add the admin*/
+	public Admin update(Admin admin, int adminId) 
 			throws InvalidIdException, InvalidContactException {
-		Admin admin1=getById(AdminId);
-		//check whether each value in admin is mull or not 
+		Admin admin1=getById(adminId);
+		//check whether each value in admin is null or not 
        //if not null add that in the existing admin
 		if(admin.getName() != null)
 			admin1.setName(admin.getName());
@@ -74,6 +85,11 @@ public class AdminService {
 		
 		logger.info("Admin "+admin1.getName()+" updated successfully ");
 		return adminRepository.save(admin1);
+	}
+
+	/* find the admin by using the username => method findByUserUsername */
+	public Admin getByUser(String user) {
+		return adminRepository.findByUserUsername(user);
 	}
 }
 

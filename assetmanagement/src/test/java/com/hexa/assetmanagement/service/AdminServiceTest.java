@@ -23,7 +23,6 @@ import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Admin;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.AdminRepository;
-import com.hexa.assetmanagement.repository.UserRepository;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -34,10 +33,10 @@ public class AdminServiceTest {
 	@InjectMocks
 	private AdminService adminService;
 	@Mock
-	private UserRepository userRepository;
+	private UserService userService;
 	
 	Admin a1,a2,a3,a4;
-	User u1;
+	User u1,u2;
 	
 	@BeforeEach
 	public void init() {
@@ -46,6 +45,7 @@ public class AdminServiceTest {
 		a3=new Admin(3,"Harry","harry@gmail.com", "9850345","Mumbai",new User(3,"harry","1234","ADMIN"));
 		a4=new Admin(4,"admin4","admin4@gmail.com","987563698","Chennai");
 		u1=new User(4,"admin1", "1234","ADMIN");
+		u2=new User(1,"julie","1234","ADMIN");
 	}
 	
 	@Test
@@ -54,6 +54,9 @@ public class AdminServiceTest {
 		//actual:adminService.add(a1,"julie");
 		//usecase 1: correct output
 		when(adminRepository.save(a1)).thenReturn(a1);
+		try {
+			when(userService.signup(u2)).thenReturn(u2);
+		} catch (UsernameInvalidException e) { }
 		try {
 			assertEquals(a1,adminService.add(a1));
 		} catch (InvalidContactException | UsernameInvalidException e) {		}
@@ -73,14 +76,6 @@ public class AdminServiceTest {
 		try {
 			assertNotEquals(a1,adminService.add(a2));
 		} catch (InvalidContactException | UsernameInvalidException e) {	}
-		
-		//usercase 4:check findByUsername()
-		when(userRepository.findByUsername("admin4")).thenReturn(u1);
-		//here we check whether the method findByUsername() method is working fine or not
-		try {
-			assertEquals(a4,adminService.add(a4));
-		} catch (InvalidContactException | UsernameInvalidException e) {		}
-		
 		
 		verify(adminRepository,times(1)).save(a1);
 		verify(adminRepository,never()).save(a3);

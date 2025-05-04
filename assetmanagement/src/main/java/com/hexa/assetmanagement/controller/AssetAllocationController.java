@@ -23,12 +23,13 @@ import com.hexa.assetmanagement.service.AssetAllocationService;
 
 @RestController
 @RequestMapping("/api/assetallocation")
-@CrossOrigin(origins = "http://localhost:5173/")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AssetAllocationController {
 
 	@Autowired
 	private AssetAllocationService assetAllocationService;
 
+	/*add the asset allocation*/
 	@PostMapping("/add/{assetId}/{empId}")
 	public AssetAllocation addAssetAllocation(@PathVariable int assetId
 			, @PathVariable int empId,
@@ -38,6 +39,7 @@ public class AssetAllocationController {
 		return assetAllocationService.addAssetAllocation(assetId, empId, assetAllocation);
 	}
 
+	/* get the allocation by using the id */
 	@GetMapping("/get/{assetAllocationId}")
 	public AssetAllocation getById(@PathVariable int assetAllocationId) 
 			throws InvalidIdException {
@@ -45,19 +47,23 @@ public class AssetAllocationController {
 		return assetAllocationService.getById(assetAllocationId);
 	}
 
+	/* get all asset allocation*/
 	@GetMapping("/getall")
 	public List<AssetAllocation> getAllAssetAllocation() {
 		//get all the asset allocation in database
 		return assetAllocationService.getAllAssetAllocation();
 	}
 	
+	/* delete the allocation by using the asset id*/
 	@DeleteMapping("/delete-assetid/{assetId}")
-	public ResponseEntity<?> deleteByAssetId(@PathVariable int assetId) throws InvalidIdException {
+	public ResponseEntity<?> deleteByAssetId(@PathVariable int assetId) 
+			throws InvalidIdException {
 		//delete all the asset allocation by the given asset id
 		String message =assetAllocationService.deleteByAssetId(assetId);
 		return ResponseEntity.ok(message);
 	}
 	
+	/* delete the allocation by using the employee id*/
 	@DeleteMapping("/delete-empId/{empId}")
 	public ResponseEntity<?> deleteByEmployeeId(@PathVariable int empId) 
 			throws InvalidIdException {
@@ -66,6 +72,7 @@ public class AssetAllocationController {
 		return ResponseEntity.ok(message);
 	}
 	
+	/* update the assetallocation by using id*/
 	@PutMapping("/update/{allocationId}")
 	public AssetAllocation update(@RequestBody AssetAllocation assetAllocation,
 			@PathVariable int allocationId) throws InvalidIdException {
@@ -73,6 +80,7 @@ public class AssetAllocationController {
 		return assetAllocationService.update(assetAllocation,allocationId);
 	}
 	
+	/* get the asset allocation by using the asset id*/
 	@GetMapping("/byAssetId")
 	public List<AssetAllocation> getAssetAllocationByAssetId(@RequestParam int assetId) 
 			throws InvalidIdException {
@@ -80,6 +88,7 @@ public class AssetAllocationController {
 		return assetAllocationService.getAssetAllocationByAssetId(assetId);
 	}
 	
+	/* get the asset allocation by using the employee id*/
 	@GetMapping("/byEmpId")
 	public List<AssetAllocation> getAssetAllocationByEmployeeId(@RequestParam int empId) 
 			throws InvalidIdException {
