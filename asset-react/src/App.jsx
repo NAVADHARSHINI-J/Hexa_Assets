@@ -16,7 +16,6 @@ import LiquidAssetRequest from './components/manager/LiquidAssetRequest';
 import LiquidAssetAllocation from './components/manager/LiquidAssetAllocation';
 import LiquidAssetUnallocated from './components/manager/LiquidAssetUnallocated';
 
-
 function App() {
   
   const dispatch = useDispatch()
@@ -38,9 +37,10 @@ function App() {
         <Route path="/dashassetreq" element={<LiquidAssetRequest/>}/>
         <Route path="/dashassetall" element={<LiquidAssetAllocation/>}/>
         <Route path="/dashassetunall" element={<LiquidAssetUnallocated/>}/>
+        <Route path="/manager/signup" element={<ManagerSignUp />} />
       </Routes>
     </div>
   )
 }
 
-export default App
+export default App;

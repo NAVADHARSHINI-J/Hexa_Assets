@@ -1,6 +1,6 @@
 import { useState } from "react"
 import users from "../../data/users";
-import { Link, useNavigate } from "react-router";
+import { Link,useNavigate } from "react-router";
 import axios from "axios";
 
 function Login() {
@@ -9,7 +9,7 @@ function Login() {
     const [msgUsername, setMsgUsername] = useState(null);
     const [msgPassword, setMsgPassword] = useState(null);
     const [userData, setUserData] = useState(users);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
     const login = () => {
         let isCorrect = false;
@@ -21,17 +21,6 @@ function Login() {
             setMsgPassword("password should not be blank")
             return
         }
-
-        userData.forEach(u => {
-            if (u.username === username && u.password === password) {
-                isCorrect = true;
-                alert("alright u r legit, u role is  " + u.role)
-                switch (u.role) {
-                    case 'EMPLOYEE':
-                        //navigate to employee dashboard
-                    case 'CUSTOMER':
-                        //navigate to customer dashboard
-                switch (u.role) {
         //get the token
         axios.post("http://localhost:8081/api/user/token/generate",
             {
@@ -55,7 +44,6 @@ function Login() {
                 // console.log(resp.data.role)
                 // console.log(resp)
                 switch (resp.data.role) {
-
                     case 'EMPLOYEE':
                         //navigate to employee dashboard
                         navigate("/employee")
@@ -68,22 +56,12 @@ function Login() {
                         //navigate to manager dashboard
                         navigate("/manager")
                         break;
-                    case 'ADMIN':
-                        //navigate to executive dashboard
-                        break;
                     default:
                         break;
                 }
-            } 
-            if(isCorrect === false){
-                setMsgUsername("Invalid Credentials")
-                    default:
-                        break;
-                }
-            }
 
-        });
- })
+            })
+                .catch(err => console.log(err))
         }).catch(err => console.log(err))
         // userData.forEach(u => {
         //     if (u.username === username && u.password === password) {
@@ -162,6 +140,8 @@ function Login() {
                                     </div>
                                 </div>
                                 <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
+
+                                 <p > Don't have an Account?<br/> <Link to="/manager/signup" style={{ color: "white" }}>Sign Up as Manager</>
                                     <p > Don't have an Account? <Link to="/signupadmin" style={{ color: "white" }}>Sign Up as Admin</Link><br />
                                         <a href="#" style={{ color: "white" }}>Reset Password</a></p>
                                 </div>
