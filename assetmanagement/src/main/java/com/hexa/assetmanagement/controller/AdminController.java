@@ -57,9 +57,3 @@ public class AdminController {
 		return adminService.getByUser(user);
 	}
 }
-
-
-
-
-
-

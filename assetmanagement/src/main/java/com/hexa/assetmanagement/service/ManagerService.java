@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.hexa.assetmanagement.exception.InvalidContactException;
 import com.hexa.assetmanagement.exception.InvalidIdException;
+import com.hexa.assetmanagement.exception.UsernameInvalidException;
 import com.hexa.assetmanagement.model.Manager;
 import com.hexa.assetmanagement.model.User;
 import com.hexa.assetmanagement.repository.ManagerRepository;
@@ -19,16 +20,20 @@ public class ManagerService {
 	private ManagerRepository managerRepository;
 	@Autowired
 	private UserRepository userRepository;
- 
+    @Autowired
+	private UserService userService;
+    
 	Logger logger=LoggerFactory.getLogger("ManagerService");
 	
-	public Manager add(Manager manager, String username) throws InvalidContactException {
+	public Manager add(Manager manager, String username) throws InvalidContactException, UsernameInvalidException {
 	    // Get the user by username
 	    User user = userRepository.findByUsername(username);
 	    // Validate contact number
 	    if (manager.getContact().length() != 10) {
 	        throw new InvalidContactException("Invalid contact number...");
 	    }
+	    user.setRole("MANAGER");
+        user=userService.signup(user);
 	    // Attach the user to manager
 	    manager.setUser(user);
 	    logger.info("Manager is added: " + username);
