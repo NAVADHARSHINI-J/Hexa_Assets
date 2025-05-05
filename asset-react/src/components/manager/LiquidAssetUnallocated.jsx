@@ -50,7 +50,7 @@ function LiquidAssetUnallocated() {
         {/* Main Content */}
         <div className="col-md-10 p-4">
           <div className="card">
-            <div className="card-header d-flex justify-content-between align-items-center">
+            <div className="card-header liquid-header d-flex justify-content-between align-items-center">
               <span>Unallocated Liquid Assets</span>
               <div style={{ maxWidth: '300px' }}>
                 <input

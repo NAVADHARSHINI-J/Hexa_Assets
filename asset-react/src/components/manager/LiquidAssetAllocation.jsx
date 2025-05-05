@@ -63,7 +63,7 @@ function LiquidAssetAllocation() {
         {/* Main Content */}
         <div className="col-md-10 p-4">
           <div className="card">
-            <div className="card-header d-flex justify-content-between align-items-center">
+            <div className="card-header liquid-header d-flex justify-content-between align-items-center">
               <span>Liquid Asset Allocations</span>
               <input
                 type="text"

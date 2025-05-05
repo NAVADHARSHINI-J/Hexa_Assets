@@ -176,7 +176,6 @@ function LiquidAssetPage() {
         id="addAssetModal"
         tabIndex="-1"
         aria-labelledby="addAssetModalLabel"
-        aria-hidden="true"
       >
         <div className="modal-dialog" style={{ margin: '0', maxWidth: '400px', position: 'absolute', left: 0 }}>
           <div className="modal-content">

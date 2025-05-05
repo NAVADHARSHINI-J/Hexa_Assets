@@ -59,9 +59,9 @@ function LiquidAssetRequest() {
   };
 
   // 5. Delete request
-  const deleteRequest = async (requestId) => {
+  const deleteRequest = async (liquidAssetId) => {
     try {
-      await axios.delete(`http://localhost:8081/api/liquidassetreq/delete/by-liquid-asset/${requestId}`);
+      await axios.delete(`http://localhost:8081/api/liquidassetreq/delete/by-liquid-asset/${liquidAssetId}`);
       fetchRequests();
     } catch (error) {
       console.error('Error deleting request:', error);
@@ -80,7 +80,7 @@ function LiquidAssetRequest() {
         {/* Main Content */}
         <div className="col-md-10 p-4">
           <div className="card">
-            <div className="card-header d-flex justify-content-between align-items-center">
+            <div className="card-header liquid-header d-flex justify-content-between align-items-center">
               <span>Liquid Asset Requests</span>
               <input
                 type="text"

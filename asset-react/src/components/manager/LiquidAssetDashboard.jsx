@@ -71,7 +71,7 @@ function LiquidAssetDashboard() {
                         {/* Asset Requests Section */}
                         <div className="col-md-6">
                             <div className="card dashboard-card">
-                                <div className="card-header">
+                                <div className="card-header liquid-header">
                                     <span>Recent Requests</span>
                                     <Link to="/dashassetreq" className="btn btn-sm btn-light">View All</Link>
                                 </div>
@@ -93,7 +93,7 @@ function LiquidAssetDashboard() {
                         {/* Liquid Assets Section */}
                         <div className="col-md-6">
                             <div className="card dashboard-card">
-                                <div className="card-header">
+                                <div className="card-header liquid-header">
                                     <span>Liquid Assets</span>
                                     <Link to="/dashassetpage" className="btn btn-sm btn-light">View All</Link>
                                 </div>
