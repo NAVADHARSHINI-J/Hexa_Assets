@@ -100,7 +100,7 @@ public class SecurityConfig {
 	            .requestMatchers("/api/manager/getbyid/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/manager/update/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
  
-	            .requestMatchers("/api/employee/update/{empId}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/employee/update/{empId}").hasAnyAuthority("ADMIN", "EMPLOYEE")
 	            .requestMatchers("/api/employee/delete/{empId}").hasAuthority("ADMIN")  
 	            .requestMatchers("/api/assetrequest/add/{assetId}").hasAuthority("EMPLOYEE")  
 	            .requestMatchers("/api/assetrequest/get/{assetRequestId}").authenticated()

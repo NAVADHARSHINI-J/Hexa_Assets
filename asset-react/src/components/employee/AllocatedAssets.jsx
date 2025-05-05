@@ -6,6 +6,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 
 function AllocatedAssets() {
+    //state.<sliceName>.<key-In-InitialState>
     const assetAllocations = useSelector(state => state.assetAllocation.assetAllocation);
     const liquidAssetAllocations = useSelector(state => state.liquidAssetAllocation.liquidAssetAllocation);
    // console.log("State check", useSelector(state => state));

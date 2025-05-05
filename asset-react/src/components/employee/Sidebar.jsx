@@ -37,6 +37,11 @@ function Sidebar() {
                     </Link>
                 </li>
                 <li className="nav-item">
+                    <Link to={'/employee/profile'} className={`nav-link ${currentPath === '/employee/profile' ? 'active' : ''}`} >
+                    <i className="bi bi-person me-2"></i>Profile
+                    </Link>
+                </li>
+                <li className="nav-item">
                     <Link to={'/'} className={`nav-link`} >
                         <i className="bi bi-box-arrow-right me-2"></i>Logout
                     </Link>

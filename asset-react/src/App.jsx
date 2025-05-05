@@ -12,6 +12,8 @@ import LiquidAsset from "./components/employee/LiquidAsset";
 import TrackingRequest from "./components/employee/TrackingRequest";
 import LiquidAssetDetails from "./components/employee/LiquidAssetDetails";
 import fetchLiquidAssetAllocation from "./employeeStore/actions/liquidAssetAllocationActions";
+import Profile from "./components/employee/Profile";
+import fetchProfile from "./employeeStore/actions/profileAction";
 
 
 function App() {
@@ -21,6 +23,8 @@ function App() {
     dispatch(fetchAssetAllocation());
 
     dispatch(fetchLiquidAssetAllocation());
+
+    dispatch(fetchProfile());
   }, [])
 
   return (
@@ -36,8 +40,7 @@ function App() {
         <Route path="employee/liquidassets" element={<LiquidAsset />} /> 
         <Route path="employee/viewassetdetails/:liquidAssetId" element={<LiquidAssetDetails />} /> 
         <Route path="employee/trackingrequest" element={<TrackingRequest />} />  
-
-       
+        <Route path="employee/profile" element={<Profile />} />
 
       </Routes>
 
