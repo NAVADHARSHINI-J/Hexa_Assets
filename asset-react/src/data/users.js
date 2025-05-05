@@ -33,13 +33,9 @@ const users = [
         "id" : 6,
         "username" : "executive2@gmail.com", 
         "password" : "executive2",
-        "role" : "EXECUTIVE"
-    },
-    {
-        "id" : 7,
-        "username" : "manager@gmail.com", 
-        "password" : "manager1",
-        "role" :     "MANAGER"
+        "role" : "MANAGER"
+
+
     }
 ]
 
