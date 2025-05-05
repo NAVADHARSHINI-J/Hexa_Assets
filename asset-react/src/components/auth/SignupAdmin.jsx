@@ -1,6 +1,5 @@
 import axios from "axios";
 import { useState } from "react";
-import { Link, useNavigate } from "react-router";
 
 function SignupAdmin() {
     const [name, setName] = useState();
@@ -9,7 +8,7 @@ function SignupAdmin() {
     const [username, setUsername] = useState();
     const [password, setPassword] = useState();
     const [address, setAddress] = useState();
-    const navigate = useNavigate();
+
     const signUp = async () => {
         try {
             const response = await axios
@@ -25,7 +24,6 @@ function SignupAdmin() {
                     }
                 })
             console.log("sign up is successfull..")
-            navigate("/")
         }
         catch (err) {
             console.log(err);
@@ -40,7 +38,7 @@ function SignupAdmin() {
                         <div className="col-sm-4">
                         </div>
                         <div className="col-sm-4">
-                            <div className="card" >
+                            <div class="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
                                     <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3>
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
@@ -78,18 +76,18 @@ function SignupAdmin() {
                                         </div>
                                         <div className="col-md-12">
                                             <label className="form-label">Address</label>
-                                            <textarea className="form-control" id="address" rows="3"
+                                            <textarea class="form-control" id="address" rows="3"
                                                 onChange={($event) => { setAddress($event.target.value) }}></textarea>
                                         </div>
                                     </form>
                                 </div>
                                 <div className="mb-4 text-center">
-                                    <button type="button" className="btn btn-primary "
+                                    <button type="button" class="btn btn-primary "
                                         onClick={() => { signUp() }}>Sign Up</button>
                                 </div>
                             </div>
                             <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
-                                <p > Already have an Account? <Link to={"/"} style={{ color: "white" }}>Sign In </Link><br /></p>
+                                <p > Already have an Account? <a href="#" style={{ color: "white" }}>Sign In </a><br /></p>
 
                             </div>
                         </div>

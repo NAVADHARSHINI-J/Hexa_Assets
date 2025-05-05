@@ -1,6 +1,6 @@
 import { useState } from "react"
 import users from "../../data/users";
-import { Link, useNavigate } from "react-router";
+import { Link,useNavigate } from "react-router";
 import axios from "axios";
 
 function Login() {
@@ -100,9 +100,9 @@ function Login() {
 
                         </div>
                         <div className="col-sm-4">
-                            <div className="card" >
+                            <div class="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
-                                    <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3>
+                                    <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3><br />
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
                                 </div>
                                 <div className="card-body">
@@ -135,12 +135,12 @@ function Login() {
                                             }} />
                                     </div>
                                     <div className="mb-4 text-center">
-                                        <button type="button" className="btn btn-primary "
+                                        <button type="button" class="btn btn-primary "
                                             onClick={() => { login() }}>Login</button>
                                     </div>
                                 </div>
                                 <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
-                                    <p > Don't have an Account? <Link to="/signupadmin" style={{ color: "white" }}>Sign Up as Admin</Link><br />
+                                    <p > Don't have an Account?<br/> <Link to="/manager/signup" style={{ color: "white" }}>Sign Up as Manager</Link><br />
                                         <a href="#" style={{ color: "white" }}>Reset Password</a></p>
                                 </div>
                             </div>
