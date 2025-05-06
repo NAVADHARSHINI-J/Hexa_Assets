@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.LiquidAsset;
@@ -25,8 +26,8 @@ import com.hexa.assetmanagement.service.LiquidAssetRequestService;
 import com.hexa.assetmanagement.service.LiquidAssetService;
 
 @RestController
-@RequestMapping("/api/liquidassetreq") 
-//@CrossOrigin(origins = "http://localhost:5173/")
+@RequestMapping("/api/liquidassetreq")
+//@CrossOrigin(origins = {"http://localhost:5173"})
 public class LiquidAssetRequestController {
 
 	@Autowired
@@ -61,7 +62,7 @@ public class LiquidAssetRequestController {
     }
 
     @GetMapping("/getall")
-    public List<LiquidAssetRequest> getAll(@RequestParam int page, @RequestParam int size) {
+    public Page<LiquidAssetRequest> getAll(@RequestParam int page, @RequestParam int size) {
         Pageable pageable = PageRequest.of(page, size);
         //get all liquid asset request in page format
         return liquidAssetRequestService.getAll(pageable);
@@ -110,6 +111,28 @@ public class LiquidAssetRequestController {
         return ResponseEntity.ok(message);
     }
     
-    
+    @PostMapping("/approve/{id}")
+    public ResponseEntity<String> approveRequest(@PathVariable int id) throws InvalidIdException {
+        liquidAssetRequestService.approveRequest(id);
+        return ResponseEntity.ok("Request approved successfully");
+    }
+
+    @PostMapping("/reject/{id}")
+    public ResponseEntity<String> rejectRequest(@PathVariable int id) throws InvalidIdException {
+        liquidAssetRequestService.rejectRequest(id);
+        return ResponseEntity.ok("Request rejected successfully");
+    }
+
+    @DeleteMapping("/delete/{requestId}")
+    public ResponseEntity<String> deleteRequestById(@PathVariable int requestId) throws InvalidIdException {
+        String message = liquidAssetRequestService.deleteByRequestId(requestId);
+        return ResponseEntity.ok(message);
+    }   
+    @GetMapping("/countbystatus/{status}")
+    public ResponseEntity<Integer> countByStatus(@PathVariable String status) {
+        // Get count of requests by status
+         int count = liquidAssetRequestService.countByStatus(status);
+        return ResponseEntity.ok(count);
+    }
     
 }

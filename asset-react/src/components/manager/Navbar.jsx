@@ -6,7 +6,7 @@ function Navbar(){
     
          return(
           <div className="col-md-2 sidebar flex-column py-4">
-         <div class="text-center text-white mb-4">
+         <div className="text-center text-white mb-4">
             <h3>HexaAssets</h3>
           </div>
           <ul className="nav flex-column flex-grow-1">

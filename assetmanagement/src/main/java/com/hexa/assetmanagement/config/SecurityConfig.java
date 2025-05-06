@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.hexa.assetmanagement.service.MyService;
@@ -34,8 +35,7 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-	 
-		.cors(withDefaults())
+		        .cors(withDefaults())
 		 //cross site reference forgery to run post we have to disable this
 				.cors(withDefaults())
 				.csrf(csrf ->csrf.disable())
@@ -62,12 +62,12 @@ public class SecurityConfig {
 				.requestMatchers("/api/category/getbyid/{CategoryId}").authenticated()
 				.requestMatchers("/api/category/getall").authenticated()
 				.requestMatchers("/api/liquidasset/add").hasAuthority("MANAGER")
- 
+
 				.requestMatchers("/api/liquidasset/getall").authenticated()
 				.requestMatchers("/api/liquidasset/get/{id}").authenticated()
 				.requestMatchers("/api/liquidasset/bystatus/{status}").authenticated()
 				.requestMatchers("/api/liquidasset/byname").authenticated()
- 
+
 				.requestMatchers("/api/liquidasset/update/{liquidAssetId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidasset/delete/{liquidAssetId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetreq/add/{employeeId}/{liquidAssetId}").hasAuthority("EMPLOYEE")
@@ -76,12 +76,15 @@ public class SecurityConfig {
 				.requestMatchers("/api/liquidassetreq/bystatus").authenticated()
 				.requestMatchers("/api/liquidassetreq/byliquidAssetId/{id}").authenticated()
 				.requestMatchers("/api/liquidassetreq/byemployeeId/{id}").authenticated()
-				.requestMatchers("/api/liquidassetreq/bydate/{date}").permitAll()
+
+				.requestMatchers("/api/liquidassetreq/bydate/{date}").authenticated()
+				.requestMatchers("/api/liquidassetreq/countbystatus/{status}").authenticated()
 				.requestMatchers("/api/liquidassetreq/delete/byliquidasset/{id}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetreq/delete/byemployee/{id}").hasAuthority("MANAGER")
-				.requestMatchers("/api/liquidassetallocation/add/{assetId}/{empId}").hasAuthority("MANAGER")
-				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").permitAll()
-				.requestMatchers("/api/liquidassetallocation/getall").permitAll()
+				.requestMatchers("api/liquidassetallocation/add/{employeeId}/{liquidAssetId}").hasAuthority("MANAGER")
+				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").authenticated()
+				.requestMatchers("/api/liquidassetallocation/getall").hasAuthority("MANAGER")
+
 				.requestMatchers("/api/liquidassetallocation/employee/{employeeId}").authenticated()
 				.requestMatchers("/api/liquidassetallocation/liquidAsset/{liquidAssetId}/employees").authenticated()
 				.requestMatchers("/api/liquidassetallocation//delete/by-liquid-asset/{id}").hasAuthority("MANAGER")
@@ -138,8 +141,8 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicerequest/update/{requestId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/servicerequest/image/upload/{requestId}").hasAuthority("EMPLOYEE")
  
+
 				.requestMatchers("/swagger-ui/**").permitAll()
- 
 				.anyRequest().permitAll()
 			)
 			//no session will be stored on the server when we give stateless
@@ -150,6 +153,19 @@ public class SecurityConfig {
 
 		return http.build();
 	}
+	
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+	    CorsConfiguration configuration = new CorsConfiguration();
+	    configuration.setAllowedOrigins(List.of("http://localhost:5173"));
+	    configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	    configuration.setAllowedHeaders(List.of("*"));
+	    configuration.setAllowCredentials(true);
+	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+	    source.registerCorsConfiguration("/**", configuration);
+	    return source;
+	}
+
 
 	
 	@Bean

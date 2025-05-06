@@ -25,7 +25,7 @@ function ManagerSignUp() {
                     }
                 }
             )
-
+            alert('SignUp Sucessful!! Please Login to continue')
             console.log('sign Up success....')
         }
         catch (err) {
@@ -48,7 +48,7 @@ function ManagerSignUp() {
                     </div>
                     <div className="col-md-6">
                         <div className="card">
-                            <div className="card-header">
+                            <div className="card-header liquid-header">
                                 Manager SignUp
                             </div>
                             <div className="card-body">
@@ -83,13 +83,14 @@ function ManagerSignUp() {
                                         <input type="password" className="form-control"
                                             onChange={($event) => { setPassword($event.target.value) }} />
                                     </div>
-                                    <div className="col-12">
-                                    </div>
                                     <center>
                                         <div className="col-12">
                                             <button type="submit" className="btn btn-primary">Sign Up</button>
                                         </div>
-                                    </center>
+                                        </center>
+                                    <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
+                                <p > Already have an Account? <a href="/" style={{ color: "white" }}>Sign In </a><br /></p>
+                            </div>
                                 </form>
                             </div>
                         </div>

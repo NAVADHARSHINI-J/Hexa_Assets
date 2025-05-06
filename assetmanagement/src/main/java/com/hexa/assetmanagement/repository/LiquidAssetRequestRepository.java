@@ -14,5 +14,5 @@ public interface LiquidAssetRequestRepository extends JpaRepository<LiquidAssetR
 	List<LiquidAssetRequest> findByLiquidAssetId(int liquidAssetId);
 	List<LiquidAssetRequest> findByRequestDate(LocalDate date);
 	List<LiquidAssetRequest> findByEmployee(Employee employee);
-
+	int countByStatus(String status);
 }

@@ -106,4 +106,3 @@ public class ServiceRequestController {
  		return serviceRequestService.uploadImage(file,requestId);
  	}
 }
-

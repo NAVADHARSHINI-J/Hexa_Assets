@@ -81,17 +81,32 @@ public class LiquidAssetService {
 }
 
 	public String deleteById(int liquidAssetId) throws InvalidIdException {
-	   // Check if the liquid asset exists
-	   LiquidAsset liquidAsset = getById(liquidAssetId); // throws InvalidIdException if not found
-	   // Find all LiquidAssetAllocations linked to this id
-	   List<LiquidAssetAllocation> allocationsToDelete = liquidAssetAllocationRepository.findAll()
-	            .stream()
-	            .filter(a -> a.getLiquidAsset().getId() == liquidAsset.getId())
-	            .toList();
-	    // Delete the allocation done to this id
-	    liquidAssetAllocationRepository.deleteAll(allocationsToDelete);
-	    logger.info("Liquid asset allocations with asset ID " + liquidAsset.getId() + " deleted successfully.");
-	    return "Liquid asset allocations deleted successfully.";
+		   // Check if the liquid asset exists
+		   LiquidAsset liquidAsset = getById(liquidAssetId); // throws InvalidIdException if not found
+		   // Find all LiquidAssetAllocations linked to this id
+		   List<LiquidAssetAllocation> allocationsToDelete = liquidAssetAllocationRepository.findAll()
+		            .stream()
+		            .filter(a -> a.getLiquidAsset().getId() == liquidAsset.getId())
+		            .toList();
+		   // Delete the allocation done to this id
+		   liquidAssetAllocationRepository.deleteAll(allocationsToDelete);
+		   logger.info("Liquid asset allocations with asset ID " + liquidAsset.getId() + " deleted successfully.");
+		   //Delete the liquid asset itself
+		   liquidAssetRepository.delete(liquidAsset);
+		   logger.info("Liquid asset with ID " + liquidAsset.getId() + " deleted successfully.");
+		   return "Liquid asset and its allocations deleted successfully.";
+		}
+	
+	public double getTotalRemainingAmount() {
+	    List<LiquidAsset> allAssets = liquidAssetRepository.findAll();
+
+	    // Calculate the sum of remainingAmount for all assets
+	    double totalRemainingAmount = 0;
+	    for (LiquidAsset asset : allAssets) {
+	        totalRemainingAmount += asset.getRemainingAmount();
+	    }
+
+	    return totalRemainingAmount;
 	}
 }
 

@@ -34,6 +34,7 @@ public class UserService {
 		// check the role is given or not
 		if (user.getRole() == null)
 			user.setRole("EMPLOYEE");
+
 		// encode the password
 		String pass = encoder.encode(user.getPassword());
 		// set the encoded password in user

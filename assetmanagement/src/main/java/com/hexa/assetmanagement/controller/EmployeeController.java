@@ -169,6 +169,5 @@ public class EmployeeController {
 	@GetMapping("/getEmpSize")
 	public int getEmployeeSize() {
 		return employeeService.getEmployeeSize();
-	}
- 
+  }
 }

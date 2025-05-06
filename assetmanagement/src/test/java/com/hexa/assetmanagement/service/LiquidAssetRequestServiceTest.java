@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -85,9 +86,9 @@ public class LiquidAssetRequestServiceTest{
         Pageable pageable = PageRequest.of(0, 2);
         when(requestRepository.findAll(pageable)).thenReturn(new PageImpl<>(List.of(request)));
 
-        List<LiquidAssetRequest> result = requestService.getAll(pageable);
+        Page<LiquidAssetRequest> result = requestService.getAll(pageable);
 
-        assertEquals(1, result.size());
+        assertEquals(1, result.getSize());
         verify(requestRepository).findAll(pageable);
     }
 

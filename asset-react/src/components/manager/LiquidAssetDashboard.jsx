@@ -9,38 +9,55 @@ function LiquidAssetDashboard() {
 
     const [totalAssets, setTotalAssets] = useState(0);
     const [availableBalance, setAvailableBalance] = useState(0);
-    const [pendingWithdrawals, setPendingWithdrawals] = useState(0);
+    const [pendingRequestCount, setPendingRequestCount] = useState(0);
     const [recentRequests, setRecentRequests] = useState([]);
     const [recentAssets, setRecentAssets] = useState([]);
 
     useEffect(() => {
-        // Fetch statistics and data when the component is mounted
         fetchDashboardData();
     }, []);
 
-    // Fetch statistics and recent data
     const fetchDashboardData = async () => {
         try {
-            const response = await axios.get('/api/liquidasset/getall?page=0&size=100');
-            const assetData = response.data.content; // important: .content
+            const token=localStorage.getItem('token');
+            let headers = {
+              headers: {
+                "Authorization": `Bearer ${token}`
+              }
+            }
+            // Fetch all assets
+            const assetResponse = await axios.get(`http://localhost:8081/api/liquidasset/getall?page=0&size=10`,headers);
+            const assetData = assetResponse.data.content || [];
+            const totalAssetsCount = assetResponse.data.totalElements || 0;
 
-            const totalAssets = assetData.length;
-            const availableAssets = assetData.filter(asset => asset.status === 'Available').length;
-            const allocatedAssets = assetData.filter(asset => asset.status === 'Allocated').length;
-            const criticalAssets = assetData.filter(asset => asset.status === 'Critical').length;
+            // Fetch all requests
+            const requestResponse = await axios.get(`http://localhost:8081/api/liquidassetreq/getall?page=0&size=10`,headers);
+            const requestData = requestResponse.data.content || [];
 
-            const totalAmount = assetData.reduce((sum, asset) => sum + asset.amount, 0);
+            // Fetch total remaining amount
+            const remainingAmountResponse = await axios.get(`http://localhost:8081/api/liquidasset/totalremainingamount`,headers);
+            const totalRemainingAmount = remainingAmountResponse.data || 0;
 
-            setDashboardData({ totalAssets, availableAssets, allocatedAssets, criticalAssets, totalAmount });
+            // Fetch pending request count
+            let status = "Pending"
+            const pendingCountResponse = await axios.get(`http://localhost:8081/api/liquidassetreq/countbystatus/${status}`,headers);
+            const pendingCount = pendingCountResponse.data || 0;
+
+            // Update state
+            setTotalAssets(totalAssetsCount);
+            setAvailableBalance(totalRemainingAmount); // Set the total remaining amount
+            setPendingRequestCount(pendingCount); // Set the pending request count
+            setRecentAssets(assetData.slice(0, 2));
+            setRecentRequests(requestData.slice(0, 2));
         } catch (error) {
             console.error('Error fetching dashboard data:', error);
         }
     };
+
     return (
         <div className="container-fluid">
             <div className="row">
                 <Navbar />
-                {/* Main Content */}
                 <div className="col-md-10 p-4">
                     <center><h1 className="mb-4">Liquid Assets Dashboard</h1></center>
 
@@ -49,29 +66,29 @@ function LiquidAssetDashboard() {
                         <div className="card stat-card bg-primary text-white">
                             <div className="card-body">
                                 <h5>Total Liquid Assets</h5>
-                                <h3>${totalAssets.toLocaleString()}</h3>
+                                <h3>{totalAssets.toLocaleString()}</h3>
                             </div>
                         </div>
                         <div className="card stat-card bg-success text-white">
                             <div className="card-body">
                                 <h5>Available Balance</h5>
-                                <h3>${availableBalance.toLocaleString()}</h3>
+                                <h3>₹ {availableBalance.toLocaleString()}</h3> {/* Display the available balance */}
                             </div>
                         </div>
                         <div className="card stat-card bg-warning text-white">
                             <div className="card-body">
-                                <h5>Pending Withdrawals</h5>
-                                <h3>${pendingWithdrawals.toLocaleString()}</h3>
+                                <h5>Pending Requests</h5>
+                                <h3>{pendingRequestCount}</h3> {/* Display the count of pending requests */}
                             </div>
                         </div>
                     </div>
 
                     {/* Asset Requests and Liquid Assets Sections */}
                     <div className="row">
-                        {/* Asset Requests Section */}
+                        {/* Recent Requests */}
                         <div className="col-md-6">
                             <div className="card dashboard-card">
-                                <div className="card-header liquid-header">
+                                <div className="card-header liquid-header d-flex justify-content-between">
                                     <span>Recent Requests</span>
                                     <Link to="/dashassetreq" className="btn btn-sm btn-light">View All</Link>
                                 </div>
@@ -79,7 +96,7 @@ function LiquidAssetDashboard() {
                                     <ul className="list-group">
                                         {recentRequests.map(request => (
                                             <li className="list-group-item d-flex justify-content-between align-items-center" key={request.id}>
-                                                {request.name}
+                                                {request.reason || 'Unnamed Request'}
                                                 <span className={`badge ${request.status === 'Pending' ? 'bg-warning' : 'bg-success'}`}>
                                                     {request.status}
                                                 </span>
@@ -90,10 +107,10 @@ function LiquidAssetDashboard() {
                             </div>
                         </div>
 
-                        {/* Liquid Assets Section */}
+                        {/* Recent Liquid Assets */}
                         <div className="col-md-6">
                             <div className="card dashboard-card">
-                                <div className="card-header liquid-header">
+                                <div className="card-header liquid-header d-flex justify-content-between">
                                     <span>Liquid Assets</span>
                                     <Link to="/dashassetpage" className="btn btn-sm btn-light">View All</Link>
                                 </div>
@@ -101,9 +118,9 @@ function LiquidAssetDashboard() {
                                     <ul className="list-group">
                                         {recentAssets.map(asset => (
                                             <li className="list-group-item d-flex justify-content-between align-items-center" key={asset.id}>
-                                                {asset.name}
+                                                {asset.name || 'Unnamed Asset'}
                                                 <span className={`badge ${asset.status === 'Available' ? 'bg-success' : 'bg-warning'}`}>
-                                                    ${asset.amount.toLocaleString()}
+                                                    ${asset.remainingAmount?.toLocaleString() || 0}
                                                 </span>
                                             </li>
                                         ))}
@@ -112,6 +129,7 @@ function LiquidAssetDashboard() {
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

@@ -55,13 +55,13 @@ public class ManagerServiceTest {
         when(userRepository.findByUsername("sam")).thenReturn(m1.getUser());
         when(managerRepository.save(m1)).thenReturn(m1);
         try {
-            assertEquals(m1, managerService.add(m1, "sam"));
+            assertEquals(m1, managerService.add(m1));
         } catch (InvalidContactException e) {
         }
 
         // Use case 2: Invalid contact number
         try {
-            managerService.add(m3, "raj");
+            managerService.add(m3);
         } catch (InvalidContactException e) {
             assertEquals("Invalid contact number...", e.getMessage());
         }
@@ -70,7 +70,7 @@ public class ManagerServiceTest {
         when(userRepository.findByUsername("lara")).thenReturn(m2.getUser());
         when(managerRepository.save(m2)).thenReturn(m2);
         try {
-            assertNotEquals(m1, managerService.add(m2, "lara"));
+            assertNotEquals(m1, managerService.add(m2));
         } catch (InvalidContactException e) {
         }
 
@@ -78,7 +78,7 @@ public class ManagerServiceTest {
         when(userRepository.findByUsername("tom")).thenReturn(u1);
         when(managerRepository.save(m4)).thenReturn(m4); 
         try {
-            assertEquals(m4, managerService.add(m4, "tom"));
+            assertEquals(m4, managerService.add(m4));
         } catch (InvalidContactException e) { }
     }
 
