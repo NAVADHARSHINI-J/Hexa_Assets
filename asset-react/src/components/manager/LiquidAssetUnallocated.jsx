@@ -13,14 +13,14 @@ function LiquidAssetUnallocated() {
   useEffect(() => {
     const fetchAllocations = async () => {
       try {
-        let token = localStorage.getItem("token")
+        const token=localStorage.getItem('token');
         let headers = {
           headers: {
             "Authorization": `Bearer ${token}`
           }
         }
-        let status = "PENDING"
-        const response = await axios.get(`http://localhost:8081/api/liquidassetallocation/bystatus/${status}`, headers)
+        let status = "Pending"
+        const response = await axios.get(`http://localhost:8081/api/liquidasset/bystatus/${status}`, headers)
         console.log(response.data)
         setAllocations(response.data);
         setFilteredAllocations(response.data);
@@ -36,13 +36,13 @@ function LiquidAssetUnallocated() {
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
+  
     const filtered = allocations.filter((alloc) =>
-      alloc.liquidAssetName?.toLowerCase().includes(value.toLowerCase())
+      (alloc.id?.toString() || '').includes(value)
     );
     setFilteredAllocations(filtered);
   };
-
+  
   return (
     <div className="container-fluid">
       <div className="row">
@@ -56,7 +56,7 @@ function LiquidAssetUnallocated() {
                 <input
                   type="text"
                   className="form-control form-control-sm"
-                  placeholder="Search assets..."
+                  placeholder="Search..."
                   value={searchTerm}
                   onChange={handleSearchChange}
                 />
@@ -80,8 +80,8 @@ function LiquidAssetUnallocated() {
                       <tr key={index}>
                         <td>{alloc.id}</td>
                         <td>{alloc.name}</td>
-                        <td>{alloc.totalAmount?.totalAmount}</td>
-                        <td>{alloc.remainingAmount?.remainingAmount}</td>
+                        <td>{alloc.totalAmount}</td>
+                        <td>{alloc.remainingAmount}</td>
                         <td>{alloc.description}</td>
                         <td>
                           {alloc.status === 'Low Allocation' ? (
@@ -100,10 +100,10 @@ function LiquidAssetUnallocated() {
                 </tbody>
               </table>
             </div>
+            </div>
           </div>
         </div>
       </div>
-    </div>
   );
 }
 

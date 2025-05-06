@@ -15,12 +15,13 @@ function LiquidAssetAllocation() {
   const fetchAllocations = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8081/api/liquidassetallocation/getall', {
-        params: {
-          page: 0,
-          size: 10
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
         }
-      });
+      const response = await axios.get('http://localhost:8081/api/liquidassetallocation/getall?page=0&size=10', headers);
       setAllocations(response.data.content || response.data);
       setFilteredAllocations(response.data.content || response.data);
     } catch (error) {
@@ -30,22 +31,27 @@ function LiquidAssetAllocation() {
     }
   };
 
-  // 2. Search allocations by Employee Name or Asset Type
+  // 2. Search allocations by Employee Id or Liquid Asset Id
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
+  
     const filtered = allocations.filter((alloc) =>
-      (alloc.employee?.employeeName?.toLowerCase() || '').includes(value.toLowerCase()) ||
-      (alloc.liquidAsset?.assetType?.toLowerCase() || '').includes(value.toLowerCase())
+      (alloc.employee?.id?.toString() || '').includes(value) ||
+      (alloc.liquidAsset?.id?.toString() || '').includes(value)
     );
     setFilteredAllocations(filtered);
   };
-
   // 3. Delete allocation by Liquid Asset ID
   const deleteAllocationByLiquidAsset = async (allocationId) => {
     try {
-      await axios.delete(`http://localhost:8081/api/liquidassetallocation/delete/by-liquid-asset/${allocationId}`);
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      await axios.delete(`http://localhost:8081/api/liquidassetallocation/delete/by-liquid-asset/${allocationId}`,headers);
       fetchAllocations(); // Refresh the list after delete
     } catch (error) {
       console.error('Error deleting allocation:', error);

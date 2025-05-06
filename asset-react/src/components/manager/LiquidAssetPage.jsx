@@ -25,9 +25,13 @@ function LiquidAssetPage() {
   const fetchAssets = async () => {
     setLoading(true);
     try {
-      const response = await axios.get('http://localhost:8081/api/liquidasset/getall', {
-        params: { page: 0, size: 10 }
-      });
+      const token=localStorage.getItem('token');
+      let headers = {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+      const response = await axios.get(`http://localhost:8081/api/liquidasset/getall?page=0&size=10`, headers);
       setAssets(response.data.content || response.data);
     } catch (error) {
       console.error('Error fetching assets:', error);
@@ -43,7 +47,13 @@ function LiquidAssetPage() {
 
   const handleAddAsset = async () => {
     try {
-      await axios.post('http://localhost:8081/api/liquidasset/add', newAsset);
+      const token=localStorage.getItem('token');
+      let headers = {
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      }
+      await axios.post(`http://localhost:8081/api/liquidasset/add`, newAsset,headers);
       fetchAssets();
       resetForm();
     } catch (error) {
@@ -52,13 +62,14 @@ function LiquidAssetPage() {
   };
 
   const handleUpdateAsset = async () => {
+    const token=localStorage.getItem('token');
+    let headers = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
     try {
-      await axios.put(`http://localhost:8081/api/liquidasset/update/${newAsset.id}`, newAsset,
-        {
-          headers: {
-            "Authorization": `Bearer ${token}` // Add token handling if needed
-          }
-        })
+      await axios.put(`http://localhost:8081/api/liquidasset/update/${newAsset.id}`, newAsset,headers)
       fetchAssets();
       resetForm();
       setIsEditMode(false);
@@ -74,9 +85,14 @@ function LiquidAssetPage() {
 
   const handleDeleteAsset = async (assetId) => {
     if (!window.confirm("Are you sure you want to delete this asset?")) return;
-
+    const token=localStorage.getItem('token');
+    let headers = {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    }
     try {
-      await axios.delete(`http://localhost:8081/api/liquidasset/delete/by-liquid-asset${assetId}`);
+      await axios.delete(`http://localhost:8081/api/liquidasset/delete/${assetId}`,headers);
       fetchAssets();
     } catch (error) {
       console.error('Error deleting asset:', error);
@@ -121,10 +137,10 @@ function LiquidAssetPage() {
                   {assets.map((asset) => (
                     <div className="col-md-4 mb-4" key={asset.id}>
                       <div className="card h-100 shadow border-start border-4" style={{
-                        borderLeftColor: asset.status === 'Critical' ? '#dc3545' :
-                          asset.status === 'Limited' ? '#fd7e14' :
-                            asset.status === 'Allocated' ? '#0d6efd' :
-                              asset.status === 'Pending' ? '#6c757d' : '#198754'
+                        borderLeftColor: asset.status === 'CRITICAL' ? '#dc3545' :
+                          asset.status === 'LIMITED' ? '#fd7e14' :
+                            asset.status === 'ALLOCATED' ? '#0d6efd' :
+                              asset.status === 'PENDING' ? '#6c757d' : '#198754'
                       }}>
                         <div className="card-body">
                           <h5 className="card-title fw-bold text-primary mb-2">{asset.name}</h5>
@@ -132,10 +148,10 @@ function LiquidAssetPage() {
                           <p className="card-text mb-1"><strong>Remaining:</strong> {asset.remainingAmount}</p>
                           <p className="card-text mb-1">
                             <strong>Status:</strong>{' '}
-                            <span className={`badge ${asset.status === 'Critical' ? 'bg-danger' :
-                              asset.status === 'Limited' ? 'bg-warning text-dark' :
-                                asset.status === 'Allocated' ? 'bg-primary' :
-                                  asset.status === 'Pending' ? 'bg-secondary' : 'bg-success'
+                            <span className={`badge ${asset.status === 'CRITICAL' ? 'bg-danger' :
+                              asset.status === 'LIMITED' ? 'bg-warning text-dark' :
+                                asset.status === 'ALLOCATED' ? 'bg-primary' :
+                                  asset.status === 'PENDING' ? 'bg-secondary' : 'bg-success'
                               }`}>
                               {asset.status}
                             </span>
@@ -229,11 +245,11 @@ function LiquidAssetPage() {
                   value={newAsset.status}
                   onChange={handleInputChange}
                 >
-                  <option>Available</option>
-                  <option>Limited</option>
-                  <option>Critical</option>
-                  <option>Allocated</option>
-                  <option>Pending</option>
+                  <option>AVAILABLE</option>
+                  <option>LIMITED</option>
+                  <option>CRITICAL</option>
+                  <option>ALLOCATED</option>
+                  <option>PENDING</option>
                 </select>
               </div>
               <div className="mb-3">

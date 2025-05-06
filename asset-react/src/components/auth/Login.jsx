@@ -85,9 +85,9 @@ function Login() {
         //     }
 
         // });
-        // if (isCorrect == false) {
-        //     setMsgUsername("Invalid Credentials");
-        // }
+    if (isCorrect == false) {
+    setMsgUsername("Invalid Credentials");
+}
     }
     return (
         <div>
@@ -100,7 +100,7 @@ function Login() {
 
                         </div>
                         <div className="col-sm-4">
-                            <div class="card" >
+                            <div className="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
                                     <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3><br />
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
@@ -135,7 +135,7 @@ function Login() {
                                             }} />
                                     </div>
                                     <div className="mb-4 text-center">
-                                        <button type="button" class="btn btn-primary "
+                                        <button type="button" className="btn btn-primary "
                                             onClick={() => { login() }}>Login</button>
                                     </div>
                                 </div>

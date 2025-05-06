@@ -103,7 +103,3 @@ public class AssetAllocationController {
 		return assetAllocationService.getAllocationByAssetEmpId(assetId,empId);
 	}
 }
-
-
-
-

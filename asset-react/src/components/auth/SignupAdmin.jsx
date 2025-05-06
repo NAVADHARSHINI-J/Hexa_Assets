@@ -88,7 +88,6 @@ function SignupAdmin() {
                             </div>
                             <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
                                 <p > Already have an Account? <a href="#" style={{ color: "white" }}>Sign In </a><br /></p>
-
                             </div>
                         </div>
                     </div>

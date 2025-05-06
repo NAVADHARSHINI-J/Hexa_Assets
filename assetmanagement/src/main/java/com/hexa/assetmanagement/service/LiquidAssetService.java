@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -41,10 +42,10 @@ public class LiquidAssetService {
 		return optional.get();
 	}
 
-	public List<LiquidAsset> getAll(Pageable pageable) {
+	public Page<LiquidAsset> getAll(Pageable pageable) {
 		//get all the liquid asset request in page format 
 		logger.info("All Liquid Asset Service request are fetched");
-		return liquidAssetRepository.findAll(pageable).getContent();
+		return liquidAssetRepository.findAll(pageable);
 	}
 
 	public List<LiquidAsset> filterByStatus(String status) {
@@ -79,17 +80,32 @@ public class LiquidAssetService {
 }
 
 	public String deleteById(int liquidAssetId) throws InvalidIdException {
-	   // Check if the liquid asset exists
-	   LiquidAsset liquidAsset = getById(liquidAssetId); // throws InvalidIdException if not found
-	   // Find all LiquidAssetAllocations linked to this id
-	   List<LiquidAssetAllocation> allocationsToDelete = liquidAssetAllocationRepository.findAll()
-	            .stream()
-	            .filter(a -> a.getLiquidAsset().getId() == liquidAsset.getId())
-	            .toList();
-	    // Delete the allocation done to this id
-	    liquidAssetAllocationRepository.deleteAll(allocationsToDelete);
-	    logger.info("Liquid asset allocations with asset ID " + liquidAsset.getId() + " deleted successfully.");
-	    return "Liquid asset allocations deleted successfully.";
+		   // Check if the liquid asset exists
+		   LiquidAsset liquidAsset = getById(liquidAssetId); // throws InvalidIdException if not found
+		   // Find all LiquidAssetAllocations linked to this id
+		   List<LiquidAssetAllocation> allocationsToDelete = liquidAssetAllocationRepository.findAll()
+		            .stream()
+		            .filter(a -> a.getLiquidAsset().getId() == liquidAsset.getId())
+		            .toList();
+		   // Delete the allocation done to this id
+		   liquidAssetAllocationRepository.deleteAll(allocationsToDelete);
+		   logger.info("Liquid asset allocations with asset ID " + liquidAsset.getId() + " deleted successfully.");
+		   //Delete the liquid asset itself
+		   liquidAssetRepository.delete(liquidAsset);
+		   logger.info("Liquid asset with ID " + liquidAsset.getId() + " deleted successfully.");
+		   return "Liquid asset and its allocations deleted successfully.";
+		}
+	
+	public double getTotalRemainingAmount() {
+	    List<LiquidAsset> allAssets = liquidAssetRepository.findAll();
+
+	    // Calculate the sum of remainingAmount for all assets
+	    double totalRemainingAmount = 0;
+	    for (LiquidAsset asset : allAssets) {
+	        totalRemainingAmount += asset.getRemainingAmount();
+	    }
+
+	    return totalRemainingAmount;
 	}
 }
 

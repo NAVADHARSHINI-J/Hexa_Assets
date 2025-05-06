@@ -44,6 +44,7 @@ public class EmployeeService {
 		// get the user from employee
 		User user = employee.getUser(); 
 		//save the user in user repository to save the user for generating id of the user.
+		user.setRole("EMPLOYEE");
 		user= userService.signup(user);
 		//setting the user with user-id in employee.
 		employee.setUser(user);

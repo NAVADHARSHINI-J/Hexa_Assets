@@ -3,11 +3,14 @@ package com.hexa.assetmanagement.service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.Employee;
 import com.hexa.assetmanagement.model.LiquidAssetRequest;
@@ -46,10 +49,10 @@ public class LiquidAssetRequestService {
 	        return optional.get();
 	    }
 
-	    public List<LiquidAssetRequest> getAll(Pageable pageable) {
+	    public Page<LiquidAssetRequest> getAll(Pageable pageable) {
 	    	 logger.info("Fetched all the liquid asset requests");
 	    	 //fetch all the liquid asset request in page format
-	        return liquidAssetRequestRepository.findAll(pageable).getContent();
+	        return liquidAssetRequestRepository.findAll(pageable);
 	    }
 
 		public List<LiquidAssetRequest> filterByStatus(String status) {
@@ -101,4 +104,28 @@ public class LiquidAssetRequestService {
 		    return "All requests for Employee ID " + id + " have been deleted successfully.";
 		}
 		
+		public void approveRequest(int id) throws InvalidIdException {
+		    LiquidAssetRequest req = getById(id);
+		    req.setStatus("APPROVED");
+		    liquidAssetRequestRepository.save(req);
+		}
+
+		public void rejectRequest(int id) throws InvalidIdException {
+		    LiquidAssetRequest req = getById(id);
+		    req.setStatus("REJECTED");
+		    liquidAssetRequestRepository.save(req);
 	}
+		public String deleteByRequestId(int requestId) throws InvalidIdException {
+		    Optional<LiquidAssetRequest> optionalRequest = liquidAssetRequestRepository.findById(requestId);
+		    if (!optionalRequest.isPresent()) {
+		        throw new InvalidIdException("Invalid Request ID: " + requestId);
+		    }
+		    liquidAssetRequestRepository.deleteById(requestId);
+		    return "Request with ID " + requestId + " deleted successfully.";
+		}
+		
+		public int countByStatus(String status) {
+		    // Use repository to count the requests by status
+		    return liquidAssetRequestRepository.countByStatus(status);
+		}
+}

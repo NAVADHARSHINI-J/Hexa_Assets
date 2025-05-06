@@ -138,7 +138,7 @@ public class LiquidAssetServiceTest {
         when(liquidAssetRepository.findAll(PageRequest.of(0, 10))).thenReturn(new PageImpl<>(List.of(la1, la2, la4)));
         
         // Ensure the size of the result matches the expected number of liquid assets
-        assertEquals(3, liquidAssetService.getAll(PageRequest.of(0, 10)).size());
+        assertEquals(3, liquidAssetService.getAll(PageRequest.of(0, 10)).getSize());
     }
 
     @Test

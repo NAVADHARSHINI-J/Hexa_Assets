@@ -10,58 +10,74 @@ function LiquidAssetRequest() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredRequests, setFilteredRequests] = useState([]);
 
-  // 1. Fetch all liquid asset requests
+  // Fetch all liquid asset requests
   const fetchRequests = async () => {
     try {
-      const response = await axios.get('http://localhost:8081/api/liquidassetreq/getall', {
-        params: {
-          page: 0,
-          size: 10
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
         }
-      });
-      setRequests(response.data);
-      setFilteredRequests(response.data);
+      const response = await axios.get(`http://localhost:8081/api/liquidassetreq/getall?page=0&size=10`, headers);
+      console.log('Fetched Requests:', response.data);
+      setRequests(response.data.content || []);
+      setFilteredRequests(response.data.content || []);
     } catch (error) {
       console.error('Error fetching requests:', error);
     }
   };
 
-  // 2. Search functionality
+  // Search functionality
   const handleSearchChange = (e) => {
     const value = e.target.value;
     setSearchTerm(value);
-
     const filtered = requests.filter((req) =>
-      (req.employee?.employeeName?.toLowerCase() || '').includes(value.toLowerCase()) ||
-      (req.liquidAsset?.assetType?.toLowerCase() || '').includes(value.toLowerCase())
+      req.employee?.id?.toString().includes(value) ||
+      req.liquidAsset?.id?.toString().includes(value)
     );
     setFilteredRequests(filtered);
   };
 
-  // 3. Approve request
   const approveRequest = async (requestId) => {
     try {
-      await axios.post(`http://localhost:8081/api/liquidassetreq/approve/${requestId}`);
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      await axios.post(`http://localhost:8081/api/liquidassetreq/approve/${requestId}`,headers,);
       fetchRequests();
     } catch (error) {
       console.error('Error approving request:', error);
     }
   };
 
-  // 4. Reject request
   const rejectRequest = async (requestId) => {
     try {
-      await axios.post(`http://localhost:8081/api/liquidassetreq/reject/${requestId}`);
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      await axios.post(`http://localhost:8081/api/liquidassetreq/reject/${requestId}`,headers,);
       fetchRequests();
     } catch (error) {
       console.error('Error rejecting request:', error);
     }
   };
 
-  // 5. Delete request
-  const deleteRequest = async (liquidAssetId) => {
+  const deleteRequest = async (requestId) => {
     try {
-      await axios.delete(`http://localhost:8081/api/liquidassetreq/delete/by-liquid-asset/${liquidAssetId}`);
+      const token=localStorage.getItem('token');
+        let headers = {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        }
+      await axios.delete(`http://localhost:8081/api/liquidassetreq/delete/${requestId}`,headers,);
       fetchRequests();
     } catch (error) {
       console.error('Error deleting request:', error);
@@ -75,9 +91,7 @@ function LiquidAssetRequest() {
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
         <Navbar />
-        {/* Main Content */}
         <div className="col-md-10 p-4">
           <div className="card">
             <div className="card-header liquid-header d-flex justify-content-between align-items-center">
@@ -85,7 +99,7 @@ function LiquidAssetRequest() {
               <input
                 type="text"
                 className="form-control form-control-sm"
-                placeholder="Search..."
+                placeholder="Search by Employee or Asset ID..."
                 style={{ maxWidth: "300px" }}
                 value={searchTerm}
                 onChange={handleSearchChange}
@@ -122,15 +136,17 @@ function LiquidAssetRequest() {
                           <td>{req.employee?.id}</td>
                           <td>{req.liquidAsset?.id}</td>
                           <td>
-                            {req.status === 'Pending' && (
-                              <>
-                                <button onClick={() => approveRequest(req.id)} className="btn btn-sm btn-success me-1">Approve</button>
-                                <button onClick={() => rejectRequest(req.id)} className="btn btn-sm btn-danger me-1">Reject</button>
-                              </>
-                            )}
-                            <button onClick={() => deleteRequest(req.id)} className="btn btn-sm btn-danger">
-                              <i className="bi bi-trash"></i>
-                            </button>
+                            <div className="d-flex flex-wrap gap-1">
+                            {(req.status.toLowerCase() === 'pending') && (
+                                <>
+                                  <button onClick={() => approveRequest(req.id)} className="btn btn-sm btn-success">Approve</button>
+                                  <button onClick={() => rejectRequest(req.id)} className="btn btn-sm btn-danger">Reject</button>
+                                </>
+                              )}
+                              <button onClick={() => deleteRequest(req.id)} className="btn btn-sm btn-danger">
+                                <i className="bi bi-trash"></i> Delete
+                              </button>
+                            </div>
                           </td>
                         </tr>
                       ))
