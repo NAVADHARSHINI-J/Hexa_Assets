@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/RequestList.css'
-import Sidebar from './SidebarAdmin';
+import Sidebar from './Sidebar';
 import axios from 'axios';
 
 function RequestList() {

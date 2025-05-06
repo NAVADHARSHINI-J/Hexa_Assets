@@ -1,10 +1,8 @@
 import "./LiquidAsset.css"
 import Sidebar from './Sidebar'
 function LiquidAsset() {
-
     return (
         <div>
-
             <div className="container-fluid">
                 <div className="row">
                     {/* <!-- Sidebar --> */}

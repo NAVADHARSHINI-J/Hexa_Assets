@@ -34,6 +34,8 @@ const users = [
         "username" : "executive2@gmail.com", 
         "password" : "executive2",
         "role" : "MANAGER"
+
+
     }
 ]
 

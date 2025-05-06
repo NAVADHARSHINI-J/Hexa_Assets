@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import './css/AssetList.css'
 import axios from 'axios';
-import Sidebar from './SidebarAdmin';
+import Sidebar from './Sidebar';
 
 function AssetList() {
     const [assets, setAssets] = useState([]);

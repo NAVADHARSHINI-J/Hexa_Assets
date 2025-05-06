@@ -1,4 +1,5 @@
 
+
 import { Routes, Route } from "react-router-dom"
 import { useEffect } from "react"
 import { useDispatch } from "react-redux"
@@ -15,17 +16,15 @@ import LiquidAssetPage from './components/manager/LiquidAssetPage';
 import LiquidAssetRequest from './components/manager/LiquidAssetRequest';
 import LiquidAssetAllocation from './components/manager/LiquidAssetAllocation';
 import LiquidAssetUnallocated from './components/manager/LiquidAssetUnallocated';
-
+import ManagerSignUp from "./components/auth/ManagerSignUp";
 
 function App() {
-  
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(fetchProfile())
   }, [])
   return (
-    <div>
-      <Routes>
+     <Routes>
         <Route index path="" element={<Login />} />
         <Route path="admin" element={<AdminDashboard />} />
         <Route path="admin/employeelist" element={<EmployeeList />} />
@@ -39,8 +38,7 @@ function App() {
         <Route path="/dashassetall" element={<LiquidAssetAllocation/>}/>
         <Route path="/dashassetunall" element={<LiquidAssetUnallocated/>}/>
       </Routes>
-    </div>
-  )
+  );
 }
 
-export default App
+export default App;

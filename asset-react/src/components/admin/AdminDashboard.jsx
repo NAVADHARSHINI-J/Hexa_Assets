@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./css/Dashboard.css"
-import Sidebar from "./SidebarAdmin";
+import Sidebar from "./Sidebar";
 import axios from "axios";
 function AdminDashboard() {
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import './css/EmployeeList.css'
-import Sidebar from './SidebarAdmin';
+import Sidebar from './Sidebar';
 import axios from 'axios';
 
 function EmployeeList() {

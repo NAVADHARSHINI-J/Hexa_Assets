@@ -1,99 +1,119 @@
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useLocation } from "react-router-dom";
 import './LiquidAsset.css';
+import Navbar from './Navbar';
 
 function LiquidAssetAllocation() {
+  const location = useLocation();
+  const [allocations, setAllocations] = useState([]);
+  const [filteredAllocations, setFilteredAllocations] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  // 1. Fetch all liquid asset allocations
+  const fetchAllocations = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get('http://localhost:8081/api/liquidassetallocation/getall', {
+        params: {
+          page: 0,
+          size: 10
+        }
+      });
+      setAllocations(response.data.content || response.data);
+      setFilteredAllocations(response.data.content || response.data);
+    } catch (error) {
+      console.error('Error fetching allocations:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 2. Search allocations by Employee Name or Asset Type
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTerm(value);
+
+    const filtered = allocations.filter((alloc) =>
+      (alloc.employee?.employeeName?.toLowerCase() || '').includes(value.toLowerCase()) ||
+      (alloc.liquidAsset?.assetType?.toLowerCase() || '').includes(value.toLowerCase())
+    );
+    setFilteredAllocations(filtered);
+  };
+
+  // 3. Delete allocation by Liquid Asset ID
+  const deleteAllocationByLiquidAsset = async (allocationId) => {
+    try {
+      await axios.delete(`http://localhost:8081/api/liquidassetallocation/delete/by-liquid-asset/${allocationId}`);
+      fetchAllocations(); // Refresh the list after delete
+    } catch (error) {
+      console.error('Error deleting allocation:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchAllocations();
+  }, []);
+
   return (
     <div className="container-fluid">
       <div className="row">
-        {/* Sidebar */}
-        <div className="col-md-2 sidebar">
-          <div className="text-center text-white mb-4">
-            <h3>HexaAssets</h3>
-          </div>
-          <ul className="nav flex-column">
-            <li className="nav-item">
-              <a className="nav-link" href="manager">
-                <i className="bi bi-speedometer2 me-2"></i>Dashboard
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/dashassetpage">
-                <i className="bi bi-cash-stack me-2"></i>Liquid Assets
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/dashassetreq">
-                <i className="bi bi-plus-circle me-2"></i>Liquid Asset Request
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" href="/dashassetall">
-                <i className="bi bi-clipboard-check me-2"></i>Liquid Asset Allocation
-              </a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="/dashassetunall">
-                <i className="bi bi-archive me-2"></i>Unallocated Liquid Assets
-              </a>
-            </li>
-          </ul>
-        </div>
-
+        <Navbar />
         {/* Main Content */}
         <div className="col-md-10 p-4">
           <div className="card">
-            <div className="card-header">
-              <span>Liquid Asset Allocation</span>
-              <form className="d-flex" style={{ maxWidth: '300px' }} method="get">
-                <input
-                  type="text"
-                  className="form-control form-control-sm"
-                  name="search"
-                  placeholder="Search requests..."
-                />
-                <button type="submit" className="btn btn-sm btn-outline-light">
-                  <i className="bi bi-search"></i>
-                </button>
-              </form>
+            <div className="card-header liquid-header d-flex justify-content-between align-items-center">
+              <span>Liquid Asset Allocations</span>
+              <input
+                type="text"
+                className="form-control form-control-sm"
+                placeholder="Search..."
+                style={{ maxWidth: "300px" }}
+                value={searchTerm}
+                onChange={handleSearchChange}
+              />
             </div>
             <div className="card-body">
-              <table className="table table-striped">
-                <thead>
-                  <tr>
-                    <th>Asset Type</th>
-                    <th>Total Amount</th>
-                    <th>Allocated Amount</th>
-                    <th>Remaining Amount</th>
-                    <th>Allocation Percentage</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>Cash Reserves</td>
-                    <td>$500,000</td>
-                    <td>$350,000</td>
-                    <td>$150,000</td>
-                    <td>70%</td>
-                    <td><span className="badge bg-success">Optimal</span></td>
-                  </tr>
-                  <tr>
-                    <td>Short-Term Investments</td>
-                    <td>$250,000</td>
-                    <td>$100,000</td>
-                    <td>$150,000</td>
-                    <td>40%</td>
-                    <td><span className="badge bg-warning">Moderate</span></td>
-                  </tr>
-                  <tr>
-                    <td>Money Market Funds</td>
-                    <td>$350,000</td>
-                    <td>$200,000</td>
-                    <td>$150,000</td>
-                    <td>57%</td>
-                    <td><span className="badge bg-success">Optimal</span></td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="table-responsive">
+                <table className="table table-striped">
+                  <thead>
+                    <tr>
+                      <th>Id</th>
+                      <th>Allocated Amount</th>
+                      <th>Allocated Date</th>
+                      <th>Employee Id</th>
+                      <th>Liquid Asset Id</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredAllocations.length > 0 ? (
+                      filteredAllocations.map((alloc) => (
+                        <tr key={alloc.id}>
+                          <td>{alloc.id}</td>
+                          <td>{alloc.allocatedAmount}</td>
+                          <td>{alloc.allocatedDate}</td>
+                          <td>{alloc.employee?.id}</td>
+                          <td>{alloc.liquidAsset?.id}</td>
+                          <td>
+                            <button
+                              onClick={() => deleteAllocationByLiquidAsset(alloc.liquidAsset?.id)}
+                              className="btn btn-sm btn-danger me-1"
+                            >
+                              <i className="bi bi-trash"></i> Delete
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <tr>
+                        <td colSpan="6" className="text-center">No allocations found.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
