@@ -25,7 +25,7 @@ import com.hexa.assetmanagement.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173"})
 public class UserController {
 	@Autowired
     private UserService userService;

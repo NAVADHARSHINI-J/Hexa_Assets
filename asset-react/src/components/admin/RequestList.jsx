@@ -62,6 +62,7 @@ function RequestList() {
             //delete the updated
             let temp = [...servicerequests]
             temp = temp.filter(s => s.id !== serviceRequest.id)
+            temp.push(response.data)
             setServicerequests(temp)
         } catch (error) {
             console.log(error);
@@ -99,6 +100,7 @@ function RequestList() {
             //delete the updated
             let temp = [...servicerequests]
             temp = temp.filter(s => s.id !== serviceRequest.id)
+            temp.push(response.data)
             setServicerequests(temp)
         } catch (error) {
             console.log(error);
@@ -120,6 +122,7 @@ function RequestList() {
             )
             let temp = [...newrequests]
             temp = temp.filter(n => n.id !== newRequest.id)
+            temp.push(response.data)
             setNewrequests(temp)
         } catch (error) {
             console.log(error)
@@ -151,6 +154,7 @@ function RequestList() {
             )
             let temp = [...newrequests]
             temp = temp.filter(n => n.id !== newRequest.id)
+            temp.push(response.data)
             setNewrequests(temp)
         } catch (error) {
             console.log(error)
@@ -500,8 +504,8 @@ function RequestList() {
                                 <button type='button' className='btn btn-primary' onClick={() => { setShowImage(true) }} >View Image</button>
                             </div>
                             {
-                                showImage ? <div className="text-center">
-                                    <img src="/images/sample1.png" className="img-thumbnail rounded" />
+                                showImage && selectedService.imageUrl !== null ? <div className="text-center">
+                                    <img src={`/images/${selectedService.imageUrl.split("\\").pop()}`} className="img-thumbnail rounded" />
                                 </div> : ""
                             }
                         </div>

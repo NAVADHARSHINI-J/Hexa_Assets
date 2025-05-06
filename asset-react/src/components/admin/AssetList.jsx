@@ -6,7 +6,7 @@ import Sidebar from './Sidebar';
 function AssetList() {
     const [assets, setAssets] = useState([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(3);
+    const [size, setSize] = useState(9);
     const [totalpage, setTotalpage] = useState(0);
     const [pageArray, setPageArray] = useState([]);
     const [selectedAsset, setSelectedAsset] = useState({});

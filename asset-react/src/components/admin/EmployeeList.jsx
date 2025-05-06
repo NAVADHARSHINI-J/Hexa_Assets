@@ -6,7 +6,7 @@ import axios from 'axios';
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(2);
+    const [size, setSize] = useState(9);
     const [pageArray, setPageArray] = useState([]);
     const [totalpage, setTotalpage] = useState(0);
     const [department, setDepartment] = useState([]);
@@ -28,9 +28,9 @@ function EmployeeList() {
         }
     });
     const [allocation, setAllocation] = useState([]);
-    const [singleAllocation, setSingleAllocation] = useState();
+    const [singleAllocation, setSingleAllocation] = useState("");
     const [asset, setAsset] = useState({});
-    const [assetId, setAssetId] = useState();
+    const [assetId, setAssetId] = useState("");
     const [allocationDate, setAllocationDate] = useState([]);
     const [showAlert, setShowAlert] = useState(false);
     const [showErrorAlert, setShowErrorAlert] = useState(false);

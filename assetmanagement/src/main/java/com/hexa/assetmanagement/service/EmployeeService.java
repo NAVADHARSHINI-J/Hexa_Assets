@@ -43,6 +43,7 @@ public class EmployeeService {
 			throw new InvalidContactException("Invalid Contact number....");
 		// get the user from employee
 		User user = employee.getUser(); 
+		user.setRole("EMPLOYEE");	
 		//save the user in user repository to save the user for generating id of the user.
 		user= userService.signup(user);
 		//setting the user with user-id in employee.
