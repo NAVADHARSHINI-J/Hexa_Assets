@@ -1,11 +1,15 @@
 package com.hexa.assetmanagement.config;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +17,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 import com.hexa.assetmanagement.service.MyService;
 
 @Configuration
@@ -28,6 +35,7 @@ public class SecurityConfig {
 		http
 	 
 		 //cross site reference forgery to run post we have to disable this
+				.cors(withDefaults())
 				.csrf(csrf ->csrf.disable())
 				.authorizeHttpRequests((authorize) -> authorize
 
@@ -52,7 +60,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/category/getbyid/{CategoryId}").permitAll()
 				.requestMatchers("/api/category/getall").permitAll()
 				.requestMatchers("/api/category/getbyid/{CategoryId}").authenticated()
-				.requestMatchers("/api/category/getall").authenticated(
+				.requestMatchers("/api/category/getall").authenticated()
 				.requestMatchers("/api/liquidasset/add").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidasset/getall").permitAll()
 				.requestMatchers("/api/liquidasset/get/{id}").permitAll()
@@ -126,12 +134,14 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicerequest/delete-empId/{empId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/servicerequest/update/{requestId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/servicerequest/image/upload/{requestId}").hasAuthority("EMPLOYEE")
-
+				.requestMatchers("/swagger-ui/**").permitAll()
  
-				.anyRequest().authenticated()
+				.anyRequest().permitAll()
 			)
+			//no session will be stored on the server when we give stateless
 			.sessionManagement(session->session
 					.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			//please place the jwtfilter before usernamepassword authentication filter 
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
@@ -144,12 +154,27 @@ public class SecurityConfig {
 		dao.setUserDetailsService(myService);
 		return dao;
 	}
+	
+	@Bean
+ 	UrlBasedCorsConfigurationSource corsConfigurationSource() {
+ 	    CorsConfiguration configuration = new CorsConfiguration();
+ 	    configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+ 	    configuration.setAllowedHeaders(List.of("*"));
+ 	    configuration.setAllowCredentials(true);
+ 	    configuration.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+ 	    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+ 	    source.registerCorsConfiguration("/**", configuration);
+ 	    return source;
+ 	}
 
+	/*this bean is needed to encode the password*/
 	@Bean
 	BCryptPasswordEncoder encodePass() {
 		return new BCryptPasswordEncoder();
 	}
-
+	
+	/*we created a bean of authentication manager because we want it to authenticate the credentails
+	 * in token generate*/
 	@Bean
 	AuthenticationManager getAuthentication(AuthenticationConfiguration auth) throws Exception {
 		return auth.getAuthenticationManager();

@@ -185,7 +185,7 @@ public class ServiceRequestService {
  			throw new RuntimeException("Image Type Invalid");
  		}
  		
- 		String uploadPath= "E:\\SpringBoot Projects\\assetmanagement\\uploads";
+ 		String uploadPath= "E:\\SpringBoot Projects\\Fullstack Project\\asset-react\\public\\images";
  		
  		/*Create directory *///Check if directory is present else create it
  		Files.createDirectories(Paths.get(uploadPath));

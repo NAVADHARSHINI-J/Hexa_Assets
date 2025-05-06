@@ -33,7 +33,7 @@ public class AssetAllocationService {
 	/* 1. Get the asset by using id and set it in asset allocation 
 	 * 2. Get the employee by using the id and set it in asset allocation 
 	 * 3. Check the quantity of the asset is greater than 0 else throw the assetUnavailable exception
-	 * 4. check that the date is given if not set date as today data 
+	 * 4. check that the date is given if not set date as today date 
 	 * 5. reduce the quantity of the asset by 1 and save that asset
 	 * 6. save the asset allocation*/
 	public AssetAllocation addAssetAllocation(int assetId, int empId,
