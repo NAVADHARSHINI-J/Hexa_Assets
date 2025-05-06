@@ -16,22 +16,31 @@ public class DepartmentService {
 	@Autowired
 	private DepartmentRepository departmentRepository;
 
+	/*
+	 * saving the department information in department repo
+	 */
 	public Department addDepartment(Department department) {
-		//saving the department information.
 		return departmentRepository.save(department);
 	}
 
+	/*
+	 * getting a deaprtment by its id.
+	 * check if the id is valid or not
+	 * then proceed. 
+	 */
 	public Department getById(int departmentId) throws InvalidIdException {
 		//check if the department id exists or not.
 		Optional<Department> op = departmentRepository.findById(departmentId);
-		//if not threw an exception.
+		//if not throw an exception.
 		if (op.isEmpty())
 			throw new InvalidIdException("Department Id is invalid....");
 		return op.get();
 	}
 
+	/*
+	 * returning the list of departments. 
+	 */
 	public List<Department> getAll() {
-		//returning the list of departments.
 		return departmentRepository.findAll();
 	}
 

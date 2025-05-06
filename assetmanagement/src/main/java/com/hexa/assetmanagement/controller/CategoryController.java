@@ -17,7 +17,7 @@ import com.hexa.assetmanagement.service.CategoryService;
 
 @RestController
 @RequestMapping("/api/category")
-@CrossOrigin(origins = "http://localhost:5173/")
+//@CrossOrigin(origins = "http://localhost:5173/")
 public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;

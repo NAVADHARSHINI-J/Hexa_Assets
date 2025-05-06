@@ -17,26 +17,34 @@ import com.hexa.assetmanagement.service.DepartmentService;
 
 @RestController
 @RequestMapping("/api/department")
-@CrossOrigin(origins = "http://localhost:5173/")
+//@CrossOrigin(origins = "http://localhost:5173/")
 public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;
 	
+	/*
+	 * adding a new department by getting the department reference thru request body 
+	 */
 	@PostMapping("/add")
 	public Department addDepartment(@RequestBody Department department) {
-		//adding a new department.
+		//passing the department reference to the service.
 		return departmentService.addDepartment(department);
 	}
 
+	/*
+	 * getting a particular department with it's id. 
+	 */
 	@GetMapping("/getbyid/{departmentId}")
 	public Department getById(@PathVariable int departmentId) throws InvalidIdException {
-		//getting a particular department with it's id.
+		// passing the department id to service.
 		return departmentService.getById(departmentId);
 	}
 	
+	/*
+	 * getting the list of departments 
+	 */
 	@GetMapping("/getall")
-	public List<Department> getAll(){
-		//getting the list of departments exists.
+	public List<Department> getAll(){ 
 		return departmentService.getAll();
 	}
 }

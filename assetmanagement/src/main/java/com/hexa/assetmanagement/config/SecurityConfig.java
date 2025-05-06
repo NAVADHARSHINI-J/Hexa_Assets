@@ -1,5 +1,6 @@
 package com.hexa.assetmanagement.config;
 
+ 
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class SecurityConfig {
 	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 	 
+		.cors(withDefaults())
 		 //cross site reference forgery to run post we have to disable this
 				.cors(withDefaults())
 				.csrf(csrf ->csrf.disable())
@@ -60,26 +62,28 @@ public class SecurityConfig {
 				.requestMatchers("/api/category/getbyid/{CategoryId}").authenticated()
 				.requestMatchers("/api/category/getall").authenticated()
 				.requestMatchers("/api/liquidasset/add").hasAuthority("MANAGER")
-				.requestMatchers("/api/liquidasset/getall").permitAll()
-				.requestMatchers("/api/liquidasset/get/{id}").permitAll()
-				.requestMatchers("/api/liquidasset/bystatus/{status}").permitAll()
-				.requestMatchers("/api/liquidasset/byname").permitAll()
+ 
+				.requestMatchers("/api/liquidasset/getall").authenticated()
+				.requestMatchers("/api/liquidasset/get/{id}").authenticated()
+				.requestMatchers("/api/liquidasset/bystatus/{status}").authenticated()
+				.requestMatchers("/api/liquidasset/byname").authenticated()
+ 
 				.requestMatchers("/api/liquidasset/update/{liquidAssetId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidasset/delete/{liquidAssetId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetreq/add/{employeeId}/{liquidAssetId}").hasAuthority("EMPLOYEE")
-				.requestMatchers("/api/liquidassetreq/getbyid/{id}").permitAll()
-				.requestMatchers("/api/liquidassetreq/getall").permitAll()
-				.requestMatchers("/api/liquidassetreq/bystatus").permitAll()
-				.requestMatchers("/api/liquidassetreq/byliquidAssetId/{id}").permitAll()
-				.requestMatchers("/api/liquidassetreq/byemployeeId/{id}").permitAll()
+				.requestMatchers("/api/liquidassetreq/getbyid/{id}").authenticated()
+				.requestMatchers("/api/liquidassetreq/getall").authenticated()
+				.requestMatchers("/api/liquidassetreq/bystatus").authenticated()
+				.requestMatchers("/api/liquidassetreq/byliquidAssetId/{id}").authenticated()
+				.requestMatchers("/api/liquidassetreq/byemployeeId/{id}").authenticated()
 				.requestMatchers("/api/liquidassetreq/bydate/{date}").permitAll()
 				.requestMatchers("/api/liquidassetreq/delete/byliquidasset/{id}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetreq/delete/byemployee/{id}").hasAuthority("MANAGER")
-				.requestMatchers("api/liquidassetallocation/add/{employeeId}/{liquidAssetId}").hasAuthority("MANAGER")
+				.requestMatchers("/api/liquidassetallocation/add/{assetId}/{empId}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetallocation/getbyid/{id}").permitAll()
 				.requestMatchers("/api/liquidassetallocation/getall").permitAll()
-				.requestMatchers("/api/liquidassetallocation/employee/{employeeId}").permitAll()
-				.requestMatchers("/api/liquidassetallocation/liquidAsset/{liquidAssetId}/employees").permitAll()
+				.requestMatchers("/api/liquidassetallocation/employee/{employeeId}").authenticated()
+				.requestMatchers("/api/liquidassetallocation/liquidAsset/{liquidAssetId}/employees").authenticated()
 				.requestMatchers("/api/liquidassetallocation//delete/by-liquid-asset/{id}").hasAuthority("MANAGER")
 				.requestMatchers("/api/liquidassetallocation/delete/by-employee/{id}").hasAuthority("MANAGER")
                 .requestMatchers("/api/asset/add/{categoryId}").hasAuthority("ADMIN")
@@ -94,12 +98,13 @@ public class SecurityConfig {
 	            .requestMatchers("/api/admin/getall").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/getbyid/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/admin/update/{AdminId}").hasAnyAuthority("ADMIN","MANAGER")
-	            .requestMatchers("/api/employee/add-by-employee/{departmentId}").hasAuthority("EMPLOYEE") 
+	            .requestMatchers("/api/employee/add-employee/{departmentId}").permitAll() 
 	            .requestMatchers("/api/employee/getbyid/{empId}").authenticated()
 	            .requestMatchers("/api/employee/getall").hasAnyAuthority("ADMIN", "MANAGER")
  
 	            .requestMatchers("/api/employee/getbyname").authenticated()
 	            .requestMatchers("/api/employee/getbydepartment").authenticated()
+	            .requestMatchers("/api/employee/getbyuser/{userId}").authenticated()
  
 	            .requestMatchers("/api/asset/update-asset/{id}").hasAuthority("ADMIN")
 	            .requestMatchers("/api/manager/add").hasAnyAuthority("ADMIN","MANAGER")
@@ -107,7 +112,7 @@ public class SecurityConfig {
 	            .requestMatchers("/api/manager/getbyid/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
 	            .requestMatchers("/api/manager/update/{ManagerId}").hasAnyAuthority("ADMIN","MANAGER")
  
-	            .requestMatchers("/api/employee/update/{empId}").hasAuthority("ADMIN")
+	            .requestMatchers("/api/employee/update/{empId}").hasAnyAuthority("ADMIN", "EMPLOYEE")
 	            .requestMatchers("/api/employee/delete/{empId}").hasAuthority("ADMIN")  
 	            .requestMatchers("/api/assetrequest/add/{assetId}").hasAuthority("EMPLOYEE")  
 	            .requestMatchers("/api/assetrequest/get/{assetRequestId}").authenticated()
@@ -122,7 +127,7 @@ public class SecurityConfig {
  
 	            .requestMatchers("/api/department/add").authenticated()
 	            .requestMatchers("/api/department/getbyid/{departmentId}").authenticated()
-	            .requestMatchers("/api/department/getall").authenticated()
+	            .requestMatchers("/api/department/getall").permitAll()
  
 				.requestMatchers("/api/assetallocation/delete-empId/{empId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/assetallocation/update/{allocationId}").hasAnyAuthority("ADMIN","EMPLOYEE")
@@ -132,6 +137,7 @@ public class SecurityConfig {
 				.requestMatchers("/api/servicerequest/delete-empId/{empId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/servicerequest/update/{requestId}").hasAuthority("ADMIN")
 				.requestMatchers("/api/servicerequest/image/upload/{requestId}").hasAuthority("EMPLOYEE")
+ 
 				.requestMatchers("/swagger-ui/**").permitAll()
  
 				.anyRequest().permitAll()
@@ -145,6 +151,19 @@ public class SecurityConfig {
 		return http.build();
 	}
 
+	
+	@Bean
+	UrlBasedCorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+		configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+		configuration.setAllowedHeaders(List.of("*"));
+		configuration.setAllowCredentials(true);
+ 	  //  configuration.setExposedHeaders(List.of("Authorization"));
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
+	}
 	@Bean
 	AuthenticationProvider myAuth() {
 		DaoAuthenticationProvider dao = new DaoAuthenticationProvider();

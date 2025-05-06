@@ -31,3 +31,20 @@ body {
 .sidebar .nav-link.active {
     background-color: var(--accent-color);
 }
+
+.p-message-success {
+    background-color: #28a745 !important; /* Bootstrap Success Green */
+    border-color: #1e7e34 !important; 
+    border: none;
+    color: white;
+}
+
+.p-message .p-message-icon {
+    color: white !important;
+}
+
+.p-message .p-message-close {
+    color: white !important;
+}
+
+ 

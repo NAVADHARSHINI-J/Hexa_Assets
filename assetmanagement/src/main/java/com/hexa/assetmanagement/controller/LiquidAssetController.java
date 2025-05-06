@@ -1,7 +1,9 @@
 package com.hexa.assetmanagement.controller;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -15,17 +17,22 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.hexa.assetmanagement.dto.LiquidAssetDto;
 import com.hexa.assetmanagement.exception.InvalidIdException;
 import com.hexa.assetmanagement.model.LiquidAsset;
 import com.hexa.assetmanagement.service.LiquidAssetService;
 
 @RestController
 @RequestMapping("/api/liquidasset")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173/")
 public class LiquidAssetController {
 
 	@Autowired
 	private LiquidAssetService liquidAssetService;
+	
+	@Autowired
+	private LiquidAssetDto liquidAssetDto;
 
 	@PostMapping("/add") 
 	public LiquidAsset addLiquidAsset(@RequestBody LiquidAsset liquidAsset) {
@@ -40,16 +47,30 @@ public class LiquidAssetController {
 	}
 
 	@GetMapping("/getall")
-	public List<LiquidAsset> getAll(@RequestParam int page, @RequestParam int size) {
+	public LiquidAssetDto getAll(@RequestParam int page, @RequestParam int size) {
 		Pageable pageable = PageRequest.of(page, size);
-		//getting all liquid assets from the database
-		return liquidAssetService.getAll(pageable);
+		Page<LiquidAsset> liquidAssetPage = liquidAssetService.getAll(pageable);
+		liquidAssetDto.setList(liquidAssetPage.getContent());
+		//typecasting because get total elements returns long.
+		liquidAssetDto.setTotalElements((int)liquidAssetPage.getTotalElements());
+		liquidAssetDto.setTotalPages(liquidAssetPage.getTotalPages());
+		liquidAssetDto.setSize(size);
+		liquidAssetDto.setCurrentPage(page);
+		 
+		return liquidAssetDto;
 	}
 
 	@GetMapping("/bystatus/{status}")
-    public ResponseEntity<List<LiquidAsset>> getByStatus(@PathVariable String status) {
+    public LiquidAssetDto getByStatus(@PathVariable String status, @RequestParam int page, @RequestParam int size) {
         // logic to retrieve assets by status
-        return ResponseEntity.ok(liquidAssetService.filterByStatus(status));
+		Pageable pageable = PageRequest.of(page, size);
+		Page<LiquidAsset> liquidAssetPage = liquidAssetService.filterByStatus(status, pageable);
+		liquidAssetDto.setList(liquidAssetPage.getContent());
+		liquidAssetDto.setSize(size);
+		liquidAssetDto.setTotalPages(liquidAssetPage.getTotalPages());
+		liquidAssetDto.setTotalElements((int)liquidAssetPage.getTotalElements());
+		liquidAssetDto.setCurrentPage(page);
+        return liquidAssetDto; 
     }
 	
 	@GetMapping("/byname/{name}")

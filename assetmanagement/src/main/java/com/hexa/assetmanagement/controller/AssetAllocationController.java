@@ -23,7 +23,9 @@ import com.hexa.assetmanagement.service.AssetAllocationService;
 
 @RestController
 @RequestMapping("/api/assetallocation")
-@CrossOrigin(origins = "http://localhost:5173")
+ 
+//@CrossOrigin(origins = "http://localhost:5173/")
+ 
 public class AssetAllocationController {
 
 	@Autowired

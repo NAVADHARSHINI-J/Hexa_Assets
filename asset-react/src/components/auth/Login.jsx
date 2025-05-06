@@ -1,18 +1,17 @@
-import { useState } from "react"
-import users from "../../data/users";
+ 
+import { useState } from "react" 
 import { Link,useNavigate } from "react-router";
+ 
 import axios from "axios";
 
 function Login() {
     const [username, setUsername] = useState(null);
     const [password, setPassword] = useState(null);
     const [msgUsername, setMsgUsername] = useState(null);
-    const [msgPassword, setMsgPassword] = useState(null);
-    const [userData, setUserData] = useState(users);
+    const [msgPassword, setMsgPassword] = useState(null); 
     const navigate = useNavigate();
 
-    const login = () => {
-        let isCorrect = false;
+    const login = () => { 
         if (username === null || username === "" || username === undefined) {
             setMsgUsername("username should not be blank")
             return
@@ -40,9 +39,19 @@ function Login() {
                         "Authorization": `Bearer ${token}`
                     }
                 }
-            ).then(resp => {
-                // console.log(resp.data.role)
-                // console.log(resp)
+            ).then(resp => { 
+                const userId=resp.data.id; 
+                axios.get(`http://localhost:8081/api/employee/getbyuser/${userId}`,
+                    {
+                        headers: {
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }
+                ).then(empResp=>{
+                    let employeeId = empResp.data.id;
+                    console.log(employeeId);
+                    localStorage.setItem("employeeId", employeeId);
+                })
                 switch (resp.data.role) {
                     case 'EMPLOYEE':
                         //navigate to employee dashboard
@@ -62,32 +71,8 @@ function Login() {
 
             })
                 .catch(err => console.log(err))
-        }).catch(err => console.log(err))
-        // userData.forEach(u => {
-        //     if (u.username === username && u.password === password) {
-        //         isCorrect = true;
-        //         switch (u.role) {
-        //             case 'EMPLOYEE':
-        //                 //navigate to employee dashboard
-        //                 navigate("/employee")
-        //                 break;
-        //             case 'ADMIN':
-        //                 //navigate to admin dashboard
-        //                 navigate("/admin")
-        //                 break;
-        //             case 'MANAGER':
-        //                 //navigate to manager dashboard
-        //                 navigate("/manager")
-        //                 break;
-        //             default:
-        //                 break;
-        //         }
-        //     }
-
-        // });
-        // if (isCorrect == false) {
-        //     setMsgUsername("Invalid Credentials");
-        // }
+        }).catch(err => console.log(err)) 
+     
     }
     return (
         <div>
@@ -100,7 +85,7 @@ function Login() {
 
                         </div>
                         <div className="col-sm-4">
-                            <div class="card" >
+                            <div className="card" >
                                 <div className="card-header text-center" style={{ backgroundColor: "#2E7893" }}>
                                     <h3 style={{ color: "white", fontFamily: 'Georgia' }}>Hexa Assets</h3><br />
                                     <h5 style={{ color: "white" }}>Asset Management System</h5>
@@ -135,13 +120,18 @@ function Login() {
                                             }} />
                                     </div>
                                     <div className="mb-4 text-center">
-                                        <button type="button" class="btn btn-primary "
+                                        <button type="button" className="btn btn-primary "
                                             onClick={() => { login() }}>Login</button>
                                     </div>
                                 </div>
                                 <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
-                                    <p > Don't have an Account?<br/> <Link to="/manager/signup" style={{ color: "white" }}>Sign Up as Manager</Link><br />
-                                        <a href="#" style={{ color: "white" }}>Reset Password</a></p>
+ 
+                                    <p > Don't have an Account? </p> 
+                                    <Link to={"/employee/signup"}>Sign Up as Employee </Link><br />
+                                     <Link to={"/signupadmin"}>Sign Up as Admin </Link><br />
+                                       <Link to={"/manager/signup"}>Sign Up as Manager </Link><br />
+                                    
+ 
                                 </div>
                             </div>
                         </div>
