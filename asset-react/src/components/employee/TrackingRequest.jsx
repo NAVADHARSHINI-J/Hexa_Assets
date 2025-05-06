@@ -11,11 +11,13 @@ function TrackingRequest() {
     useEffect(() => {
 
         let empId = localStorage.getItem('employeeId')
+        let token = localStorage.getItem('token')
+        let headers = {headers : {"Authorization" : `Bearer ${token}`}}
         if (activeTab === "asset") {
             const getAssetTracking = async () => {
 
                 try {
-                    await axios.get(`http://localhost:8081/api/assetrequest/getbyempid/${empId}`)
+                    await axios.get(`http://localhost:8081/api/assetrequest/getbyempid/${empId}`, headers)
                         .then(response => {
                             console.log("asset tracking response "+ response.data);
                             setAssetTracking(response.data);
@@ -31,7 +33,7 @@ function TrackingRequest() {
         else if(activeTab==="service"){
             const getServiceTracking=async()=>{
                 try {
-                    await axios.get(`http://localhost:8081/api/servicerequest/byEmployeeId?empId=${empId}`)
+                    await axios.get(`http://localhost:8081/api/servicerequest/byEmployeeId?empId=${empId}`, headers)
                 .then(response=>{
                     console.log("service tracking response "+ response.data);
                     setServiceTracking(response.data);

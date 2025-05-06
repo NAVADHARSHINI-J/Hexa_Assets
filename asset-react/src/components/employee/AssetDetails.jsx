@@ -12,9 +12,12 @@ function AssetDetails() {
     console.log("asset id: ", assetId);
 
     useEffect(() => {
+
+        let token = localStorage.getItem('token');
+        let headers ={headers : {"Authorization" : `Bearer ${token}`}}
         const getAssetsById = async () => {
             try {
-                const response = await axios.get(`http://localhost:8081/api/asset/getbyid/${assetId}`);
+                const response = await axios.get(`http://localhost:8081/api/asset/getbyid/${assetId}`, headers);
                 setAssetDetails(response.data)
             } catch (error) {
 

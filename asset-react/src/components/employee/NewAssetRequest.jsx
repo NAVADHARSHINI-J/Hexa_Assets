@@ -18,6 +18,9 @@ function NewAssetRequest() {
         $event.preventDefault();
         const formattedDate = requestDate?.toLocaleDateString('en-CA');
 
+        let token = localStorage.getItem('token');
+        let headers ={headers : {"Authorization" : `Bearer ${token}`}}
+
         let obj = {
             'requestDate': formattedDate,
             'reason': reason
@@ -27,7 +30,7 @@ function NewAssetRequest() {
         console.log("Request Payload:", obj);
 
         try {
-            const response = await axios.post(`http://localhost:8081/api/assetrequest/add/${assetId || manualAssetId}`, obj);
+            const response = await axios.post(`http://localhost:8081/api/assetrequest/add/${assetId || manualAssetId}`, obj, headers);
             console.log(response);
             console.log("Asset request posted!")
 

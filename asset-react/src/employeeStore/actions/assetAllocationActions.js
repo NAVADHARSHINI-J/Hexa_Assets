@@ -4,6 +4,7 @@ import { setAssetAllocation } from "../assetAllocationSlice"
 
 const fetchAssetAllocation =()=>async(dispatch)=>{
  
+    //reducers only respond to actions. And the only way to send an action to a reducer is via dispatch().
     const employeeId = localStorage.getItem("employeeId");
     let token = localStorage.getItem("token")
 

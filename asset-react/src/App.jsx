@@ -21,7 +21,7 @@ function App() {
   const dispatch = useDispatch();
   useEffect(()=> {
     dispatch(fetchAssetAllocation());
-
+    
     dispatch(fetchLiquidAssetAllocation());
 
     dispatch(fetchProfile());

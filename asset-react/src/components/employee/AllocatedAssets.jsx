@@ -2,7 +2,7 @@ import axios from "axios";
 import "./css/AllocatedAssets.css";
 import Sidebar from "./Sidebar.jsx";
 import { useSelector } from "react-redux";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 
 function AllocatedAssets() {
@@ -15,6 +15,11 @@ function AllocatedAssets() {
     const [requestDate, setRequestDate] = useState(null);
     const [file, setFile] = useState(null);
     const [activeTab, setActiveTab] = useState("allocated");
+
+    useEffect(() => {
+        console.log("Updated asset allocations: ", assetAllocations);
+        console.log("Updated liquid asset allocations: ", liquidAssetAllocations);
+    }, [assetAllocations, liquidAssetAllocations]);
 
     const postServiceRequest = async ($event, asset) => {
         $event.preventDefault();

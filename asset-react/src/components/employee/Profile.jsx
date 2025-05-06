@@ -67,8 +67,27 @@ function Profile() {
         //console.log("Sending PUT with", body, "to employee ID", employeeId);
 
         await axios.put(`http://localhost:8081/api/employee/update/${employeeId}`, body, headers)
-        
-        alert("Edit profile of "+name + " success!")
+            .then((response) => {
+                setName(response.data.name)
+                setEmail(response.data.email)
+                setContact(response.data.contact)
+                setUsername(response.data.user.username)
+                setUserId(response.data.user.id)
+                setDepartmentName(response.data.department.name)
+                setAddress(response.data.address)
+
+            })
+
+        const modalElement = document.getElementById(`profile-${profile.id}`)
+        const modal = bootstrap.Modal.getInstance(modalElement) 
+
+        //for resetting the fields in ediit profile modal to have no values whenever openoing
+        modalElement.addEventListener('hidden.bs.modal', function () { 
+            const inputFields = modalElement.querySelectorAll('input, textarea, select');
+            inputFields.forEach(field => field.value = ''); 
+        });
+        modal.hide()
+        alert("Edit profile of " + name + " success!")
     }
     return (
         <div className="container-fluid">
@@ -87,7 +106,7 @@ function Profile() {
                         <div className="card-body">
                             <div className="row">
                                 <div className="col-md-12 mb-4">
-                                    <h4 className="fw-bold text-primary">Welcome, {profile.name}!</h4>
+                                    <h4 className="fw-bold text-primary">Welcome, {name}!</h4>
                                     <hr />
                                 </div>
 

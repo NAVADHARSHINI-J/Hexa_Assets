@@ -17,7 +17,7 @@ import com.hexa.assetmanagement.service.DepartmentService;
 
 @RestController
 @RequestMapping("/api/department")
-@CrossOrigin(origins = "http://localhost:5173/")
+//@CrossOrigin(origins = "http://localhost:5173/")
 public class DepartmentController {
 	@Autowired
 	private DepartmentService departmentService;

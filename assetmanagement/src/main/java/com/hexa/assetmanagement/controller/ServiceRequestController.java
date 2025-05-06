@@ -29,7 +29,7 @@ import com.hexa.assetmanagement.service.ServiceRequestService;
 
 @RestController
 @RequestMapping("/api/servicerequest")
-@CrossOrigin(origins = "http://localhost:5173")
+//@CrossOrigin(origins = "http://localhost:5173")
 public class ServiceRequestController {
 	@Autowired
     private ServiceRequestService serviceRequestService;

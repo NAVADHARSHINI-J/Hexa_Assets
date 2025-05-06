@@ -26,7 +26,7 @@ import com.hexa.assetmanagement.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api/assetrequest")
-@CrossOrigin(origins = "http://localhost:5173/")
+//@CrossOrigin(origins = "http://localhost:5173/")
 public class AssetRequestController {
 
 	@Autowired

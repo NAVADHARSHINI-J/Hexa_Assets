@@ -16,9 +16,13 @@ function LiquidAssetDetails() {
 
     useEffect(() => {
 
+        let token = localStorage.getItem('token')
+        let headers= {headers: {
+            "Authorization": `Bearer ${token}`
+        }}
         const getLiquidAssetsById = async () => {
 
-            await axios.get(`http://localhost:8081/api/liquidasset/get/${liquidAssetId}`)
+            await axios.get(`http://localhost:8081/api/liquidasset/get/${liquidAssetId}`, headers)
                 .then(response => {
                     console.log(response.data)
                     setLiquidAssetDetails(response.data)

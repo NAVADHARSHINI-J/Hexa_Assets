@@ -10,11 +10,15 @@ const assetAllocationSlice = createSlice({ //defines state, actions, and reducer
     reducers:{ // the reducers — pure functions to update the state
         //Reducers listen for dispatched actions and apply changes to the state accordingly
         //Defines a reducer function named setAssetAllocation
-        setAssetAllocation(state, action){
-            state.assetAllocation =action.payload.assetAllocation //here the reducer update the state with the dispatched data from action
+        setAssetAllocation(state, action){ //action creator function
+          state.assetAllocation =action.payload.assetAllocation//here the reducer update the state with the dispatched data from action
         }
     }
 })
 
-export const {setAssetAllocation} = assetAllocationSlice.actions;
+//We are exporting setAssetAllocation here, 
+//to enable dispatching that specific action from anywhere in the app
+export const {setAssetAllocation} = assetAllocationSlice.actions; 
 export default assetAllocationSlice.reducer;
+
+// three param - name, intialState, reducers
