@@ -20,6 +20,11 @@ public class UserService {
 	
 	Logger logger=LoggerFactory.getLogger("UserService");
 
+	/*1. check whether the user already exists
+	 * 2. check the role if not present then set role as EMPLOYEE
+	 * 3. encode the password
+	 * 4. set password in user
+	 * 5. save the user*/
 	public User signup(User user) throws UsernameInvalidException {
 		// check if user is present in the table or not
 		User user1 = userRepository.findByUsername(user.getUsername());
@@ -28,7 +33,8 @@ public class UserService {
 		}
 		// check the role is given or not
 		if (user.getRole() == null)
-			user.setRole(user.getRole());
+			user.setRole("EMPLOYEE");
+
 		// encode the password
 		String pass = encoder.encode(user.getPassword());
 		// set the encoded password in user

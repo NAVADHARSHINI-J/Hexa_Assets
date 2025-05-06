@@ -6,9 +6,7 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.data.domain.Page;
-
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +31,11 @@ public class EmployeeService {
 
 	Logger logger = LoggerFactory.getLogger("EmployeeService");
 
+	/*here getting the department from department id and set in employee
+	 *getting the user information passed with the employee object and saving it in user repo
+	 *getting the updated user and set in employee
+	 *save the employee in employee repo. 
+	 */
 	public Employee addEmployee(Employee employee,int departId) throws InvalidContactException, InvalidIdException, UsernameInvalidException {
 		//get the department by id
 		Department department=departmentService.getById(departId);
@@ -43,6 +46,7 @@ public class EmployeeService {
 			throw new InvalidContactException("Invalid Contact number....");
 		// get the user from employee
 		User user = employee.getUser(); 
+		user.setRole("EMPLOYEE");	
 		//save the user in user repository to save the user for generating id of the user.
 		user.setRole("EMPLOYEE");
 		user= userService.signup(user);
@@ -52,6 +56,9 @@ public class EmployeeService {
 		return employeeRepository.save(employee);
 	}
 
+	/*
+	 * find the employee by his/her id - using optional.
+	 */
 	public Employee getById(int empId) throws InvalidIdException {
 		//check if the employee exists or not through his/her id.
 		Optional<Employee> op = employeeRepository.findById(empId);
@@ -61,21 +68,33 @@ public class EmployeeService {
 		return op.get();
 	}
 
+	/*
+	 *getting all the employee from repo 
+	 */
 	public Page<Employee> getAll(Pageable pageable) {
 		//returning the list of employee.
 		return employeeRepository.findAll(pageable);
 	}
 
+	/*
+	 * returning the list of employee with his/her name. 
+	 */
 	public List<Employee> filterByName(String name) {
-		//returning the list of employee with his/her name.
 		return employeeRepository.findByName(name);
 	}
 
+	/*
+	 * returning the list of employee with his/her department name. 
+	 */
 	public Page<Employee> filterByDepartment(String department,Pageable pageable) {
-		//returning the list of employee with his/her name.
 		return employeeRepository.findByDepartmentName(department, pageable);
 	}
 
+	/*
+	 *  checking the each constraint of the new employee reference either null or not,
+	 *  if not null then update it, including department
+	 *  then save the updated old reference of employee.
+	 */
 	public Employee updateEmployee(Employee oldEmployee, Employee newEmployee) throws InvalidContactException, InvalidIdException {
 
 		// check whether the name is not null and update
@@ -112,8 +131,10 @@ public class EmployeeService {
 
 	}
 
+	/*
+	 deleting the employee before that delete user details as well as the employee.
+	 */
 	public String deleteByEmployee(Employee employee) throws InvalidIdException {
-		
 		//delete the username
 		User user=employee.getUser();
 		logger.info("Employee {} deleted successfully!", employee.getName());
@@ -125,12 +146,27 @@ public class EmployeeService {
 
 	}
 	
+	/*
+	 * finding an employee by his/her username. 
+	 */
 	public Employee findByUsername(String username) {
 		return employeeRepository.findByUserUsername(username);
 	}
+ 
+	/*
+	 * filtering an employee by their user id  
+	 */
+	public Employee filterByUser(int userId) throws InvalidIdException {  
+		Optional<Employee> optional = employeeRepository.findByUser_Id(userId); 
 
+		if(optional.isEmpty()) {
+			throw new InvalidIdException("Invalid user id");
+		}
+		return optional.get();
+}
 	public int getEmployeeSize() {
 		return employeeRepository.findAll().size();
+ 
 	}
 
 }

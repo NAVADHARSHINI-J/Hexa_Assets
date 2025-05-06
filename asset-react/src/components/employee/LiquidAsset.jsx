@@ -1,111 +1,141 @@
-import "./LiquidAsset.css"
+import { useEffect, useState } from "react";
+import "./css/LiquidAsset.css"
 import Sidebar from './Sidebar'
+import axios from "axios";
+import { Link } from "react-router";
 function LiquidAsset() {
+ 
+
+    const[liquidAssets, setLiquidAssets] = useState([]);
+    const [page, setPage] = useState(0);
+    const [size, setSize] = useState(6);
+    const [pageArray, setPageArray] = useState([]);
+    const [totalpage, setTotalpage] = useState(0);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+
+    useEffect(()=>{
+
+        let response;
+        let token = localStorage.getItem('token')
+        let headers = {headers : {"Authorization" :`Bearer ${token}`}}
+        const getLiquidAssets=async()=>{
+
+         if(selectedStatus) {
+
+            response =  await axios.get(`http://localhost:8081/api/liquidasset/bystatus/${selectedStatus}?page=${page}&size=${size}`, headers)
+         }
+         else{
+            response =  await axios.get(`http://localhost:8081/api/liquidasset/getall?page=${page}&size=${size}`, headers)
+         }
+           
+                //at the backend we are returning as a dto which as this list
+                //so my response is typically a dto class 
+                //inside the dto i have my list
+                setLiquidAssets(response.data.list);
+                setTotalpage(response.data.totalPages);
+
+                let tp = response.data.totalPages;
+                let temp = [];
+                while (tp > 0) {
+                    temp.push(1);
+                    tp = tp - 1;
+                }
+                setPageArray(temp);
+            }
+
+        getLiquidAssets();
+    }, [page, selectedStatus])
+ 
     return (
         <div>
             <div className="container-fluid">
                 <div className="row">
                     {/* <!-- Sidebar --> */}
-                   < Sidebar/>
+                    < Sidebar />
                     {/* <!-- Main Content --> */}
                     <div className="col-md-10 p-4">
                         <div className="card">
-                            <div className="card-header secondary-bg text-white d-flex justify-content-between align-items-center">
-                                Liquid Assets
-                            </div>
+                        <div className="card-header secondary-bg text-white d-flex justify-content-between align-items-center">
+                            <h5 className="mb-2 mb-md-0">Liquid Assets</h5>
+
+                            <select
+                                className="form-select form-select-sm ms-auto"
+                                style={{ minWidth: '140px', maxWidth: '180px' }}
+                                value={selectedStatus}
+                                onChange={($event) => {
+                                    setSelectedStatus($event.target.value);
+                                    setPage(0);
+                                }}
+                            >
+                                <option value="">Search by Status</option>
+                                <option value="Active">Active</option>
+                                <option value="Pending">Pending</option>
+                                <option value="Reserved">Reserved</option>
+                                 
+                            </select>
+                        </div>
+
                             <div className="card-body">
-                                <div className="asset-grid">
-                                    {/* <!-- Cash Reserves --> */}
-                                    <div className="card asset-card">
-                                        <div className="card-body">
-                                            <h5 className="card-title">Cash Reserves</h5>
-                                            <p className="card-text">Company Liquid Cash Funds</p>
-                                            <span className="badge bg-info">Available: $500,000</span>
-                                            <div className="asset-actions">
-                                                <a href="liquid-asset-details.html?id=cash-reserves" className="btn btn-primary btn-sm">
-                                                    <i className="bi bi-eye me-2"></i>View Details
-                                                </a>
-                                                <button className="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#liquidAssetRequestModal" data-asset-type="Cash Reserves">
-                                                    <i className="bi bi-plus-circle me-2"></i>Request Asset
-                                                </button>
+                            <div className="asset-grid row gap-3">
+                                {liquidAssets.map((l, index) => (
+                                    <div className="card col-lg-12 shadow rounded" key={index} style={{ minWidth: '200px' }}>
+                                        <div className="card-body"> 
+                                            <div className="text-center mb-2">
+                                                <h5>{l.name}</h5>  
+                                                <hr />
+                                                <div className="text-start"> 
+                                                <p><strong>Total Amount:</strong> {l.totalAmount}</p> 
+                                                <p><strong>Status:</strong> {l.status}</p>  
+                                                </div>
+                                            </div> 
+                                            <div className="text-center mt-3">
+                                                <Link to={`/employee/viewassetdetails/${l.id}`}>
+                                                    <button className="btn btn-outline-primary btn-sm">View Details</button>
+                                                </Link>
                                             </div>
                                         </div>
                                     </div>
-
-                                    {/* <!-- Short-Term Investments --> */}
-                                    <div className="card asset-card">
-                                        <div className="card-body">
-                                            <h5 className="card-title">Short-Term Investments</h5>
-                                            <p className="card-text">Marketable Securities</p>
-                                            <span className="badge bg-info">Available: $250,000</span>
-                                            <div className="asset-actions">
-                                                <a href="liquid-asset-details.html?id=short-term-investments" className="btn btn-primary btn-sm">
-                                                    <i className="bi bi-eye me-2"></i>View Details
-                                                </a>
-                                                <button className="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#liquidAssetRequestModal" data-asset-type="Short-Term Investments">
-                                                    <i className="bi bi-plus-circle me-2"></i>Request Asset
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    {/* <!-- Money Market Funds --> */}
-                                    <div className="card asset-card">
-                                        <div className="card-body">
-                                            <h5 className="card-title">Money Market Funds</h5>
-                                            <p className="card-text">High Liquidity Funds</p>
-                                            <span className="badge bg-info">Available: $150,000</span>
-                                            <div className="asset-actions">
-                                                <a href="liquid-asset-details.html?id=money-market-funds" className="btn btn-primary btn-sm">
-                                                    <i className="bi bi-eye me-2"></i>View Details
-                                                </a>
-                                                <button className="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#liquidAssetRequestModal" data-asset-type="Money Market Funds">
-                                                    <i className="bi bi-plus-circle me-2"></i>Request Asset
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
+                                ))}
+                            </div>
+                            </div>
+                            <div className="card-footer">
+                            <div className="row">
+                                <div className="col-sm-4"></div>
+                                <div className="col-sm-6">
+                                    <nav aria-label="Page navigation">
+                                        <ul className="pagination">
+                                            {
+                                                page === 0 ? <li className="page-item disabled">
+                                                    <a className="page-link" href="#" tabIndex="-1" aria-disabled="true">Prev</a>
+                                                </li> : <li className="page-item">
+                                                    <a className="page-link" href="#" onClick={() => { setPage(page - 1) }}>Prev</a>
+                                                </li>
+                                            }
+                                            {pageArray.map((e, index) => (
+                                                <li key={index}
+                                                    className={`page-item ${page === index ? "active" : ""}`}>
+                                                    <a className="page-link" href="#"
+                                                        onClick={() => { setPage(index) }}>{index + 1}</a></li>
+                                            ))}
+                                            {
+                                                page === totalpage - 1 ? <li className="page-item disabled">
+                                                    <a className="page-link" href="#" aria-disabled="true">Next</a>
+                                                </li> : <li className="page-item">
+                                                    <a className="page-link" href="#" onClick={() => { setPage(page + 1) }}>Next</a>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* <!-- Liquid Asset Request Modal (unchanged from previous version) --> */}
-            <div className="modal fade" id="liquidAssetRequestModal" tabindex="-1">
-                <div className="modal-dialog">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title">Liquid Asset Request</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div className="modal-body">
-                            <form id="liquidAssetRequestForm">
-                                <div className="mb-3">
-                                    <label className="form-label">Asset Type</label>
-                                    <select className="form-select" id="assetTypeSelect" required>
-                                        <option value="">Select Liquid Asset Type</option>
-                                        <option>Cash Reserves</option>
-                                        <option>Short-Term Investments</option>
-                                        <option>Money Market Funds</option>
-                                    </select>
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Amount</label>
-                                    <input type="number" className="form-control" placeholder="Enter amount" required/>
-                                </div>
-                                <div className="mb-3">
-                                    <label className="form-label">Purpose</label>
-                                    <textarea className="form-control" rows="3" placeholder="Explain the purpose of the liquid asset request" required></textarea>
-                                </div>
-                                <button type="submit" className="btn btn-primary">Submit Request</button>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     )
 }
 

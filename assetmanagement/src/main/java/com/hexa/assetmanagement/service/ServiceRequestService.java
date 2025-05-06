@@ -176,6 +176,9 @@ public class ServiceRequestService {
 	public ServiceRequest uploadImage(MultipartFile file, int requestId)
 			throws IOException, InvalidIdException {
 		/*check if request id isvalid */
+		System.out.println("File received: " + file.getOriginalFilename());
+		System.out.println("Request ID: " + requestId);
+
 		ServiceRequest serviceRequest = getById(requestId);	
  		List<String> allowedExtensions = Arrays.asList("png","jpg","jpeg","gif","svg"); 
  		String originalFileName = file.getOriginalFilename(); 
@@ -185,7 +188,7 @@ public class ServiceRequestService {
  			throw new RuntimeException("Image Type Invalid");
  		}
  		
- 		String uploadPath= "E:\\SpringBoot Projects\\assetmanagement\\uploads";
+ 		String uploadPath= "E:\\SpringBoot Projects\\Fullstack Project\\asset-react\\public\\images";
  		
  		/*Create directory *///Check if directory is present else create it
  		Files.createDirectories(Paths.get(uploadPath));

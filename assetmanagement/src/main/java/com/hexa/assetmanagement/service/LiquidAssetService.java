@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -48,10 +49,10 @@ public class LiquidAssetService {
 		return liquidAssetRepository.findAll(pageable);
 	}
 
-	public List<LiquidAsset> filterByStatus(String status) {
+	public Page<LiquidAsset> filterByStatus(String status, Pageable pageable) {
 		//get all the liquid asset by status
-		logger.info("Liquid Asset is filtered by status");
-		return liquidAssetRepository.findByStatus(status);
+		logger.info("Liquid Asset is filtered by status"); 
+		 return liquidAssetRepository.findByStatus(status, pageable);
 	}
 
 	public List<LiquidAsset> filterByName(String name) {

@@ -33,6 +33,8 @@ public class AdminService {
 			throws InvalidContactException, UsernameInvalidException {
 		//get the user from admin
 		User user=admin.getUser();
+		//check the role
+		user.setRole("ADMIN");
 		//save this user
 		userService.signup(user);
 		//check the contact

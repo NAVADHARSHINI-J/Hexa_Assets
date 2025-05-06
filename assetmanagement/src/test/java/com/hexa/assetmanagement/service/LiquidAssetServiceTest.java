@@ -1,3 +1,4 @@
+
 package com.hexa.assetmanagement.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -155,4 +156,3 @@ public class LiquidAssetServiceTest {
         assertEquals(1, liquidAssetService.filterByName("Asset1").size());
     }
 }
-
