@@ -6,22 +6,36 @@ import Sidebar from './Sidebar';
 function AssetList() {
     const [assets, setAssets] = useState([]);
     const [page, setPage] = useState(0);
-    const [size, setSize] = useState(3);
+    const [size, setSize] = useState(9);
     const [totalpage, setTotalpage] = useState(0);
     const [pageArray, setPageArray] = useState([]);
-    const [selectedAsset, setSelectedAsset] = useState({})
+    const [selectedAsset, setSelectedAsset] = useState({});
     const [category, setCategory] = useState([]);
     const [categoryId, setCategoryId] = useState();
     const [disable, setDisable] = useState(true);
     const [employee, setEmployee] = useState({});
-    const [employeeId, setEmployeeId] = useState();
-    const [allocationDate, setAllocationDate] = useState();
+    const [employeeId, setEmployeeId] = useState("");
+    const [allocationDate, setAllocationDate] = useState("");
+    const [showAlert, setShowAlert] = useState(false);
+    const [alertMsg, setAlertMsg] = useState(null);
+    const [empErrorMsg, setEmpErrorMsg] = useState(null);
+    const [showErrorAlert, setShowErrorAlert] = useState(false);
+    const [errorMsg, setErrorMsg] = useState("")
+    const [filterAssetValue, setfilterAssetValue] = useState("")
+    const [filterAsset, setfilterAsset] = useState("")
+
 
     //to get all the records
     const getAsset = async () => {
+        let token = localStorage.getItem("token")
+        let headers = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
         //call the api
         const response = await axios
-            .get(`http://localhost:8081/api/asset/getall?page=${page}&size=${size}`);
+            .get(`http://localhost:8081/api/asset/getall?page=${page}&size=${size}`, headers);
         setAssets(response.data.list);
         setTotalpage(response.data.totalPages);
         let tp = response.data.totalPages;
@@ -36,8 +50,14 @@ function AssetList() {
     //to get all the category
     const getCategory = async () => {
         //call the api
+        let token = localStorage.getItem("token")
+        let headers = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
         try {
-            const response = await axios.get("http://localhost:8081/api/category/getall");
+            const response = await axios.get("http://localhost:8081/api/category/getall", headers);
             setCategory(response.data);
         }
         catch (err) {
@@ -52,28 +72,58 @@ function AssetList() {
 
     //function to update the object
     const updateAsset = async (asset) => {
-        //call the api to update
-        const response = await axios.put(`http://localhost:8081/api/asset/update-asset/${asset.id}`, asset)
-        //delete the existing in asset
-        let temp = [...assets]
-        temp = temp.filter(a => a.id !== asset.id);
-        //update the new record
-        temp.push(asset);
-        setAssets(temp);
+
+        let token = localStorage.getItem("token")
+        let headers = {
+            headers: {
+                "Authorization": `Bearer ${token}`
+            }
+        }
+        try {
+            //call the api to update
+            const response = await axios.put(`http://localhost:8081/api/asset/update-asset/${asset.id}`, asset, headers)
+            //delete the existing in asset
+            let temp = [...assets]
+            temp = temp.filter(a => a.id !== asset.id);
+            //update the new record
+            temp.push(asset);
+            setAssets(temp);
+            setSelectedAsset({})
+            const modalElement = document.getElementById("editAssetModal")
+            const modal = bootstrap.Modal.getInstance(modalElement)
+            modal.hide()
+            setAlertMsg("Asset Updated Successfully")
+            alertOpen()
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     //function to delete the asset
     const deleteAsset = async (asset) => {
         try {
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
             //call the api to delete
-            const response = await axios.delete(`http://localhost:8081/api/asset/delete/${asset.id}`);
+            const response = await axios.delete(`http://localhost:8081/api/asset/delete/${asset.id}`, headers);
             //delete the record in ui
             let temp = [...assets]
             temp = temp.filter(a => a.id !== asset.id);
             setAssets(temp);
+            const modalElement = document.getElementById("deleteAssetModal")
+            const modal = bootstrap.Modal.getInstance(modalElement)
+            modal.hide();
+            setAlertMsg("Asset  Deleted Successfully")
+            alertOpen()
+            setSelectedAsset({})
+            setDisable(true)
         }
         catch (err) {
-
+            console.log(err)
         }
     }
     //function to get the employee
@@ -81,12 +131,18 @@ function AssetList() {
         //call the api to get employee
         if (empId === "") setEmployee({});
         if (empId !== "") {
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
             try {
-                const response = await axios.get(`http://localhost:8081/api/employee/getbyid/${empId}`);
+                const response = await axios.get(`http://localhost:8081/api/employee/getbyid/${empId}`, headers);
                 setEmployee(response.data);
             }
             catch (err) {
-                //console.log(err);
+                setEmpErrorMsg("Employee Id is invalid")
             }
         }
     }
@@ -94,37 +150,129 @@ function AssetList() {
     const allocateAsset = async (asset, emp, date) => {
         try {
             //call the api
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
             const response = await axios
                 .post(`http://localhost:8081/api/assetallocation/add/${asset.id}/${emp.id}`,
-                    { "date": date }
+                    { "allocationDate": date }, headers
                 )
-            console.log(response)
+            // console.log(response)
             //delete the asset and update
             let temp = [...assets]
             temp = temp.filter(a => a.id !== asset.id)
             //add the new
             temp.push(response.data.asset)
             setAssets(temp)
+            const modalElement = document.getElementById("allocateAssetModal")
+            const modal = bootstrap.Modal.getInstance(modalElement)
+            modal.hide()
+            setAlertMsg("Asset Allocated Successfully")
+            alertOpen()
+            setSelectedAsset({})
+            setEmployee({})
+            setEmployeeId(null)
+            setAllocationDate("")
         }
         catch (err) {
+            setErrorMsg("Error in Asset Allocation ")
+            errorAlertOpen()
             console.log(err);
         }
     }
     //function to add the asset
     const addAsset = async (asset, catId) => {
         try {
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
             const response = await axios
-                .post(`http://localhost:8081/api/asset/add/${catId}`, asset)
+                .post(`http://localhost:8081/api/asset/add/${catId}`, asset, headers)
             //add the asset in the list
             let temp = [...assets]
             temp.push(response.data)
             setAssets(temp);
+            // // Hide the modal manually
+            const modalElement = document.getElementById('addAssetModal');
+            const modal = bootstrap.Modal.getInstance(modalElement);
+            modal.hide();
+            setSelectedAsset({});
+            setCategoryId("");
+            setAlertMsg("Asset added successfully")
+            alertOpen()
+
         }
         catch (err) {
             console.log(err);
+            setErrorMsg("Asset is not added")
+            errorAlertOpen()
         }
     }
-
+    //function to filter asset
+    const callAssetFilter = async () => {
+        if (filterAsset === "asset") {
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+            try {
+                const response = await axios.get(`http://localhost:8081/api/asset/getbyid/${filterAssetValue}`, headers)
+                console.log(response)
+                setPageArray([1]);
+                setAssets([response.data])
+            } catch (error) {
+                setErrorMsg("Invalid Id")
+                errorAlertOpen()
+                console.log(error)
+            }
+        }
+        else if (filterAsset === "category") {
+            let token = localStorage.getItem("token")
+            let headers = {
+                headers: {
+                    "Authorization": `Bearer ${token}`
+                }
+            }
+            //call the api
+            if (filterAssetValue === "--Select Category--") {
+                setErrorMsg("Please select category")
+                errorAlertOpen()
+                console.log(error)
+            }
+            try {
+                const response = await axios.get(`http://localhost:8081/api/asset/getbycategory?category=${filterAssetValue}&page=${page}&size=${size}`, headers);
+                setAssets(response.data.list);
+                setTotalpage(response.data.totalPages);
+                let tp = response.data.totalPages;
+                let temp = []
+                while (tp > 0) {
+                    temp.push(1);
+                    tp = tp - 1;
+                }
+                setPageArray(temp);
+            }
+            catch (err) {
+                console.log(err);
+            }
+        }
+        else if (filterAsset === "all") {
+            getAsset()
+        }
+    }
+    //function to show error message
+    const errorAlertOpen = () => { setShowErrorAlert(true) }
+    const errorAlertClose = () => { setShowErrorAlert(false); setErrorMsg(null) }
+    //function to show alert
+    const alertOpen = () => { setShowAlert(true) }
+    const alertClose = () => { setShowAlert(false); setAlertMsg(null) }
     return (
         <div>
             <div className="container-fluid">
@@ -132,14 +280,96 @@ function AssetList() {
                     {/* <!-- Sidebar Component --> */}
                     <Sidebar />
                     {/* <!-- Main Content Area --> */}
+                    {showAlert && (
+                        <div
+                            className="position-fixed top-0 start-50 translate-middle-x p-3"
+                            style={{ zIndex: 9999 }} >
+                            <div className='row'>
+                                <div className='col-5'></div>
+                                <div className='col-3'>
+                                    <div className="alert text-white bg-success alert-dismissible fade show align-items-center border-0" role="alert">
+                                        {alertMsg}
+                                        <button
+                                            type="button"
+                                            className="btn-close btn-close-white me-2 m-auto"
+                                            aria-label="Close"
+                                            onClick={alertClose}
+                                        ></button>
+                                    </div>
+                                </div>
+                                <div className='col-4'></div>
+                            </div>
+                        </div>
+                    )}
+                    {showErrorAlert && (
+                        <div
+                            className="position-fixed top-0 start-50 translate-middle-x p-3"
+                            style={{ zIndex: 9999 }} >
+                            <div className='row'>
+                                <div className='col-5'></div>
+                                <div className='col-3'>
+                                    <div className="alert text-white bg-danger alert-dismissible fade show align-items-center border-0" role="alert">
+                                        {errorMsg}
+                                        <button
+                                            type="button"
+                                            className="btn-close btn-close-white me-2 m-auto"
+                                            aria-label="Close"
+                                            onClick={errorAlertClose}
+                                        ></button>
+                                    </div>
+                                </div>
+                                <div className='col-4'></div>
+                            </div>
+                        </div>
+                    )}
                     <div className="col-md-10 p-4">
                         <div className="card">
                             <div className="card-header d-flex justify-content-between align-items-center" style={{ backgroundColor: "#159895", color: "white" }}>
-                                <span>Company Assets</span>
-                                <button className="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addAssetModal">
-                                    <i className="bi bi-plus me-2"></i>Add Asset
-                                </button>
-                            </div>
+                                <span><h5>Company Assets</h5></span>
+                                <div>
+                                    <div className='card text-end' style={{ backgroundColor: "#159895" }}>
+                                        <form onSubmit={(e) => { e.preventDefault(), callAssetFilter() }}>
+                                            <div className='row justify-content-end align-items-center g-2'>
+                                                <div className='col-auto'>
+                                                    <select className="form-select " defaultValue="all" onChange={(e) => { setfilterAsset(e.target.value) }}>
+                                                        <option value="all" >All</option>
+                                                        <option value="asset">Asset Id</option>
+                                                        <option value="category" >Category</option>
+                                                    </select>
+                                                </div>
+                                                {filterAsset !== "all" && <div className='col-auto'>
+                                                    {
+                                                        filterAsset === "asset" ? <input className='form-control' placeholder='Enter Asset Id' defaultValue=""
+                                                            onChange={(e) => {
+                                                                setfilterAssetValue(e.target.value); if (e.target.value == "") {
+                                                                    getAsset();
+                                                                }
+                                                            }} /> :
+                                                            filterAsset === "category" ?
+                                                                <select className="form-select" defaultValue="--Select Category--" onChange={(e) => { setfilterAssetValue(e.target.value) }} >
+                                                                    <option value="--Select Category--">--Select Category--</option>
+                                                                    {category.map((d, index) => (
+                                                                        <option key={index} value={d.name} >{d.name}</option>
+                                                                    ))}
+                                                                </select> : ""
+                                                    }
+                                                </div>}
+                                                <div className='col-auto'>
+                                                    <button type='submit'
+                                                        className='btn btn-primary btn-sm'>Search</button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div className='row justify-content-end mt-2'>
+                                        <div className='col-auto'>
+                                            <button className="btn btn-light btn-sm" data-bs-toggle="modal" data-bs-target="#addAssetModal"
+                                                onClick={() => { setSelectedAsset({}) }}>
+                                                <i className="bi bi-plus me-2"></i>Add Asset
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div></div>
                             <div className="card-body">
                                 <div className="row">
                                     {
@@ -185,7 +415,7 @@ function AssetList() {
                                     <div className="col-sm-4"></div>
                                     <div className="col-sm-6">
                                         <nav aria-label="Page navigation">
-                                            <ul class="pagination">
+                                            <ul className="pagination">
                                                 {
                                                     page === 0 ? <li className="page-item disabled">
                                                         <a className="page-link" href="#" tabIndex="-1" aria-disabled="true">Prev</a>
@@ -196,14 +426,14 @@ function AssetList() {
                                                 {pageArray.map((e, index) => (
                                                     <li key={index}
                                                         className={`page-item ${page === index ? "active" : ""}`}>
-                                                        <a class="page-link" href="#"
+                                                        <a className="page-link" href="#"
                                                             onClick={() => { setPage(index) }}>{index + 1}</a></li>
                                                 ))}
                                                 {
-                                                    page === totalpage - 1 ? <li class="page-item disabled">
-                                                        <a class="page-link" href="#" aria-disabled="true">Next</a>
-                                                    </li> : <li class="page-item">
-                                                        <a class="page-link" href="#" onClick={() => { setPage(page + 1) }}>Next</a>
+                                                    page === totalpage - 1 ? <li className="page-item disabled">
+                                                        <a className="page-link" href="#" aria-disabled="true">Next</a>
+                                                    </li> : <li className="page-item">
+                                                        <a className="page-link" href="#" onClick={() => { setPage(page + 1) }}>Next</a>
                                                     </li>
                                                 }
                                             </ul>
@@ -224,23 +454,26 @@ function AssetList() {
                             <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div className="modal-body">
-                            <form>
+                            <form onSubmit={(e) => { e.preventDefault(), allocateAsset(selectedAsset, employee, allocationDate) }}>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Asset ID</label>
-                                        <input type="text" className="form-control" value={selectedAsset.id} readOnly />
+                                        <input type="text" className="form-control" value={selectedAsset.id || ""} readOnly />
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Asset Name</label>
-                                        <input type="text" className="form-control" value={selectedAsset.name} readOnly />
+                                        <input type="text" className="form-control" value={selectedAsset.name || ""} readOnly />
                                     </div>
                                 </div>
                                 <div className="row mb-3">
                                     <div className="col-md-6">
                                         <label className="form-label">Employee ID</label><span style={{ color: "red" }}>*</span>
+                                        {empErrorMsg != null ? <p style={{ color: "red" }}> {empErrorMsg} </p> : ""}
                                         <div className='d-flex'>
                                             <input type="text" className="form-control me-2" placeholder="Enter Employee ID"
+                                                value={employeeId || ""}
                                                 onChange={(e) => {
+                                                    setEmpErrorMsg(null)
                                                     const evl = e.target.value
                                                     if (evl === "") {
                                                         setEmployee({})
@@ -263,16 +496,16 @@ function AssetList() {
 
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Allocation Date</label><span style={{ color: "red" }}>*</span>
-                                        <input type="date" className="form-control"
-                                            onChange={(e) => { setAllocationDate(e.value.target) }} required />
+                                        <input type="date" className="form-control" value={allocationDate || ""}
+                                            onChange={(e) => { setAllocationDate(e.target.value) }} required />
                                     </div>
                                 </div>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" className="btn btn-success" >Allocate Asset</button>
+                                </div>
                             </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" className="btn btn-success"
-                                onClick={() => { allocateAsset(selectedAsset, employee, allocationDate) }} data-bs-dismiss="modal">Allocate Asset</button>
                         </div>
                     </div>
                 </div>
@@ -325,27 +558,27 @@ function AssetList() {
                             <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div className="modal-body">
-                            <form>
+                            <form onSubmit={(e) => { e.preventDefault(), updateAsset(selectedAsset) }}>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Asset Name</label><span style={{ color: "red" }}>*</span>
-                                        <input type="text" className="form-control" value={selectedAsset.name}
+                                        <input type="text" className="form-control" value={selectedAsset.name || ""}
                                             onChange={(e) => setSelectedAsset({ ...selectedAsset, "name": e.target.value })} required />
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Asset ID</label>
-                                        <input type="text" className="form-control" value={selectedAsset.id} readOnly />
+                                        <input type="text" className="form-control" value={selectedAsset.id || ""} readOnly />
                                     </div>
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Model</label><span style={{ color: "red" }}>*</span>
-                                        <input type="text" className="form-control" value={selectedAsset.model}
+                                        <input type="text" className="form-control" value={selectedAsset.model || ""}
                                             onChange={(e) => setSelectedAsset({ ...selectedAsset, "model": e.target.value })} required />
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Asset Type</label><span style={{ color: "red" }}>*</span>
-                                        <select value={selectedAsset.category?.name} className="form-select" onChange={(e) => {
+                                        <select value={selectedAsset.category?.name || ""} className="form-select" onChange={(e) => {
                                             let found = e.target.value
                                             let temp = [...category];
                                             let cat = temp.find(c => c.name === found)
@@ -367,26 +600,25 @@ function AssetList() {
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Purchase Date</label>
-                                        <input type="date" className="form-control" value={selectedAsset.date}
+                                        <input type="date" className="form-control" value={selectedAsset.date || ""}
                                             onChange={(e) => setSelectedAsset({ ...selectedAsset, "date": e.target.value })} />
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Quantity</label>
-                                        <input type="number" className="form-control" value={selectedAsset.quantity} min="1"
+                                        <input type="number" className="form-control" value={selectedAsset.quantity || ""} min="1"
                                             onChange={(e) => setSelectedAsset({ ...selectedAsset, "quantity": e.target.value })} />
                                     </div>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Configurations</label>
-                                    <textarea className="form-control" rows="4" value={selectedAsset.configuration}
+                                    <textarea className="form-control" rows="4" value={selectedAsset.configuration || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "configuration": e.target.value })} ></textarea>
                                 </div>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" className="btn btn-warning">Save Changes</button>
+                                </div>
                             </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" className="btn btn-warning"
-                                onClick={() => { updateAsset(selectedAsset), setEditModal(false) }} data-bs-dismiss="modal">Save Changes</button>
                         </div>
                     </div>
                 </div>
@@ -430,25 +662,25 @@ function AssetList() {
                             <button type="button" className="btn-close" data-bs-dismiss="modal"></button>
                         </div>
                         <div className="modal-body">
-                            <form>
+                            <form onSubmit={(e) => { e.preventDefault(), addAsset(selectedAsset, categoryId) }}>
                                 <div className="mb-3">
                                     <label className="form-label">Asset Name</label><span style={{ color: "red" }}>*</span>
-                                    <input type="text" className="form-control"
+                                    <input type="text" className="form-control" value={selectedAsset.name || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "name": e.target.value })} required />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Asset Model</label><span style={{ color: "red" }}>*</span>
-                                    <input type="text" className="form-control"
+                                    <input type="text" className="form-control" value={selectedAsset.model || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "model": e.target.value })} required />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Purchase Date</label><span style={{ color: "red" }}>*</span>
-                                    <input type="date" className="form-control"
+                                    <input type="date" className="form-control" value={selectedAsset.date || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "date": e.target.value })} required />
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Quantity</label><span style={{ color: "red" }}>*</span>
-                                    <input type="number" min="1" className="form-control"
+                                    <input type="number" min="1" className="form-control" value={selectedAsset.quantity || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "quantity": e.target.value })} required />
                                 </div>
                                 <div className="col-md-6 mb-3">
@@ -465,20 +697,20 @@ function AssetList() {
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Configurations</label><span style={{ color: "red" }}>*</span>
-                                    <textarea className="form-control" rows="4"
+                                    <textarea className="form-control" rows="4" value={selectedAsset.configuration || ""}
                                         onChange={(e) => setSelectedAsset({ ...selectedAsset, "configuration": e.target.value })} required></textarea>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Description</label>
-                                    <textarea className="form-control" rows="4"
-                                        onChange={(e) => setSelectedAsset({ ...selectedAsset, "configuration": e.target.value })} required></textarea>
+                                    <textarea className="form-control" rows="4" value={selectedAsset.description || ""}
+                                        onChange={(e) => setSelectedAsset({ ...selectedAsset, "description": e.target.value })} ></textarea>
+                                </div>
+
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <button type="submit" className="btn btn-primary">Add Asset</button>
                                 </div>
                             </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                            <button type="button" className="btn btn-primary"
-                                onClick={() => { addAsset(selectedAsset, categoryId) }} data-bs-dismiss="modal">Add Asset</button>
                         </div>
                     </div>
                 </div>

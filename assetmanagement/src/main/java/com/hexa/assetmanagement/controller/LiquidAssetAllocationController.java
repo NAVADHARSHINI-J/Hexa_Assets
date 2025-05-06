@@ -22,8 +22,10 @@ import com.hexa.assetmanagement.model.LiquidAssetAllocation;
 import com.hexa.assetmanagement.service.LiquidAssetAllocationService;
 
 @RestController
+ 
 @RequestMapping("api/liquidassetallocation")
 //@CrossOrigin(origins = "http://localhost:5173/")
+ 
 public class LiquidAssetAllocationController {
 
 	@Autowired

@@ -94,9 +94,6 @@ public class CategoryServiceTest {
 		list=Arrays.asList(c1,c2);
 		when(categoryRepository.findAll()).thenReturn(list);
 		assertEquals(list,categoryService.getall());
-		
-		
-		
 	}
 	
 }

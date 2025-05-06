@@ -30,6 +30,12 @@ public class AssetAllocationService {
 	
 	Logger logger=LoggerFactory.getLogger("AssetAllocationService");
 
+	/* 1. Get the asset by using id and set it in asset allocation 
+	 * 2. Get the employee by using the id and set it in asset allocation 
+	 * 3. Check the quantity of the asset is greater than 0 else throw the assetUnavailable exception
+	 * 4. check that the date is given if not set date as today date 
+	 * 5. reduce the quantity of the asset by 1 and save that asset
+	 * 6. save the asset allocation*/
 	public AssetAllocation addAssetAllocation(int assetId, int empId,
 			AssetAllocation assetAllocation)
 			throws InvalidIdException, AssetUnavailableException {
@@ -55,6 +61,8 @@ public class AssetAllocationService {
 		return assetAllocationRepository.save(assetAllocation);
 	}
 
+	/* 1. get the asset by using the id by repository method if found return the asset
+	 * 2. else throw the exception*/
 	public AssetAllocation getById(int assetAllocationId) throws InvalidIdException {
 		//check the asset allocation is find with the id or not
 		Optional<AssetAllocation> optional = assetAllocationRepository.findById(assetAllocationId);
@@ -64,11 +72,15 @@ public class AssetAllocationService {
 		return optional.get();
 	}
 
+	/* get all the allocation by using the repository method*/
 	public List<AssetAllocation> getAllAssetAllocation() {
 		logger.info("All asset allocation is retrieved from database");
 		return assetAllocationRepository.findAll();
 	}
 
+	/* 1. get the asset by using id
+	 * 2. find all the asset allocation having this assetId and store it in the list
+	 * 3. delete the list by using repository deleteAll(list) method */
 	public String deleteByAssetId(int assetId) throws InvalidIdException {
 		//check that the asset id is found or not
 		Asset asset=assetService.getById(assetId);
@@ -81,6 +93,9 @@ public class AssetAllocationService {
 		return "Assset allocation is deleted successfully";
 	}
 
+	/* 1. get the employee by using id
+	 * 2. find all the asset allocation having this employee Id and store it in the list
+	 * 3. delete the list by using repository deleteAll(list) method */
 	public String deleteByEmployeeId(int empId) throws InvalidIdException {
 		//check that the employee with id is found or not
 		Employee employee=employeeService.getById(empId);
@@ -93,6 +108,13 @@ public class AssetAllocationService {
 		return "Assset allocation is deleted successfully";
 	}
 
+	/* 1. get the allocation by using the allocation id
+	 * 2. check that the new allocation fields or null or not if not
+	 * set the fields to the old allocation
+	 * 3. check the return date if null set the return date as today date
+	 * 4. get the asset from allocation and then increase the quantity by one and then save it 
+	 * to the asset
+	 * 5. save the asset allocation*/
 	public AssetAllocation update(AssetAllocation assetAllocation, int allocationId)
 			throws InvalidIdException {
 		//get the asset allocation by the id
@@ -115,7 +137,7 @@ public class AssetAllocationService {
 			assetAllocation1.setReturnDate(assetAllocation.getReturnDate());
 		if(assetAllocation.getReason()!=null)
 			assetAllocation1.setReason(assetAllocation.getReason());
-		System.out.println(assetAllocation.getStatus());
+		logger.debug(assetAllocation.getStatus());
 		//make the status as returned if they not give anything
 		if(assetAllocation.getStatus()!=null) {
 			assetAllocation1.setStatus(assetAllocation.getStatus());
@@ -131,6 +153,9 @@ public class AssetAllocationService {
 		return assetAllocationRepository.save(assetAllocation1);
 	}
 
+	/*1. get the asset by using the asset id 
+	 * 2. using repository method find all allocation by the asset
+	 * 3. filter the allocation by the status allocated*/
 	public List<AssetAllocation> getAssetAllocationByAssetId(int assetId) 
 			throws InvalidIdException {
 		//check that asset is found with assetid
@@ -142,6 +167,10 @@ public class AssetAllocationService {
 				.stream().
 				filter(e->e.getStatus().equalsIgnoreCase("ALLOCATED")).toList();
 	}
+	
+	/*1. get the employee by using the employee id 
+	 * 2. using repository method find all allocation by the employee
+	 * 3. filter the allocation by the status allocated*/
 	public List<AssetAllocation> getAssetAllocationByEmployeeId(int empId) 
 			throws InvalidIdException {
 		//check that employee is found with empId
@@ -154,6 +183,12 @@ public class AssetAllocationService {
 				filter(e->e.getStatus().equalsIgnoreCase("ALLOCATED")).toList();
 	}
 
+	/*this method to used to filter the allocation by using both asset id and employee id
+	 * 1. filter allocation by using the assetid
+	 * 2. filter the allocation by using the employeeid
+	 * 3. filter the allocation by using the status allocated
+	 * 4. this three filteration can be done in single list so that we can able to filter
+	 * the allocation by using the both employee and assset id */
 	public AssetAllocation getAllocationByAssetEmpId(int assetId, int empId) {
 		List<AssetAllocation> assetAllocation = assetAllocationRepository.findAll()
 				.stream().filter(a->a.getAsset().getId()==assetId)

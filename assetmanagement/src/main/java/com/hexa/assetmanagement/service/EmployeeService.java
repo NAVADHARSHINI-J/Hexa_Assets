@@ -46,6 +46,7 @@ public class EmployeeService {
 			throw new InvalidContactException("Invalid Contact number....");
 		// get the user from employee
 		User user = employee.getUser(); 
+		user.setRole("EMPLOYEE");	
 		//save the user in user repository to save the user for generating id of the user.
 		user= userService.signup(user);
 		//setting the user with user-id in employee.
@@ -150,7 +151,7 @@ public class EmployeeService {
 	public Employee findByUsername(String username) {
 		return employeeRepository.findByUserUsername(username);
 	}
-
+ 
 	/*
 	 * filtering an employee by their user id  
 	 */
@@ -161,6 +162,10 @@ public class EmployeeService {
 			throw new InvalidIdException("Invalid user id");
 		}
 		return optional.get();
+}
+	public int getEmployeeSize() {
+		return employeeRepository.findAll().size();
+ 
 	}
 
 }

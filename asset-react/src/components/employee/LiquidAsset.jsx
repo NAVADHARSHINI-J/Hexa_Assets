@@ -4,6 +4,7 @@ import Sidebar from './Sidebar'
 import axios from "axios";
 import { Link } from "react-router";
 function LiquidAsset() {
+ 
 
     const[liquidAssets, setLiquidAssets] = useState([]);
     const [page, setPage] = useState(0);
@@ -44,9 +45,9 @@ function LiquidAsset() {
 
         getLiquidAssets();
     }, [page, selectedStatus])
+ 
     return (
         <div>
-
             <div className="container-fluid">
                 <div className="row">
                     {/* <!-- Sidebar --> */}

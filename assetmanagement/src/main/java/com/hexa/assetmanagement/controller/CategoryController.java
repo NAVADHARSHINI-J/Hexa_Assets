@@ -22,17 +22,21 @@ public class CategoryController {
 	@Autowired
 	private CategoryService categoryService;
 	
+	/* add the category*/
 	@PostMapping("/add")
 	public Category addCategory(@RequestBody Category category) {
 		//call method to add category
 		return categoryService.addCategory(category);
 	}
+	
+	/*Get the category by using the category id*/
 	@GetMapping("/getbyid/{CategoryId}")
 	public Category getById(@PathVariable int CategoryId) throws InvalidIdException {
 		//call method to get by id
 		return categoryService.getById(CategoryId);
 	}
 	
+	/* get all the category*/
 	@GetMapping("/getall")
 	public List<Category> getAll() {
 		return categoryService.getall();

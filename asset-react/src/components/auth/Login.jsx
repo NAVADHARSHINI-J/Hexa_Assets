@@ -1,5 +1,7 @@
+ 
 import { useState } from "react" 
-import { Link, useNavigate } from "react-router";
+import { Link,useNavigate } from "react-router";
+ 
 import axios from "axios";
 
 function Login() {
@@ -123,9 +125,13 @@ function Login() {
                                     </div>
                                 </div>
                                 <div className="card-footer" style={{ backgroundColor: "#2E7893", color: "white" }}>
+ 
                                     <p > Don't have an Account? </p> 
-                                    <Link to={"/employee/signup"}>Sign Up </Link><br />
-                                      <p> <a href="#" style={{ color: "white" }}>Reset Password</a></p>
+                                    <Link to={"/employee/signup"}>Sign Up as Employee </Link><br />
+                                     <Link to={"/signupadmin"}>Sign Up as Admin </Link><br />
+                                       <Link to={"/manager/signup"}>Sign Up as Manager </Link><br />
+                                    
+ 
                                 </div>
                             </div>
                         </div>

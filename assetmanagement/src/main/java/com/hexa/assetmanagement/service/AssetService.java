@@ -134,4 +134,8 @@ public class AssetService {
 		return "Asset deleted successfully";
 	}
 
+	public int getAssetSize() {
+		return assetRepository.findAll().size();
+	}
+
 }

@@ -31,6 +31,7 @@ import com.hexa.assetmanagement.repository.AssetRepository;
 @ExtendWith(MockitoExtension.class)
 public class AssetServiceTest {
 
+ 
 	@InjectMocks
 	private AssetService assetService;
 
@@ -276,4 +277,5 @@ public class AssetServiceTest {
 		assertEquals("Asset deleted successfully", assetService.deleteAssetById(a1));
 		verify(assetRepository, times(1)).delete(a1);
 	}
+ 
 }

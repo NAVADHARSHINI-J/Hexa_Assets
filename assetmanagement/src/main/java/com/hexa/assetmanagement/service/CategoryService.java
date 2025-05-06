@@ -21,12 +21,15 @@ public class CategoryService {
 	@Autowired
 	private CategoryRepository categoryRepository;
 	
+	/* Add the category by uisng the repository method*/
 	public Category addCategory(Category category) {
 		logger.info("Category added with name "+category.getName());
 		//save the category
 		return categoryRepository.save(category);
 	}
 	
+	/* 1. get the category by using id => repository method
+	 * 2. if category found return it else throws an exception*/
 	public Category getById(int CategoryId) throws InvalidIdException {
 		//check whether the category is present with id or not
 		Optional<Category> op=categoryRepository.findById(CategoryId);
@@ -37,6 +40,7 @@ public class CategoryService {
 		return op.get();
 	}
 	
+	/* get all the category by using the repository method*/
 	public List<Category> getall() {
 		logger.info("All Categories of asset was got from db");
 		return categoryRepository.findAll();

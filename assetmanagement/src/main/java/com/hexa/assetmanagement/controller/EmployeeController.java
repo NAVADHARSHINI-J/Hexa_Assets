@@ -155,7 +155,7 @@ public class EmployeeController {
 		assetAllocationController.deleteByEmployeeId(employee.getId());
 		return employeeService.deleteByEmployee(employee);
 	}
-	
+	 
 	/*
 	 * finding an employee by his/her username.
 	 * getting the username as a string thru request-param 
@@ -164,4 +164,11 @@ public class EmployeeController {
 	public Employee findByUsername(@RequestParam String username) {
 		return employeeService.findByUsername(username);
 	}
+ 
+	//get the size of the employee
+	@GetMapping("/getEmpSize")
+	public int getEmployeeSize() {
+		return employeeService.getEmployeeSize();
+	}
+ 
 }

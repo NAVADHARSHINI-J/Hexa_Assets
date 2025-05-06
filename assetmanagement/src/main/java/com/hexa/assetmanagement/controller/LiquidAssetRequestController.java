@@ -25,7 +25,7 @@ import com.hexa.assetmanagement.service.LiquidAssetRequestService;
 import com.hexa.assetmanagement.service.LiquidAssetService;
 
 @RestController
-@RequestMapping("/api/liquidassetreq")
+@RequestMapping("/api/liquidassetreq") 
 //@CrossOrigin(origins = "http://localhost:5173/")
 public class LiquidAssetRequestController {
 
